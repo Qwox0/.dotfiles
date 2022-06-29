@@ -1,5 +1,3 @@
-set exrc " vim . -> execute .vimrc in . dir
-
 " vim settings
 set hidden
 
