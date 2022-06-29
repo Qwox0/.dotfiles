@@ -1,0 +1,13 @@
+#!/bin/bash
+
+file_path="~/.dotfiles/nvim"
+config_path="~/.config/nvim"
+
+# crate directories
+mkdir -p $config_path/plugin
+
+for file in `find . -regex ".*\.vim$\|.*.lua$"`; 
+    rm -rf ~/.config/nvim/$f
+    ln -s $file_path/$f $config_path/$f
+done
+
