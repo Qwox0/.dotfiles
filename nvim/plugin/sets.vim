@@ -14,6 +14,8 @@ set undofile
 " left column settings
 set number
 set relativenumber
+autocmd InsertEnter * :set norelativenumber " no relative numbers in insert Mode
+autocmd InsertLeave * :set relativenumber 
 set signcolumn=yes
 
 " tab settings

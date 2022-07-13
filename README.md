@@ -1,3 +1,3 @@
 ### .dotfiles
 
-My configurations files for Linux applications.
+My configuration files for Linux applications.
