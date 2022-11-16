@@ -116,6 +116,7 @@ awful.spawn.with_shell(home .. "/scripts/blueFilter.sh")
 
 awful.spawn.with_shell("syncthing serve --no-browser --logfile=default")
 awful.spawn.with_shell("compton")
+--awful.spawn.with_shell("picom")
 --awful.spawn.with_shell("nitrogen --restore")
 awful.spawn.with_shell(home .. "/scripts/wallpaper.sh")
 
