@@ -37,8 +37,8 @@ return packer.startup(function(use)
     }
 
     -- Treesitter: Syntax highlighting (see after/plugins/treesitter.lua
-    use({"nvim-treesitter/nvim-treesitter",
-        run =":TSUpdate"
+    use({ "nvim-treesitter/nvim-treesitter",
+        run = ":TSUpdate"
     })
     --use("nvim-treesitter/playground")
     use("romgrk/nvim-treesitter-context")   -- show current context (function) at the top
@@ -51,10 +51,10 @@ return packer.startup(function(use)
     use("ThePrimeagen/vim-be-good")         -- train vim movements with :VimBeGood5
 
     --[[ Style ]]
-    use({"nvim-lualine/lualine.nvim",       -- bottom statusline
+    use({ "nvim-lualine/lualine.nvim",       -- bottom statusline
         requires = "kyazdani42/nvim-web-devicons"
     })
-    use({"akinsho/bufferline.nvim",         -- show open buffers at the top
+    use({ "akinsho/bufferline.nvim",         -- show open buffers at the top
         tag = "v2.*",
         requires = "kyazdani42/nvim-web-devicons"
     })
@@ -65,6 +65,8 @@ return packer.startup(function(use)
     -- Themes
     use("folke/tokyonight.nvim")
     use("gruvbox-community/gruvbox")
+    use({ "catppuccin/nvim", as = "catppuccin" })
+    use({ "rose-pine/neovim", as = "rose-pine" })
 
     -- Icons
     use("kyazdani42/nvim-web-devicons")

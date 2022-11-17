@@ -4,7 +4,8 @@ local awful = require("awful")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 
-local modkey = require("vars").keys.modkey
+local keys = require("vars").keys
+local modkey = keys.modkey
 local terminal = require("vars").terminal
 -- }}}
 
@@ -100,6 +101,11 @@ actions.tag.focus = {
             data = { description = "focus " .. relative_to_word(dx) .. " tag", group = "tag" }
         }
     end,
+    urgent = function() return {
+            fn = function() awful.tag.urgent.jumpto() end,
+            data = { description = "focus tag with notification", group = "tag" },
+        }
+    end
 }
 -- }}}
 
@@ -113,42 +119,57 @@ actions.tag.focus = {
 local globalkeys = gears.table.join(
     awful.key({ modkey, }, "s", hotkeys_popup.show_help, { description = "show help", group = "awesome" }),
 
-    addkey({ modkey, }, "Left", actions.tag.focus.relative(-1)),
-    addkey({ modkey, }, "Right", actions.tag.focus.relative(1)),
-    awful.key({ modkey, }, "Escape", awful.tag.history.restore, { description = "go back", group = "tag" }),
 
-    -- awful.key({ modkey, }, "u", awful.tag.urgent.jumpto, { description = "jump to notification", group = "tag" }),
-
-    --addkey({ modkey, }, "h", object_actions.client.focus("left")),
-    -- awful.key({ modkey, }, "h", awful.client.focus.bydirection("left"), { description = "focus left", group = "client" }),
+    --------------------------- {{{ Client
     addkey({ modkey, }, "h", actions.client.focus.global_direction("left")),
+    -- old: awful.key({ modkey, }, "h", awful.client.focus.bydirection("left"), { description = "focus left", group = "client" }),
     addkey({ modkey, }, "j", actions.client.focus.global_direction("down")),
     addkey({ modkey, }, "k", actions.client.focus.global_direction("up")),
     addkey({ modkey, }, "l", actions.client.focus.global_direction("right")),
 
     -- FIXME: H, L don't work
-    awful.key({ modkey, }, "H", changeClient("swap", "left"), { description = "swap left", group = "client" }),
-    awful.key({ modkey, }, "J", changeClient("swap", "down"), { description = "swap down", group = "client" }),
-    awful.key({ modkey, }, "K", changeClient("swap", "up"), { description = "swap up", group = "client" }),
-    awful.key({ modkey, }, "L", changeClient("swap", "right"), { description = "swap right", group = "client" }),
+    -- FIXME: global_direction doesn't work
+    addkey({ modkey, keys.shift }, "h", actions.client.swap.global_direction("left")),
+    addkey({ modkey, keys.shift }, "j", actions.client.swap.global_direction("down")),
+    addkey({ modkey, keys.shift }, "k", actions.client.swap.global_direction("up")),
+    addkey({ modkey, keys.shift }, "l", actions.client.swap.global_direction("right")),
+    --}}}
 
+
+    --------------------------- {{{ Tag
+    addkey({ modkey, }, "Left", actions.tag.focus.relative(-1)),
+    addkey({ modkey, }, "Right", actions.tag.focus.relative(1)),
+    addkey({ modkey, }, "b", actions.tag.focus.relative(-1)),
+    addkey({ modkey, }, "n", actions.tag.focus.relative(1)),
+    awful.key({ modkey, }, "Escape", awful.tag.history.restore, { description = "go back", group = "tag" }),
+    addkey({ modkey, }, "u", actions.tag.focus.urgent()),
+    -- }}}
+
+
+    --------------------------- {{{ Screen
+
+    -- }}}
+
+    --[[ old:
     awful.key({ modkey, }, "n", function() awful.screen.focus_relative(1) end,
         { description = "focus next screen", group = "screen" }),
     awful.key({ modkey, }, "b", function() awful.screen.focus_relative(-1) end,
         { description = "focus previous screen", group = "screen" }),
 
-
-    -- awful.key({ modkey, }, "w", function() mymainmenu:show() end, { description = "show main menu", group = "awesome" }),
-
-    -- Layout manipulation
     awful.key({ modkey, "Shift" }, "j", function() awful.client.swap.byidx(1) end,
         { description = "swap with next client by index", group = "client" }),
     awful.key({ modkey, "Shift" }, "k", function() awful.client.swap.byidx(-1) end,
         { description = "swap with previous client by index", group = "client" }),
+
     awful.key({ modkey, "Control" }, "j", function() awful.screen.focus_relative(1) end,
         { description = "focus the next screen", group = "screen" }),
     awful.key({ modkey, "Control" }, "k", function() awful.screen.focus_relative(-1) end,
         { description = "focus the previous screen", group = "screen" }),
+    ]]
+
+
+    -- awful.key({ modkey, }, "w", function() mymainmenu:show() end, { description = "show main menu", group = "awesome" }),
+
     awful.key({ modkey, }, "u", awful.client.urgent.jumpto,
         { description = "jump to urgent client", group = "client" }),
     awful.key({ modkey, }, "Tab",

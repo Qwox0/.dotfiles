@@ -34,7 +34,8 @@ V.conf_path = V.home .. "/.config/awesome"
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-V.terminal = "x-terminal-emulator"
+--V.terminal = "x-terminal-emulator"
+V.terminal = "alacritty"
 V.editor = os.getenv("EDITOR") or "nvim"
 V.editor_cmd = V.terminal .. " -e " .. V.editor
 
