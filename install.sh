@@ -8,6 +8,10 @@ script_path="$(dirname $(readlink -f $0))"
 print_err() {
     printf "ERR: $@\n"
 }
+ll_dir() {
+    # -d: show directory instead of content
+    ls -aldhF --color=auto $@
+}
 
 if [[ $# == 0 ]]; then # install all dotfiles
     directories=$(find "$script_path" -maxdepth 1 -type d -not -name "\.*")
@@ -32,6 +36,7 @@ for config in $directories; do
 
     if [[ -L "$target" ]]; then
         printf "$target already exists and is a symbolic link\n"
+        ll_dir "$target"
         if $do_relinks; then
             printf "deleting $target\n"
             rm "$target"
@@ -40,6 +45,7 @@ for config in $directories; do
 
     if [[ -d "$target" && ! -L "$target" ]]; then
         printf "$target already exists and is a directory\n"
+        ll_dir "$target"
         printf "Trying \`rmdir $target\`\n"
         rmdir "$target"
     fi
