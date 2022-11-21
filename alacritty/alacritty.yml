@@ -733,10 +733,8 @@ font:
 # If the same trigger is assigned to multiple actions, all of them are executed
 # in the order they were defined in.
 key_bindings:
-  #- { key: V,           mods: Control|Shift,  mode: ~Vi,    action: Paste           }
-  #- { key: C,           mods: Control|Shift,                action: Copy            }
-  - { key: V,           mods: Control,  mode: ~Vi,    action: Paste           }
-  - { key: C,           mods: Control,  mode: ~Vi,    action: Copy            }
+  - { key: V,           mods: Control|Shift,  mode: ~Vi,    action: Paste           }
+  - { key: C,           mods: Control|Shift,                action: Copy            }
   - { key: PageUp,      mods: None,           mode: ~Alt,   action: ScrollPageUp,   }
   - { key: PageDown,    mods: None,           mode: ~Alt,   action: ScrollPageDown, }
 
