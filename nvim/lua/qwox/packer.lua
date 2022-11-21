@@ -45,7 +45,8 @@ return packer.startup(function(use)
 
     use("terryma/vim-multiple-cursors")     -- CTRL + N for new cursor
     use("tpope/vim-surround")               -- ds": "word" -> word | cs"(: "word" -> ( word )
-    use("jiangmiao/auto-pairs")
+    --use("jiangmiao/auto-pairs")
+    use("windwp/nvim-autopairs")
     --use("lukas-reineke/indent-blankline.nvim")-- show indentation
 
     use("ThePrimeagen/vim-be-good")         -- train vim movements with :VimBeGood5
