@@ -90,3 +90,16 @@ if require("qwox.util").file_exists(sumneko_binary) then
     })
 end
 
+-- HTML
+qwox_lsp.setup_server("html", {
+    cmd = { "html-languageserver", "--stdio" },
+    filetypes = { "html" },
+    settings = {},
+})
+
+-- Typescript
+qwox_lsp.setup_server("tsserver", {
+    filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+    root_dir = function() return vim.loop.cwd() end -- run lsp for javascript in any directory
+})
+--require'lspconfig'.tsserver.setup{}
