@@ -99,7 +99,7 @@ qwox_lsp.setup_server("html", {
 
 -- Typescript
 qwox_lsp.setup_server("tsserver", {
-    filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+    filetypes = { "typescript", "typescriptreact", "typescript.tsx", "javascript" },
     root_dir = function() return vim.loop.cwd() end -- run lsp for javascript in any directory
 })
 --require'lspconfig'.tsserver.setup{}

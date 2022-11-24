@@ -9,6 +9,8 @@ U.src_path = U.home .. "/dev/src"
 U.os = {
     sysname = vim.loop.os_uname().sysname -- "Linux", "Windows_NT"
 }
+U.os.is_windows = U.os.sysname == "Windows_NT"
+U.os.is_linux = U.os.sysname == "Linux"
 -- }}}
 
 
