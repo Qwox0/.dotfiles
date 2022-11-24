@@ -1,11 +1,13 @@
 -- git keymaps
 local nnoremap = require("qwox.keymap").nnoremap
+local telescope = require("telescope.builtin")
 
-nnoremap("<leader>gi", ":!git status<CR>",  "git status (\"info\")")
-nnoremap("<leader>gf", ":!git fetch<CR>",   "git fetch")
-nnoremap("<leader>gd", ":!git pull<CR>",    "git pull (\"down\")")
-nnoremap("<leader>gu", ":!git push<CR>",    "git push (\"up\")")
-nnoremap("<leader>ga", ":!git add -A<CR>",  "git stash all")
+nnoremap("<leader>gi", function() telescope.git_status() end,       "git status (\"info\")")
+nnoremap("<leader>gb", function() telescope.git_branches() end,     "git sshow branches")
+nnoremap("<leader>gf", ":!git fetch<CR>",                           "git fetch")
+nnoremap("<leader>gd", ":!git pull<CR>",                            "git pull (\"down\")")
+nnoremap("<leader>gu", ":!git push<CR>",                            "git push (\"up\")")
+nnoremap("<leader>ga", ":!git add -A<CR>",                          "git stash all")
 nnoremap("<leader>gca", function ()
     local stage = vim.api.nvim_exec(":!git add -A", true) -- true: don't show output, return it!
     local status = vim.api.nvim_exec(":!git status", true) -- true: don't show output, return it!
@@ -16,17 +18,5 @@ nnoremap("<leader>gca", function ()
     if ok == 2 then return end
     vim.api.nvim_exec(commit_cmd, false)
 end,      "git commit all")
+
 nnoremap("<leader>gs", ":!git fetch<CR>:!git pull<CR>:!git push<CR>", "git sync (fetch, pull, push)")
-
-nnoremap("<leader>jj", ":echo \"a<BR>b\"<CR>")
-
-
-
-
-
-
-
-
-
-
-

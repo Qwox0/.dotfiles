@@ -15,6 +15,7 @@ return packer.startup(function(use)
 
     -- -- -- Fuzzy Finder
     use("nvim-telescope/telescope.nvim")
+    use("nvim-telescope/telescope-ui-select.nvim")
 
     -- -- -- LSP
     use("neovim/nvim-lspconfig")        -- LSP: Install language: install language server > add language server to "after/plugins/lsp.lua")
