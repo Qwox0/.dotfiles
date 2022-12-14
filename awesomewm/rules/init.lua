@@ -66,4 +66,8 @@ return {
     { rule = { class = "discord" },
         properties = { screen = 2, tag = "Dc" }
     },
+    { rule = { instance = "virt-manager", class = "Virt-manager" },
+        properties = { screen = 1, tag = "VM"}
+
+    }
 }

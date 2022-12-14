@@ -75,7 +75,7 @@ screen.connect_signal("property::geometry", set_wallpaper)
 -- Each screen has its own tag table.
 local default_tags = { 1, 2, 3, 4, 5, 6, 7, 8, 9 }
 local custom_tags = {
-    [1] = { "www", "dev", 3, 4, 5, 6, 7, 8, "conf" },
+    [1] = { "www", "dev", 3, 4, 5, 6, "VM", 8, "conf" },
     [2] = { "Email", "Dc", 3, 4, 5, 6, 7, 8, 9 },
 }
 
