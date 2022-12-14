@@ -17,6 +17,9 @@ return packer.startup(function(use)
     use("nvim-telescope/telescope.nvim")
     use("nvim-telescope/telescope-ui-select.nvim")
 
+    -- -- -- Harpoon
+    use("theprimeagen/harpoon")
+
     -- -- -- LSP
     use("neovim/nvim-lspconfig")        -- LSP: Install language: install language server > add language server to "after/plugins/lsp.lua")
     use("onsails/lspkind-nvim")         -- LSP: nice formating + icons

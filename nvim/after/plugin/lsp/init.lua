@@ -15,6 +15,7 @@ Alternatively you might be able to configure your editor to start rust-analyzer 
 $ rustup run stable rust-analyzer
 ]]
 local rust_analyzer_cmd = { "rustup", "run", "stable", "rust-analyzer" }
+--local rust_analyzer_cmd = { "rustup", "run", "nightly", "rust-analyzer" }
 local has_rt, rt = pcall(require, "rust-tools")
 if has_rt then
     rt.setup({

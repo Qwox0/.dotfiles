@@ -18,8 +18,13 @@ inoremap("<C-a>", "<Esc>A", "jump to line start")
 nnoremap("<leader>e", ":Ex<CR>", "explore with vim file manager")
 vnoremap("J", ":m '>+1<CR>gv=gv", "move entire line down")
 vnoremap("K", ":m '<-2<CR>gv=gv", "move entire line up")
+
 nnoremap("<C-d>", "<C-d>zz", "center cursor on Ctrl-d")
 nnoremap("<C-u>", "<C-u>zz", "center cursor on Ctrl-u")
+-- zv: some extra folding stuff
+nnoremap("n", "nzzzv", "center cursor on search next")
+nnoremap("N", "Nzzzv", "center cursor on search previous")
+
 
 xnoremap("<leader>p", "\"_dP", "paste but keep copy buffer")
 
@@ -29,10 +34,6 @@ nnoremap("<leader>ra", function()
     local replacement = vim.fn.input("Replace with > ")
     vim.api.nvim_command(":%s/" .. search .. "/" .. replacement .. "/g")
 end, "replace all (:%s/../../g)")
-
--- -- -- goto directories
-nnoremap("<leader>co", qwox_util.edit_path(qwox_util.conf_path), "goto nvim config path")
-nnoremap("<leader>src", qwox_util.edit_path(qwox_util.src_path), "goto src") --TODO: select repo
 
 -- -- -- buffer, window, tab
 --[[ Explanation

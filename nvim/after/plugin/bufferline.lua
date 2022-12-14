@@ -1,4 +1,7 @@
-require("bufferline").setup({
+local ok, bufferline = pcall(require, "bufferline")
+if not ok then print("Warn: bufferline is missing!") return end
+
+bufferline.setup({
     options = {
         diagnostic = "nvim_lsp",
         diagnostic_update_in_insert = true,

@@ -1,40 +1,30 @@
+-- colorschemes["scheme_name"] = scheme_setup
 local colorschemes = {
-    gruvbox = {
-        name = "gruvbox",
-        setup = function()
-            vim.g.gruvbox_contrast_dark = "hard"
-        end,
-    },
-    tokyonight = {
-        name = "tokyonight",
-        setup = function()
-            vim.g.tokyonight_transparent_sidebar = true
-            vim.g.tokyonight_transparent = true
-        end,
-    },
-    ["rose-pine"] = {
-        name = "rose-pine",
-        setup = function()
-            require('rose-pine').setup({
-                dark_variant = 'moon',
-            })
-
-        end
-    },
-    catppuccin = {
-        name = "catppuccin",
-        setup = function()
-
-        end
-    },
+    gruvbox = function()
+        vim.g.gruvbox_contrast_dark = "hard"
+    end,
+    tokyonight = function()
+        vim.g.tokyonight_transparent_sidebar = true
+        vim.g.tokyonight_transparent = true
+    end,
+    ["rose-pine"] = function()
+        require("rose-pine").setup({
+            dark_variant = "moon",
+        })
+    end,
+    catppuccin = function()
+    end,
 }
 
 
-local set_scheme = function(scheme)
+local set_scheme = function(scheme_name)
+    local scheme_setup = colorschemes[scheme_name]
+    if scheme_setup == nil then return "Err: invalid scheme_name" end
+
     vim.opt.background = "dark"
 
-    scheme.setup()
-    vim.cmd("colorscheme " .. scheme.name)
+    scheme_setup()
+    vim.cmd("colorscheme " .. scheme_name)
 
     local hl = function(thing, opts)
         vim.api.nvim_set_hl(0, thing, opts)
@@ -66,12 +56,13 @@ local set_scheme = function(scheme)
         fg = "#5eacd3"
     })
     ]]
+    return "Ok"
 end
 
-set_scheme(colorschemes.gruvbox)
---set_scheme(colorschemes["rose-pine"])
+set_scheme("gruvbox")
+--set_scheme("rose-pine")
 
 return {
-    colorschemes = colorschemes,
+    -- colorschemes = colorschemes,
     set_scheme = set_scheme,
 }

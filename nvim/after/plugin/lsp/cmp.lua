@@ -1,7 +1,8 @@
--- Setup nvim-cmp. See https://github.com/hrsh7th/nvim-cmp
-local has_cmp, cmp = pcall(require, "cmp")
-if not has_cmp then return end
-local lspkind = require("lspkind")
+local ok, cmp = pcall(require, "cmp")
+if not ok then print("Warn: cmp is missing!") return end
+
+local ok, lspkind = pcall(require, "lspkind")
+if not ok then print("Warn: lspkind is missing!") return end
 
 local confirm_opt = {
     behavior = cmp.ConfirmBehavior.Insert,
