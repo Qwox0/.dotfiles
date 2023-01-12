@@ -1,10 +1,15 @@
-------------------------- {{{ Imports
--- Notification library
-local naughty = require("naughty")
--- }}}
---
--- Check if awesome encountered an error during startup and fell back to
--- another config (This code will only ever execute for the fallback config)
+local naughty = require("core").naughty
+
+naughty.connect_signal("request::display_error", function(message, startup)
+    naughty.notification {
+        urgency = "critical",
+        title   = "Oops, an error happened" .. (startup and " during startup!" or "!"),
+        message = message
+    }
+end)
+
+-- old:
+--[[
 if awesome.startup_errors then
     naughty.notify({ preset = naughty.config.presets.critical,
         title = "Oops, there were errors during startup!",
@@ -25,3 +30,4 @@ do
         in_error = false
     end)
 end
+]]
