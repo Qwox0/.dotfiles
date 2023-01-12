@@ -28,7 +28,26 @@ screen.connect_signal("request::wallpaper", function(s)
     }
 end)
 
-local mykeyboardlayout = awful.widget.keyboardlayout()
+--local kbdcfg = awful.widget.keyboardlayout()
+local kbdcfg = {}
+kbdcfg.cmd = "setxkbmap"
+kbdcfg.widget = wibox.widget.textbox()
+kbdcfg.layouts = {
+    { "us", "intl" }, { "de", "" },
+    current = 1,
+    get = function(self) return self[self.current] end,
+    set = function(self, idx)
+        if type(idx) == "number" then self.current = idx end
+        local t = kbdcfg.layouts:get()
+        local variant = (t[2] == "") and "" or "(" .. t[2] .. ")"
+        kbdcfg.widget:set_text(" " .. t[1] .. variant .. " ")
+        os.execute(kbdcfg.cmd .. " " .. t[1] .. " " .. t[2])
+    end,
+    next = function(self) self:set(self.current % #self + 1) end
+}
+kbdcfg.layouts:set()
+kbdcfg.widget:connect_signal("button::press", function() kbdcfg.layouts:next() end)
+
 local mytextclock = wibox.widget.textclock()
 
 
@@ -113,7 +132,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
             s.mytasklist, -- Middle widget
             { -- Right widgets
                 layout = wibox.layout.fixed.horizontal,
-                mykeyboardlayout,
+                kbdcfg.widget,
                 wibox.widget.systray(),
                 mytextclock,
                 s.mylayoutbox,
