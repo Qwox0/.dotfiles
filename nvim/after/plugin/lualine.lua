@@ -1,5 +1,5 @@
 local ok, lualine = pcall(require, "lualine")
-if not ok then print("Warn: lualine is missing!") return end
+if not ok then print("Warn: lualine is missing!"); return end
 
 lualine.setup({
     options = {

@@ -1,78 +1,95 @@
--- config file for nvim package manager("packer")
--- This file can be loaded by calling `require"packer"` from your init.lua
-
--- Install added packages with :PackerSync
-
-local has_packer, packer = pcall(require, "packer")
-if not has_packer then return end
+local ok, packer = pcall(require, "packer")
+if not ok then return end
 
 return packer.startup(function(use)
-    use("wbthomason/packer.nvim")       -- Packer can manage itself
-    use("nvim-lua/popup.nvim")          -- dependency
-    use("nvim-lua/plenary.nvim")        -- dependency
-    use("L3MON4D3/LuaSnip")             -- Snippet engine
-    use("mfussenegger/nvim-dap")        -- Debugging
+    use { "wbthomason/packer.nvim" } -- Packer can manage itself
 
-    -- -- -- Fuzzy Finder
-    use("nvim-telescope/telescope.nvim")
-    use("nvim-telescope/telescope-ui-select.nvim")
+    --use { "nvim-lua/popup.nvim" } -- dependency
+    --use { "mfussenegger/nvim-dap" } -- Debugging
 
-    -- -- -- Harpoon
-    use("theprimeagen/harpoon")
+    -- -- -- Telescope
+    use { "nvim-telescope/telescope.nvim",
+        requires = { "nvim-lua/plenary.nvim" }
+    }
+    use { "nvim-telescope/telescope-ui-select.nvim" }
 
     -- -- -- LSP
-    use("neovim/nvim-lspconfig")        -- LSP: Install language: install language server > add language server to "after/plugins/lsp.lua")
-    use("onsails/lspkind-nvim")         -- LSP: nice formating + icons
-    use("simrat39/rust-tools.nvim")     -- LSP: rust_analyzer
-    use("ray-x/lsp_signature.nvim")
+    use { "neovim/nvim-lspconfig",
+        requires = {
+            -- LSP Support
+            "williamboman/mason.nvim",
+            "williamboman/mason-lspconfig.nvim",
+
+            -- Useful status UI for LSP
+            "j-hui/fidget.nvim",
+
+            -- little Symbols
+            "onsails/lspkind-nvim",
+        }
+    }
+    --use { "simrat39/rust-tools.nvim" } -- LSP: rust_analyzer
+    use { "ray-x/lsp_signature.nvim" }
 
     -- -- -- CMP
-    use("hrsh7th/nvim-cmp")             -- suggestions/auto completions plugin
-    use("hrsh7th/cmp-buffer")           -- suggestions from current buffer (file)
-    use("hrsh7th/cmp-path")             -- suggest paths
-    use("hrsh7th/cmp-nvim-lua")         -- lua + nvim suggestions
-    use("hrsh7th/cmp-nvim-lsp")         -- compatibility with buildin LSP
-    use("hrsh7th/cmp-cmdline")          -- vim cmdline completion
-    use("saadparwaiz1/cmp_luasnip")     -- "L3MON4D3/LuaSnip" compatibility
-    use { "saecki/crates.nvim",
-        tag = "v0.3.0",
-        requires = { "nvim-lua/plenary.nvim" },
-        config = function() require("crates").setup() end,
+    use { "hrsh7th/nvim-cmp",
+        requires = {
+            -- completiion sources
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-nvim-lua",
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-cmdline",
+            { "saecki/crates.nvim",
+                requires = { "nvim-lua/plenary.nvim" },
+                config = function() require("crates").setup() end,
+            },
+
+            -- Snippets
+            "L3MON4D3/LuaSnip",
+            "saadparwaiz1/cmp_luasnip",
+            "rafamadriz/friendly-snippets",
+        }
     }
 
+    -- -- -- Harpoon
+    use { "theprimeagen/harpoon" }
+    use { "ThePrimeagen/vim-be-good" }
+
     -- Treesitter: Syntax highlighting (see after/plugins/treesitter.lua
-    use({ "nvim-treesitter/nvim-treesitter",
-        run = ":TSUpdate"
-    })
-    --use("nvim-treesitter/playground")
-    use("romgrk/nvim-treesitter-context")   -- show current context (function) at the top
+    use { "nvim-treesitter/nvim-treesitter",
+        run = function()
+            pcall(require("nvim-treesitter.install").update({ with_sync = true }))
+        end,
+    }
+    use { "nvim-treesitter/playground" } -- show treesitter AST (for plugin development)
+    use { "romgrk/nvim-treesitter-context" } -- show current context (function) at the top
 
-    use("terryma/vim-multiple-cursors")     -- CTRL + N for new cursor
-    use("tpope/vim-surround")               -- ds": "word" -> word | cs"(: "word" -> ( word )
-    --use("jiangmiao/auto-pairs")
-    use("windwp/nvim-autopairs")
-    --use("lukas-reineke/indent-blankline.nvim")-- show indentation
+    -- Undotree
+    use { "mbbill/undotree" }
 
-    use("ThePrimeagen/vim-be-good")         -- train vim movements with :VimBeGood5
+    -- Git
+    use { "tpope/vim-fugitive" }
+
+    --use { "terryma/vim-multiple-cursors" } -- CTRL + N for new cursor
+    use { "tpope/vim-surround" } -- ds": "word" -> word | cs"(: "word" -> ( word )
+    --use { "jiangmiao/auto-pairs" }
+    use { "windwp/nvim-autopairs" }
+
 
     --[[ Style ]]
-    use({ "nvim-lualine/lualine.nvim",       -- bottom statusline
+    use { "nvim-lualine/lualine.nvim", -- bottom statusline
         requires = "kyazdani42/nvim-web-devicons"
-    })
-    use({ "akinsho/bufferline.nvim",         -- show open buffers at the top
-        tag = "v2.*",
+    }
+    use { "akinsho/bufferline.nvim", -- show open buffers at the top
         requires = "kyazdani42/nvim-web-devicons"
-    })
+    }
 
 
-
+    --use { "lukas-reineke/indent-blankline.nvim" } -- show indentation
     --[[ Style ]]
     -- Themes
-    use("folke/tokyonight.nvim")
-    use("gruvbox-community/gruvbox")
-    use({ "catppuccin/nvim", as = "catppuccin" })
-    use({ "rose-pine/neovim", as = "rose-pine" })
-
-    -- Icons
-    use("kyazdani42/nvim-web-devicons")
+    use { "folke/tokyonight.nvim" }
+    use { "gruvbox-community/gruvbox" }
+    use { "catppuccin/nvim", as = "catppuccin" }
+    use { "rose-pine/neovim", as = "rose-pine" }
 end)

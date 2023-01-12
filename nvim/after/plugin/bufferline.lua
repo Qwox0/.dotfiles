@@ -1,5 +1,5 @@
 local ok, bufferline = pcall(require, "bufferline")
-if not ok then print("Warn: bufferline is missing!") return end
+if not ok then print("Warn: bufferline is missing!"); return end
 
 bufferline.setup({
     options = {

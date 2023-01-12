@@ -1,6 +1,7 @@
--- Signs (see https://github.com/lucax88x/configs/blob/master/dotfiles/.config/nvim/lua/lt/lsp/init.lua)
 local column_signs = require("qwox.cosmetics").signs.small
 local inlay_signs = require("qwox.cosmetics").signs.big
+
+-- Signs (see https://github.com/lucax88x/configs/blob/master/dotfiles/.config/nvim/lua/lt/lsp/init.lua)
 
 -- setup signs
 for _, sign in ipairs(column_signs) do

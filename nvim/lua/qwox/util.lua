@@ -3,7 +3,7 @@ local U = {}
 U.home = os.getenv("HOME")
 
 U.paths = {
-    configs = "~/.dotfiles",  -- for nvim specific vim.fn.stdpath('config'),
+    configs = "~/.dotfiles", -- for nvim specific vim.fn.stdpath('config'),
     src = U.home .. "/dev/src"
 }
 --print(vim.fn.stdpath('config')) --test
@@ -25,7 +25,7 @@ U.file_exists = function(name)
     else return false end
 end
 
-local open_window = function(lines)
+U.open_window = function(lines)
     local buf = api.nvim_create_buf(false, true) -- create new emtpy buffer
 
     api.nvim_buf_set_option(buf, 'bufhidden', 'wipe')

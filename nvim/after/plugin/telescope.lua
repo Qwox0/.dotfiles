@@ -1,5 +1,5 @@
 local ok, telescope = pcall(require, "telescope")
-if not ok then print("Warn: telescope is missing!") return end
+if not ok then print("Warn: telescope is missing!"); return end
 
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
@@ -9,14 +9,12 @@ local pickers = require("telescope.pickers")
 local previewers = require("telescope.previewers")
 local themes = require("telescope.themes")
 
-local nnoremap = require("qwox.keymap").nnoremap
 local qwox_util = require("qwox.util")
-
 
 telescope.setup({
     defaults = {
-        --layout_strategy = 'vertical',
-        --layout_strategy = 'center',
+        --layout_strategy = "vertical",
+        --layout_strategy = "center",
         --layout_config = { height = 0.95 },
         --file_ignore_patterns = { "git" }
         --file_ignore_patterns = { "^.git$" }
@@ -32,24 +30,27 @@ telescope.setup({
     },
 })
 
---telescope.load_extension("ui-select")
+vim.keymap.set("n", "<leader>fo", require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" })
+vim.keymap.set("n", "<leader>fb", require("telescope.builtin").buffers, { desc = "[ ] Find existing buffers" })
+vim.keymap.set("n", "<leader>/", function()
+  require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
+    winblend = 10,
+    previewer = false,
+  }) -- You can pass additional configuration to telescope to change theme, layout, etc.
+end, { desc = "[/] Fuzzily search in current buffer]" })
 
-local find_opts = { hidden = true }
-if vim.fn.has('windows') then find_opts = {} end
+vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
+--vim.keymap.set("n", "<C-p>", builtin.git_files)
+vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
+vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "[F]ind current [W]ord" })
+vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "[F]ind by [G]rep" })
+vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "[F]ind [D]iagnostics" })
+vim.keymap.set("n", "<leader>fs", function()
+    builtin.grep_string({ search = vim.fn.input("Grep For > ") })
+end)
 
-nnoremap("<leader>ff", function() builtin.find_files(find_opts) end, "search for file")
-nnoremap("<leader>fg", function() builtin.live_grep() end, "search for file content")
-nnoremap("<leader>fs", function() builtin.grep_string({ search = vim.fn.input("Grep For > ") }) end,
-    "search for file with specific string")
-
-nnoremap("<leader>fb", function() builtin.buffers() end, "search for buffer")
-nnoremap("<leader>fh", function() builtin.help_tags() end, "search for help")
-
-nnoremap("<leader>co", function()
+vim.keymap.set("n", "<leader>co", function()
     local path = qwox_util.paths.configs .. "/nvim"
     vim.api.nvim_command(":cd " .. path)
     builtin.find_files({ prompt_title = "< NeovimRC >", })
-end, "goto nvim config path")
-
-
--- -- -- Git
+end)

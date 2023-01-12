@@ -3,9 +3,9 @@
 
 vim.opt.hidden = true       -- hide vim in bg when closing
 
-vim.opt.number = true           -- left: show line numbers
-vim.opt.relativenumber = true   -- left: show relative numbers
-vim.opt.signcolumn = "yes"      -- left: have column for symbols
+vim.opt.number = true           -- show line numbers
+vim.opt.relativenumber = true   -- show relative numbers
+vim.opt.signcolumn = "yes"      -- have column for symbols
 
 vim.opt.tabstop = 4         -- tab: tab char length
 vim.opt.shiftwidth = 4      -- tab: indentation length
@@ -21,8 +21,7 @@ vim.opt.termguicolors = true    -- colors: all 24-bit RGB colors
 
 vim.opt.errorbells = false      -- audio: no bells
 
-vim.opt.list = true
-vim.opt.listchars = "tab:-->,space: ,trail:⋅,multispace:⋅,leadmultispace:⋅⋅⋅|,extends:…,"
+-- for listchars: see after/plugin/indent.lua
 
 vim.opt.swapfile = false    -- swap: buffer in memory not swap
 vim.opt.updatetime = 50     --
@@ -46,9 +45,6 @@ vim.opt.lazyredraw = true   -- performance: dont redraw on macros etc.
 vim.opt.splitright = true   -- split: to right (instead of left) on ':vsplit'
 vim.opt.splitbelow = false
 
--- Mapping
-vim.g.mapleader = " "   -- keymapping: replaces <leader> ( See after/keymap )
-vim.opt.timeout = false     -- keymapping:
 
 -- cmp
 vim.opt.completeopt = { "menu", "menuone", "noselect" }
