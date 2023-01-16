@@ -40,3 +40,12 @@ map("n", "<leader>gca", function()
     if ok == 2 then return end
     vim.api.nvim_exec(commit_cmd, false)
 end, "[C]ommit [A]ll")
+map("n", "<leader>gco", function()
+    local status = vim.api.nvim_exec(":!git status", true) -- true: don't show output, return it!
+    local msg = vim.fn.input(tostring(status) .. "Commit Message > ")
+    if msg == "q" or msg == "Q" then return end
+    local commit_cmd = ":!git commit -m \"" .. msg .. "\""
+    local ok = vim.fn.confirm("Execute " .. commit_cmd .. "?", "&Yes\n&No") -- Yes=1; No=2
+    if ok == 2 then return end
+    vim.api.nvim_exec(commit_cmd, false)
+end, "[CO]mmit")

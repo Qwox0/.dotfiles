@@ -3,6 +3,8 @@ if not ok then print("Warn: cmp is missing!"); return end
 local ok, luasnip = pcall(require, "luasnip")
 if not ok then print("Warn: luasnip is missing!"); return end
 
+vim.opt.completeopt = { "menu", "menuone", "preview" }
+
 local confirm_opt = {
     behavior = cmp.ConfirmBehavior.Insert,
     select = true
@@ -12,8 +14,8 @@ cmp.setup{
     mapping = cmp.mapping.preset.insert({
         ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
         ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-        --["<C-d>"] = cmp.mapping.scroll_docs(-4),
-        --["<C-f>"] = cmp.mapping.scroll_docs(4),
+        ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+        ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ["<C-e>"] = cmp.mapping.abort(),
         ["<Tab>"] = cmp.mapping.confirm(confirm_opt),
         ["<C-i>"] = cmp.mapping.confirm(confirm_opt),

@@ -45,7 +45,4 @@ vim.opt.lazyredraw = true   -- performance: dont redraw on macros etc.
 vim.opt.splitright = true   -- split: to right (instead of left) on ':vsplit'
 vim.opt.splitbelow = false
 
-
--- cmp
-vim.opt.completeopt = { "menu", "menuone", "noselect" }
 --vim.opt.shortmess:append "c"      -- Don't show the dumb matching stuff.

@@ -1,11 +1,13 @@
 vim.g.mapleader = " " -- keymapping: define <leader> for mappings
 vim.opt.timeout = false -- keymapping: command timeout
 
+
+
 vim.keymap.set("n", "k", "v:count == 0 ? \"gk\" : \"k\"", { expr = true }, { desc = "jump up in wrapped lines" })
 vim.keymap.set("n", "j", "v:count == 0 ? \"gj\" : \"j\"", { expr = true }, { desc = "jump down in wrapped lines" })
 
-vim.keymap.set("i", "<C-i>", "<Esc>I", { desc = "jump to line end" })
-vim.keymap.set("i", "<C-a>", "<Esc>A", { desc = "jump to line start" })
+--vim.keymap.set("i", "<C-i>", "<Esc>I", { desc = "jump to line end" })
+--vim.keymap.set("i", "<C-a>", "<Esc>A", { desc = "jump to line start" })
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "move entire line down" })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "move entire line up" })
