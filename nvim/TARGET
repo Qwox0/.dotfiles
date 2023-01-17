@@ -1,2 +1,2 @@
 #!/bin/bash
-target="$HOME/.config/nvim"
+echo "$HOME/.config/nvim"

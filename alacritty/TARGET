@@ -1,2 +1,2 @@
 #!/bin/bash
-target="$HOME/.config/alacritty"
+echo "$HOME/.config/alacritty"
