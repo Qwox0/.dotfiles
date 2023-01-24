@@ -2,28 +2,15 @@
 
 # ~/.bash_profile is invoked on bash start
 # bash reads and executes commands from ~/.bashrc
+# \<cmd> uses original
 
-#############################
-##### own aliases
-
-### Neovim
 alias v='nvim'
 alias vi='nvim'
 alias vim='nvim'
 
-
-# \<cmd> uses original
-
-### list (ls) ###
 alias ls='ls -hF --color=auto'
-# always show human-readable file sizes
 
-# prevent misstypes
-alias ks='ls'
-
-
-#############################
-##### bash functions
+alias ks='ls' # prevent misstypes
 
 ### disk usage ###
 du() {
