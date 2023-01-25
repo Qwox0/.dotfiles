@@ -8,8 +8,8 @@ local set_scheme = function(scheme)
     scheme.name = scheme.name or default_scheme
     scheme.setup = scheme.setup or default_setup
 
-    local ok, _ = pcall(require, scheme.name)
-    if not ok then print("Warn: " .. scheme.name .. " is missing!"); return end
+    -- local ok, _ = pcall(require, scheme.name)
+    -- if not ok then print("Warn: " .. scheme.name .. " is missing!"); return end
 
     vim.cmd.colorscheme(scheme.name)
 

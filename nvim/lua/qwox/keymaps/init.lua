@@ -1,6 +1,3 @@
-local ok, telescope = pcall(require, "telescope")
-if not ok then print("Warn: telescope is missing!"); return end
-
 vim.g.mapleader = " " -- keymapping: define <leader> for mappings
 vim.keymap.set({ "n", "v" }, "<leader>", "<Nop>", { desc = "Remove default behavior of the leader key" })
 vim.opt.timeout = false -- keymapping: command timeout
@@ -61,6 +58,8 @@ vim.keymap.set("n", "<leader>k", "<C-w>k", { desc = "switch screen up" })
 vim.keymap.set("n", "<leader>l", "<C-w>l", { desc = "switch screen right" })
 
 --------------------------------- git keymaps
+local ok, telescope = pcall(require, "telescope")
+if not ok then print("Warn: telescope is missing!"); return end
 
 local map = function(mode, keys, func, desc)
     if desc then
