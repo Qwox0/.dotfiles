@@ -1,4 +1,5 @@
-local telescope = require("telescope.builtin")
+local ok, telescope = pcall(require, "telescope")
+if not ok then print("Warn: telescope is missing!"); return end
 
 vim.g.mapleader = " " -- keymapping: define <leader> for mappings
 vim.keymap.set({ "n", "v" }, "<leader>", "<Nop>", { desc = "Remove default behavior of the leader key" })

@@ -1,3 +1,14 @@
+local ok, telescope = pcall(require, "telescope")
+if not ok then print("Warn: telescope is missing!"); return end
+local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+if not ok then print("Warn: cmp_nvim_lsp is missing!"); return end
+local ok, mason = pcall(require, "mason")
+if not ok then print("Warn: mason is missing!"); return end
+local ok, lspconfig = pcall(require, "lspconfig")
+if not ok then print("Warn: lspconfig is missing!"); return end
+local ok, fidget = pcall(require, "fidget")
+if not ok then print("Warn: fidget is missing!"); return end
+
 local custom_attach = function(client, bufnr)
     local map = function(mode, keys, func, desc)
         if desc then
@@ -72,7 +83,7 @@ capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 require("mason").setup()
 
 -- Ensure the servers above are installed
-local mason_lspconfig = require "mason-lspconfig"
+local mason_lspconfig = require("mason-lspconfig")
 
 mason_lspconfig.setup {
     ensure_installed = vim.tbl_keys(servers),
