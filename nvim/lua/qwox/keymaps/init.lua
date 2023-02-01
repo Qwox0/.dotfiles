@@ -26,6 +26,7 @@ vim.keymap.set("n", "<leader>e", vim.cmd.Ex, { desc = "explore with vim file man
 vim.keymap.set("i", "<C-c>", "<Esc>", { desc = "Ctrl+C = Esc" })
 
 vim.keymap.set("x", "<leader>p", "\"_dP", { desc = "paste but keep copy buffer" })
+vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 -- Substitute / Replace
 vim.keymap.set("n", "<leader>ra", function()
