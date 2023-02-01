@@ -2,6 +2,8 @@ local ok, cmp = pcall(require, "cmp")
 if not ok then print("Warn: cmp is missing!"); return end
 local ok, luasnip = pcall(require, "luasnip")
 if not ok then print("Warn: luasnip is missing!"); return end
+local ok, lspkind = pcall(require, "lspkind")
+if not ok then print("Warn: lspkind is missing!"); return end
 
 vim.opt.completeopt = { "menu", "menuone", "preview" }
 
@@ -39,13 +41,12 @@ cmp.setup{
         end,
     },
 
-    --[[
     formatting = {
         format = lspkind.cmp_format({
-            mode = "symbol", -- show only symbol annotations
-            --maxwidth = 50
-            --ellipsis_char = "…", -- must define maxwidth first!
-            --with_text = true,
+            mode = "symbol_text", -- show only symbol annotations
+            maxwidth = 50,
+            ellipsis_char = "…", -- must define maxwidth first!
+            --[[
             menu = {
                 buffer = "[Buf]",
                 nvim_lsp = "[LSP]",
@@ -55,9 +56,12 @@ cmp.setup{
                 gh_issues = "[issues]",
                 tn = "[TabNine]",
             },
+            ]]
+            before = function (entry, vim_item)
+                return vim_item
+            end
         }),
     },
-    ]]
 
     experimental = {
         -- new menu = better
