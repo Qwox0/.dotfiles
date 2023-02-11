@@ -43,7 +43,7 @@ cmp.setup{
 
     formatting = {
         format = lspkind.cmp_format({
-            mode = "symbol_text", -- show only symbol annotations
+            mode = "symbol",
             maxwidth = 50,
             ellipsis_char = "…", -- must define maxwidth first!
             --[[
