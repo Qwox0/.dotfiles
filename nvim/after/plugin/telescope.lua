@@ -1,5 +1,8 @@
 local ok, telescope = pcall(require, "telescope")
-if not ok then print("Warn: telescope is missing!"); return end
+if not ok then
+    print("Warn: telescope is missing!");
+    return
+end
 
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
@@ -30,26 +33,31 @@ telescope.setup({
     },
 })
 
-vim.keymap.set("n", "<leader>fo", require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" })
-vim.keymap.set("n", "<leader>fb", require("telescope.builtin").buffers, { desc = "[ ] Find existing buffers" })
-vim.keymap.set("n", "<leader>/", function()
-  require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
-    winblend = 10,
-    previewer = false,
-  }) -- You can pass additional configuration to telescope to change theme, layout, etc.
-end, { desc = "[/] Fuzzily search in current buffer]" })
+local map = function(mode, keys, func, desc)
+    local props = { hidden = true }
+    vim.keymap.set(mode, keys, function() func(props) end, { desc = desc })
+end
 
-vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
---vim.keymap.set("n", "<C-p>", builtin.git_files)
-vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
-vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "[F]ind current [W]ord" })
-vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "[F]ind by [G]rep" })
-vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "[F]ind [D]iagnostics" })
-vim.keymap.set("n", "<leader>fs", function()
+map("n", "<leader>fo", require("telescope.builtin").oldfiles, "[?] Find recently opened files")
+map("n", "<leader>fb", require("telescope.builtin").buffers, "[ ] Find existing buffers")
+map("n", "<leader>/", function()
+    require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
+        winblend = 10,
+        previewer = false,
+    }) -- You can pass additional configuration to telescope to change theme, layout, etc.
+end, "[/] Fuzzily search in current buffer]")
+
+map("n", "<leader>ff", builtin.find_files, "[F]ind [F]iles")
+--map("n", "<C-p>", builtin.git_files)
+map("n", "<leader>fh", builtin.help_tags, "[F]ind [H]elp")
+map("n", "<leader>fw", builtin.grep_string, "[F]ind current [W]ord")
+map("n", "<leader>fg", builtin.live_grep, "[F]ind by [G]rep")
+map("n", "<leader>fd", builtin.diagnostics, "[F]ind [D]iagnostics")
+map("n", "<leader>fs", function()
     builtin.grep_string({ search = vim.fn.input("Grep For > ") })
 end)
 
-vim.keymap.set("n", "<leader>co", function()
+map("n", "<leader>co", function()
     local path = qwox_util.paths.configs .. "/nvim"
     vim.api.nvim_command(":cd " .. path)
     builtin.find_files({ prompt_title = "< NeovimRC >", })
