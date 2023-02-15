@@ -1,0 +1,6 @@
+# [relative path (from here) to dotfiles] ; [link path from $HOME]
+.bashrc         ; .bashrc
+nvim            ; .config/nvim
+alacritty       ; .config/alacritty
+awesomewm       ; .config/awesome
+starship.toml   ; .config/starship.toml
