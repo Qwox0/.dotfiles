@@ -1,27 +1,93 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
+export HISTCONTROL=ignoreboth       # no duplicate entries
+export EDITOR='nvim'                # default editor
+
+### vim mode
+#set -o vi
+#bind -m vi-command 'Control-l: clear-screen'
+#bind -m vi-insert 'Control-l: clear-screen'
 
 # If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
+[[ $- != *i* ]] && return
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
+### PATH
+export PATH="/usr/local/bin:/usr/bin:/bin"
 
-# append to the history file, don't overwrite it
-shopt -s histappend
+add_to_path() {
+    path="$1"
+    # affix colons on either side of $PATH to simplify matching
+    case ":${PATH}:" in
+        *:"$path":*)    ;; # already in path
+        *)              export PATH="$path:$PATH" ;;
+    esac
+}
+
+add_to_path "$HOME/bin"
+add_to_path "$HOME/.local/bin"
+add_to_path "$HOME/.cargo/bin"
+
+### SHOPT
+shopt -s autocd             # change to named directory
+shopt -s cdspell            # autocorrects cd misspellings
+shopt -s cmdhist            # save multi-line commands in history as single line
+shopt -s dotglob            # * includes hidden (.name) files
+shopt -s histappend         # do not overwrite history
+shopt -s expand_aliases     # expand aliases
+shopt -s checkwinsize       # checks term size when bash regains control
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+
+bind "set completion-ignore-case on" #ignore upper and lowercase when TAB completion
+
+### ARCHIVE EXTRACTION
+# usage: ex <file>
+ex() {
+  if [ -f "$1" ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1   ;;
+      *.gz)        gunzip $1    ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tgz)       tar xzf $1   ;;
+      *.zip)       unzip $1     ;;
+      *.Z)         uncompress $1;;
+      *.7z)        7z x $1      ;;
+      *.deb)       ar x $1      ;;
+      *.tar.xz)    tar xf $1    ;;
+      *.tar.zst)   unzstd $1    ;;
+      *)           echo "'$1' cannot be extracted via ex()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+### Aliases
+
+alias ls='ls -hF --color=auto'
+alias l='ls -CF'
+alias ll='ls -alF'
+alias la='ls -A'
+alias ks='ls' # prevent misstypes
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+alias v='nvim'
+alias vi='nvim'
+alias vim='nvim'
+
+# Colorize grep output
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
 HISTFILESIZE=2000
-
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
@@ -87,22 +153,6 @@ fi
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-alias v='nvim'
-alias vi='nvim'
-alias vim='nvim'
-
-alias ls='ls -hF --color=auto'
-
-alias ks='ls' # prevent misstypes
 
 ### disk usage ###
 du() {
@@ -172,8 +222,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# default editor
-export EDITOR='nvim'
 
 ### Rust programming language home path
 ### default values:
@@ -183,23 +231,6 @@ export EDITOR='nvim'
 
 # . "$HOME/.dotfiles/.bash_path"
 
-add_to_path() {
-    path="$1"
-    #echo "add: $path"
-    # affix colons on either side of $PATH to simplify matching
-    case ":${PATH}:" in
-        *:"$path":*)
-            # already in path
-            ;;
-        *)
-            export PATH="$path:$PATH"
-            ;;
-    esac
-}
-
-add_to_path "$HOME/bin" # already exists in PATH. why?
-add_to_path "$HOME/.local/bin"
-add_to_path "$HOME/.cargo/bin" # already exists in PATH. why?
 
 if command -v starship > /dev/null; then
     eval "$(starship init bash)"
