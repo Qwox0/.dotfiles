@@ -1,5 +1,12 @@
-format = "$all $directory$character"
+format = """\
+$all$character
+ $directory\
+[➜](bold green) """
+
 add_newline = true
+
+[line_break] # line break after $all
+disabled = true # use newline in format instead
 
 [username]
 style_user = "green bold"
@@ -18,7 +25,8 @@ disabled = false
 # ❯ ➜ \\$
 [character]
 format = "$symbol "
-success_symbol = "[➜](bold green)"
+#success_symbol = "[➜](bold green)"
+success_symbol = "[✔️](bold green)"
 error_symbol = "[✗](bold red)"
 
 # configure directory
@@ -34,9 +42,6 @@ show_milliseconds = false
 disabled = false
 #style = "bold italic red"
 
-#[directory]
-#read_only = " "
-
 [docker_context]
 symbol = " "
 format = "via [$symbol$context]($style) "
@@ -51,14 +56,16 @@ symbol = " "
 
 [git_status]
 format = '([\[$all_status$ahead_behind\]]($style) )'
-stashed = "[${count}*](green)"
-modified = "[${count}+](yellow)"
-deleted =  "[${count}-](red)"
 conflicted =  "[${count}~](red)"
 ahead = "⇡${count}"
 behind = "⇣${count}"
-untracked = "[${count}?](blue)"
-staged = "[${count}+](green)"
+#untracked = "[${count}?](blue)"
+untracked = "[+${count}](green)"
+stashed = "[${count}$](green)"
+modified = "[~${count}](yellow)"
+staged = "[+{count}$](green)"
+deleted =  "[-${count}](red)"
+style = "bold"
 
 [git_state]
 style =	"bold red"
