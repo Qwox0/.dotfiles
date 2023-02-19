@@ -43,7 +43,6 @@ vim.keymap.set("v", "<leader>r", [["ay<CR>:%s/<C-r>"/<C-r>"/gI<Left><Left><Left>
     A buffer is the in-memory text of a file.   file
     A window is a viewport on a buffer.         buffer view
     A tab page is a collection of windows.      window collection]]
-
 vim.keymap.set("n", "<leader>b", ":bprevious<CR>",
     { desc = "previous buffer ([B]ack)" })
 vim.keymap.set("n", "<leader>n", ":bnext<CR>", { desc = "[N]ext buffer" })
@@ -58,9 +57,16 @@ vim.keymap.set("n", "<leader>j", "<C-w>j", { desc = "switch screen down" })
 vim.keymap.set("n", "<leader>k", "<C-w>k", { desc = "switch screen up" })
 vim.keymap.set("n", "<leader>l", "<C-w>l", { desc = "switch screen right" })
 
+vim.keymap.set("n", "<leader>ji", "mzgg=G`z", { desc = "Indent current buffer" })
+
+
+
 --------------------------------- git keymaps
 local ok, telescope = pcall(require, "telescope")
-if not ok then print("Warn: telescope is missing!"); return end
+if not ok then
+    print("Warn: telescope is missing!");
+    return
+end
 
 local map = function(mode, keys, func, desc)
     if desc then
