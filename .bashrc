@@ -11,6 +11,7 @@ export EDITOR='nvim'                # default editor
 
 ### PATH
 export PATH="/usr/local/bin:/usr/bin:/bin"
+export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig"
 
 add_to_path() {
     path="$1"
