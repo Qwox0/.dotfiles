@@ -1,7 +1,9 @@
 # [relative path (from here) to dotfiles] ; [link path from $HOME]
-.Xinitrc        ; .Xinitrc
-.bashrc         ; .bashrc
-nvim            ; .config/nvim
-alacritty       ; .config/alacritty
-awesomewm       ; .config/awesome
-starship.toml   ; .config/starship.toml
+./.Xinitrc      ; .Xinitrc
+./.bashrc       ; .bashrc
+./nvim          ; .config/nvim
+./alacritty     ; .config/alacritty
+./awesomewm     ; .config/awesome
+./starship.toml ; .config/starship.toml
+./gtk/gtk-3.0   ; .config/gtk-3.0
+./gtk/gtk-4.0   ; .config/gtk-4.0
