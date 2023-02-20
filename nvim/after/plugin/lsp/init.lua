@@ -10,6 +10,11 @@ local ok, fidget = pcall(require, "fidget")
 if not ok then print("Warn: fidget is missing!"); return end
 
 local custom_attach = function(client, bufnr)
+    -- Create a command `:Format` local to the LSP buffer
+    vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
+        vim.lsp.buf.format()
+    end, { desc = "Format current buffer with LSP" })
+
     local map = function(mode, keys, func, desc)
         if desc then
             desc = "LSP: " .. desc
@@ -38,12 +43,6 @@ local custom_attach = function(client, bufnr)
     map("n", "<leader>wl", function()
         print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, "[W]orkspace [L]ist Folders")
-
-
-    -- Create a command `:Format` local to the LSP buffer
-    vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
-        vim.lsp.buf.format()
-    end, { desc = "Format current buffer with LSP" })
 end
 
 -- Enable the following language servers
@@ -93,6 +92,7 @@ local mason_lspconfig = require("mason-lspconfig")
 
 mason_lspconfig.setup {
     ensure_installed = vim.tbl_keys(servers),
+    automatic_installation = true,
 }
 
 mason_lspconfig.setup_handlers {
