@@ -13,7 +13,7 @@ local awesome_menu = {
     { "manual", terminal .. " -e man awesome" },
     { "edit config", editor_cmd .. " " .. awesome.conffile },
     { "restart", awesome.restart },
-    { "quit", awesome.quit },
+    { "quit", function() awesome.quit() end },
     { "hibernate", function() os.execute("systemctl hibernate") end },
 }
 
