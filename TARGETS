@@ -2,6 +2,8 @@
 ./.Xinitrc      ; .Xinitrc
 ./.Xsession     ; .Xsession
 ./.Xresources   ; .Xresources
+./.env          ; .env
+./.profile      ; .profile
 ./.bashrc       ; .bashrc
 ./nvim          ; .config/nvim
 ./alacritty     ; .config/alacritty

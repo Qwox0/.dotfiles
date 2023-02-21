@@ -1,0 +1,3 @@
+all environment variables should be a file in /.env/ or ~/.env/
+
+use export to write these files

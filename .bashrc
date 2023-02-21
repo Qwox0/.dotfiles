@@ -1,3 +1,4 @@
+#echo ".bashrc: $PATH"
 export HISTCONTROL=ignoreboth       # no duplicate entries
 export EDITOR='nvim'                # default editor
 
@@ -10,21 +11,9 @@ export EDITOR='nvim'                # default editor
 [[ $- != *i* ]] && return
 
 ### PATH
-export PATH="/usr/local/bin:/usr/bin:/bin"
 export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig"
 
-add_to_path() {
-    path="$1"
-    # affix colons on either side of $PATH to simplify matching
-    case ":${PATH}:" in
-        *:"$path":*)    ;; # already in path
-        *)              export PATH="$path:$PATH" ;;
-    esac
-}
-
-add_to_path "$HOME/bin"
-add_to_path "$HOME/.local/bin"
-add_to_path "$HOME/.cargo/bin"
+. "$HOME/.env/PATH"
 
 ### SHOPT
 shopt -s autocd             # change to named directory
