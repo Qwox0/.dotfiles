@@ -1,5 +1,6 @@
 # [relative path (from here) to dotfiles] ; [link path from $HOME]
 ./.Xinitrc      ; .Xinitrc
+./.Xsession     ; .Xsession
 ./.bashrc       ; .bashrc
 ./nvim          ; .config/nvim
 ./alacritty     ; .config/alacritty
