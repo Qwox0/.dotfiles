@@ -58,7 +58,7 @@ local servers = {
             }
         }
     },
-    sumneko_lua = {
+    lua_ls = {
         Lua = {
             runtime = {
                 version = "LuaJIT", -- Lua version (LuaJIT for Neovim)
