@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 install_playbook() {
     echo "ansible playbook \"$1\" exists"
