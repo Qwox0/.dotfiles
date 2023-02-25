@@ -15,8 +15,8 @@ local scripts = {
     "compton",
     --"picom",
 
-    --"nitrogen --restore",
-    home .. "/scripts/wallpaper.sh",
+    "nitrogen --restore",
+    --home .. "/scripts/wallpaper.sh",
 }
 
 -- rules[program name] = rule
@@ -41,7 +41,7 @@ local run = function()
     for program, rule in pairs(programs) do
         --require("rules").append_rule(rule)
         if type(rule) ~= "table" then
-            require("naughty").notify({ title = "Debug", text = "not table: " .. rule })
+            require("util").debug_msg("not table: " .. rule )
         end
         awful.spawn.once(program)
     end

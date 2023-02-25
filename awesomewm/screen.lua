@@ -9,7 +9,6 @@ local modkey = require("vars").modkey
 local launcher = require("menu").launcher
 
 
-
 screen.connect_signal("request::wallpaper", function(s)
     awful.wallpaper {
         screen = s,
@@ -33,7 +32,8 @@ local kbdcfg = {}
 kbdcfg.cmd = "setxkbmap"
 kbdcfg.widget = wibox.widget.textbox()
 kbdcfg.layouts = {
-    { "us", "intl" }, { "de", "" },
+    { "us", "intl" },
+    { "de", "" },
     current = 1,
     get = function(self) return self[self.current] end,
     set = function(self, idx)
@@ -46,7 +46,11 @@ kbdcfg.layouts = {
     next = function(self) self:set(self.current % #self + 1) end
 }
 kbdcfg.layouts:set()
-kbdcfg.widget:connect_signal("button::press", function() kbdcfg.layouts:next() end)
+require("util").debug_msg(kbdcfg.layouts:get()[1] .. kbdcfg.layouts:get()[2])
+kbdcfg.widget:connect_signal("button::press", function()
+    kbdcfg.layouts:next()
+    require("util").debug_msg(kbdcfg.layouts:get()[1] .. kbdcfg.layouts:get()[2])
+end)
 
 local mytextclock = wibox.widget.textclock()
 
@@ -68,6 +72,10 @@ screen.connect_signal("request::desktop_decoration", function(s)
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
+    -- s.mypromptbox = awful.widget.prompt({
+    --     prompt = "$ > ",
+    --     with_shell = true,
+    -- })
 
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
@@ -75,8 +83,8 @@ screen.connect_signal("request::desktop_decoration", function(s)
         screen  = s,
         buttons = {
             awful.button({}, 1, function() awful.layout.inc(1) end),
-            awful.button({}, 3, function() awful.layout.inc(-1) end),
-            awful.button({}, 4, function() awful.layout.inc(-1) end),
+            awful.button({}, 3, function() awful.layout.inc( -1) end),
+            awful.button({}, 4, function() awful.layout.inc( -1) end),
             awful.button({}, 5, function() awful.layout.inc(1) end),
         }
     }
@@ -112,7 +120,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
                 c:activate { context = "tasklist", action = "toggle_minimization" }
             end),
             awful.button({}, 3, function() awful.menu.client_list { theme = { width = 250 } } end),
-            awful.button({}, 4, function() awful.client.focus.byidx(-1) end),
+            awful.button({}, 4, function() awful.client.focus.byidx( -1) end),
             awful.button({}, 5, function() awful.client.focus.byidx(1) end),
         }
     }
