@@ -11,14 +11,14 @@ disabled = true # use newline in format instead
 [username]
 style_user = "green bold"
 style_root = "red bold"
-format = "[$user]($style) "
+format = "[$user]($style)"
 show_always = true
 disabled = false
 
 [hostname]
 ssh_only = false
 #format = "on [$hostname](bold purple) "
-format = "@ [$hostname](bold purple) "
+format = "@[$hostname](bold purple) "
 trim_at = "."
 disabled = false
 
@@ -52,24 +52,23 @@ detect_folders = []
 disabled = false
 
 [git_branch]
+format = 'on [$symbol$branch(:$remote_branch)](bold 202) '
 symbol = " "
 
 [git_status]
-format = '([\[$all_status$ahead_behind\]]($style) )'
-conflicted =  "[${count}~](red)"
+format = '([\[$conflicted$stashed$deleted$renamed$modified$untracked$staged$ahead_behind\]](bold) )'
+conflicted =  "[!${count}!](red bold)"
+stashed = "[${count}$](green)"
+deleted =  "[-${count}](red)"
+renamed = "[~${count}](blue)"
+modified = "[~${count}](yellow)"
+untracked = "[+${count}](green)"
+staged = "[/${count}](blue bold)"
 ahead = "⇡${count}"
 behind = "⇣${count}"
-#untracked = "[${count}?](blue)"
-untracked = "[+${count}](green)"
-stashed = "[${count}$](green)"
-modified = "[~${count}](yellow)"
-staged = "[+{count}$](green)"
-deleted =  "[-${count}](red)"
-style = "bold"
 
 [git_state]
-style =	"bold red"
-format = "[$state( $progress_current/$progress_total) ]($style)"
+format = "[$state( $progress_current/$progress_total) ](bold red)"
 rebase = "rebase"
 merge = "merge"
 revert = "revert"
@@ -100,6 +99,7 @@ version_format = "v${raw}"
 
 [rust]
 #symbol = " "
+style = "bold 202"
 
 [nodejs]
 format = "via [ Node.js $version](bold green) "

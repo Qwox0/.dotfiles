@@ -53,8 +53,11 @@ end
 local servers = {
     rust_analyzer = {
         ["rust-analyzer"] = {
+            cargo = {
+                features = "all",
+            },
             diagnostics = {
-                disabled = { "inactive-code" },
+                --disabled = { "inactive-code" },
             }
         }
     },
