@@ -3,6 +3,10 @@
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
+
+-- skeletons
+autocmd("BufNewFile", { pattern = "*.sh", command = "0r ~/.vim/templates/sh" })
+
 -- no relative line numbers in Insert mode
 autocmd("InsertEnter", { pattern = "*", command = ":set norelativenumber" })
 autocmd("InsertLeave", { pattern = "*", command = ":set relativenumber" })

@@ -57,7 +57,7 @@ local servers = {
                 features = "all",
             },
             diagnostics = {
-                --disabled = { "inactive-code" },
+                disabled = { "inactive-code" },
             }
         }
     },

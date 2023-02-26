@@ -1,16 +1,21 @@
 local ok, treesitter = pcall(require, "nvim-treesitter")
-if not ok then print("Warn: nvim-treesitter is missing!"); return end
+if not ok then
+    print("Warn: nvim-treesitter is missing!");
+    return
+end
 
 require("nvim-treesitter.configs").setup({
     ensure_installed = { "help", "lua", "rust" },
     sync_install = false,
     auto_install = true,
-
     highlight = {
         enable = true,
         additional_vim_regex_highlighting = false,
     },
-    indent = { enable = true, disable = { "python", "cpp" } },
+    indent = {
+        enable = false,
+        disable = { "python", "cpp", "yaml" }
+    },
     incremental_selection = {
         --[[
         enable = true,
