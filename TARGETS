@@ -7,7 +7,6 @@
 ./.bashrc               ; ~/.bashrc
 ./nvim                  ; ~/.config/nvim
 ./.vim/templates        ; ~/.vim/templates
-./.cargo/config.toml    ; ~/.cargo/config.toml
 ./mprocs                ; ~/.config/mprocs
 ./alacritty             ; ~/.config/alacritty
 ./awesomewm             ; ~/.config/awesome

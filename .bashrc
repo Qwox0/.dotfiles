@@ -13,7 +13,9 @@ export EDITOR='nvim'                # default editor
 ### PATH
 export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig"
 
-. "$HOME/.env/PATH"
+for a in $(find $HOME/.env/ -regex '.*/[^\.]+$'); do
+    . "$a"
+done
 
 ### SHOPT
 shopt -s autocd             # change to named directory
@@ -62,7 +64,7 @@ alias sudo="doas"
 
 alias ls='ls -hF --color=auto'
 alias l='ls -CF'
-alias ll='ls -alF'
+alias ll='ls -alhF'
 alias la='ls -A'
 alias ks='ls' # prevent misstypes
 
