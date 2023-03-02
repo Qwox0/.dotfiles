@@ -1,5 +1,5 @@
 local ok, lsp_signature = pcall(require, "lsp_signature")
-if not ok then print("Warn: lsp_signature is missing!"); return end
+if not ok then return print("Warn: lsp_signature is missing!") end
 
 -- https://github.com/ray-x/lsp_signature.nvim
 lsp_signature.setup({

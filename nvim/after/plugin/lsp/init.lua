@@ -1,13 +1,13 @@
 local ok, telescope = pcall(require, "telescope")
-if not ok then print("Warn: telescope is missing!"); return end
+if not ok then return print("Warn: telescope is missing!") end
 local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-if not ok then print("Warn: cmp_nvim_lsp is missing!"); return end
+if not ok then return print("Warn: cmp_nvim_lsp is missing!") end
 local ok, mason = pcall(require, "mason")
-if not ok then print("Warn: mason is missing!"); return end
+if not ok then return print("Warn: mason is missing!") end
 local ok, lspconfig = pcall(require, "lspconfig")
-if not ok then print("Warn: lspconfig is missing!"); return end
+if not ok then return print("Warn: lspconfig is missing!") end
 local ok, fidget = pcall(require, "fidget")
-if not ok then print("Warn: fidget is missing!"); return end
+if not ok then return print("Warn: fidget is missing!") end
 
 local custom_attach = function(client, bufnr)
     -- Create a command `:Format` local to the LSP buffer

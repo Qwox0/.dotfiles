@@ -1,5 +1,5 @@
 local ok, ts_context = pcall(require, "treesitter-context")
-if not ok then print("Warn: treesitter-context is missing!"); return end
+if not ok then return print("Warn: treesitter-context is missing!") end
 
 function ContextSetup(show_all_context)
     ts_context.setup({

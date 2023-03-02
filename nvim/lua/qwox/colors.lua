@@ -9,7 +9,7 @@ local set_scheme = function(scheme)
     scheme.setup = scheme.setup or default_setup
 
     -- local ok, _ = pcall(require, scheme.name)
-    -- if not ok then print("Warn: " .. scheme.name .. " is missing!"); return end
+    -- if not ok then return print("Warn: " .. scheme.name .. " is missing!") end
 
     vim.cmd.colorscheme(scheme.name)
 
@@ -17,10 +17,7 @@ local set_scheme = function(scheme)
 
     vim.opt.background = "dark"
 
-    local hl = function(thing, opts)
-        -- 0: global space (for every window)
-        vim.api.nvim_set_hl(0, thing, opts)
-    end
+    local hl =  require("qwox.util").set_hl
 
     hl("Normal", {
         bg = "none"

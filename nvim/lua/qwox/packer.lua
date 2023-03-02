@@ -1,5 +1,5 @@
 local ok, packer = pcall(require, "packer")
-if not ok then return end
+if not ok then return print("Warn: packer is missing!") end
 
 return packer.startup(function(use)
     use { "wbthomason/packer.nvim" } -- Packer can manage itself
@@ -38,6 +38,7 @@ return packer.startup(function(use)
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-nvim-lua",
             "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-nvim-lsp-signature-help",
             "hrsh7th/cmp-cmdline",
             { "saecki/crates.nvim",
                 requires = { "nvim-lua/plenary.nvim" },

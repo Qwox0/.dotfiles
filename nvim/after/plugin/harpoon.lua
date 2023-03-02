@@ -1,5 +1,5 @@
 local ok, harpoon = pcall(require, "harpoon")
-if not ok then print("Warn: harpoon is missing!"); return end
+if not ok then return print("Warn: harpoon is missing!") end
 
 local mark = require("harpoon.mark")
 local ui = require("harpoon.ui")

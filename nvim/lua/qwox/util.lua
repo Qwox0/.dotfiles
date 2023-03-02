@@ -22,7 +22,9 @@ U.file_exists = function(name)
     if f ~= nil then
         io.close(f)
         return true
-    else return false end
+    else
+        return false
+    end
 end
 
 U.open_window = function(lines)
@@ -56,5 +58,16 @@ U.open_window = function(lines)
     local win = api.nvim_open_win(buf, true, opts)
 end
 -- }}}
+
+-- set highlight groups
+local own_hl = {};
+U.set_hl = function(name, opts)
+    -- 0: global space (for every window)
+    vim.api.nvim_set_hl(0, name, opts)
+    own_hl[name] = opts
+end
+
+U.get_own_hl = function() return own_hl end
+
 
 return U

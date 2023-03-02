@@ -21,7 +21,7 @@ vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", { bg = "#4fecec" })
 
 
 local ok, indent_blankline = pcall(require, "indent_blankline")
-if not ok then print("Warn: indent_blankline is missing!"); return end
+if not ok then return print("Warn: indent_blankline is missing!") end
 
 -- DISABLED!
 
@@ -30,7 +30,6 @@ indent_blankline.setup({
     --char_blankline = '┆',
     show_current_context = true,
     show_current_context_start = true,
-
     show_trailing_blankline_indent = true,
 })
 --[[
