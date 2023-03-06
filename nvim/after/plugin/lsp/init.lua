@@ -51,34 +51,41 @@ end
 --  Add any additional override configuration in the following tables. They will be passed to
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
+    --[[
     rust_analyzer = {
-        ["rust-analyzer"] = {
-            cargo = {
-                features = "all",
-            },
-            diagnostics = {
-                disabled = { "inactive-code" },
-            }
-        }
-    },
-    lua_ls = {
-        Lua = {
-            runtime = {
-                version = "LuaJIT", -- Lua version (LuaJIT for Neovim)
-                path = vim.split(package.path, ";"), -- Setup your lua path
-            },
-            diagnostics = {
-                globals = { "vim" }, -- recognize the `vim` global
-            },
-            workspace = {
-                -- Make the server aware of Neovim runtime files
-                library = {
-                    [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-                    [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
+        cmd = { "rustup", "run", "stable", "rust-analyzer" },
+        settings = {
+            ["rust-analyzer"] = {
+                cargo = {
+                    features = "all",
                 },
-                checkThirdParty = false,
+                diagnostics = {
+                    disabled = { "inactive-code" },
+                }
+            }
+        },
+    },
+    --]]
+    lua_ls = {
+        settings = {
+            Lua = {
+                runtime = {
+                    version = "LuaJIT",                  -- Lua version (LuaJIT for Neovim)
+                    path = vim.split(package.path, ";"), -- Setup your lua path
+                },
+                diagnostics = {
+                    globals = { "vim" }, -- recognize the `vim` global
+                },
+                workspace = {
+                    -- Make the server aware of Neovim runtime files
+                    library = {
+                            [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+                            [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
+                    },
+                    checkThirdParty = false,
+                },
+                telemetry = { enable = false, },
             },
-            telemetry = { enable = false, },
         },
     },
 }
@@ -90,23 +97,74 @@ capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 -- Setup mason so it can manage external tooling
 require("mason").setup()
 
--- Ensure the servers above are installed
-local mason_lspconfig = require("mason-lspconfig")
-
-mason_lspconfig.setup {
+require("mason-lspconfig").setup {
     ensure_installed = vim.tbl_keys(servers),
-    automatic_installation = true,
+    automatic_installation = false,
 }
 
-mason_lspconfig.setup_handlers {
+require("mason-lspconfig").setup_handlers {
     function(server_name)
+        --[[
         require("lspconfig")[server_name].setup {
             capabilities = capabilities,
             on_attach = custom_attach,
             settings = servers[server_name],
         }
+        --]]
+        require("lspconfig")[server_name].setup(
+            vim.tbl_deep_extend("force", servers[server_name] or {}, {
+                capabilities = capabilities,
+                on_attach = custom_attach,
+            })
+        )
     end,
 }
 
+require("qwox.util").set_hl("RustToolsInlayHint", { fg = "#D3D3D3", bg = "#3A3A3A", italic = true})
+require("rust-tools").setup({
+    tools = {
+        inlay_hints = {
+            show_parameter_hints = false,
+            parameter_hints_prefix = "<- ",
+            other_hints_prefix = "» ",
+            highlight = "RustToolsInlayHint"
+
+        },
+    },
+    server = {
+        cmd = { "rustup", "run", "nightly", "rust-analyzer" },
+        capabilities = capabilities,
+        on_attach = custom_attach,
+        standalone = false, -- single file support
+        settings = {
+                ["rust-analyzer"] = {
+                cargo = {
+                    features = "all",
+                },
+                diagnostics = {
+                    disabled = { "inactive-code" },
+                }
+            }
+        },
+    },
+})
+--[[
+--
+require("lspconfig").rust_analyzer.setup {
+    cmd = { "rustup", "run", "nightly", "rust-analyzer" },
+    capabilities = capabilities,
+    on_attach = custom_attach,
+    settings = {
+            ["rust-analyzer"] = {
+            cargo = {
+                features = "all",
+            },
+            diagnostics = {
+                disabled = { "inactive-code" },
+            }
+        }
+    },
+}
+--]]
 -- Turn on lsp status information
 require("fidget").setup()

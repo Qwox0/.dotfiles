@@ -25,6 +25,9 @@ return packer.startup(function(use)
 
             -- little Symbols
             "onsails/lspkind-nvim",
+
+            -- rust
+            "simrat39/rust-tools.nvim"
         }
     }
     --use { "simrat39/rust-tools.nvim" } -- LSP: rust_analyzer
