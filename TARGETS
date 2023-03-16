@@ -1,4 +1,4 @@
-# [relative path (from here) to dotfiles] ; [link path from $HOME]
+# [relative path to dotfiles] ; [link path (~ is replaced with $HOME)]
 ./.Xinitrc              ; ~/.Xinitrc
 ./.Xsession             ; ~/.Xsession
 ./.Xresources           ; ~/.Xresources
@@ -15,3 +15,4 @@
 ./gtk/gtk-3.0           ; ~/.config/gtk-3.0
 ./gtk/gtk-4.0           ; ~/.config/gtk-4.0
 ./fonts                 ; ~/.fonts
+./.sqliterc             ; ~/.sqliterc
