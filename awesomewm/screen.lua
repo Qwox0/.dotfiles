@@ -5,7 +5,7 @@ local beautiful = require("core").beautiful
 local client = require("core").client
 local screen = require("core").screen
 
-local modkey = require("vars").modkey
+local modkey = require("vars").keys.modkey
 local launcher = require("menu").launcher
 
 
@@ -28,38 +28,40 @@ screen.connect_signal("request::wallpaper", function(s)
 end)
 
 --local kbdcfg = awful.widget.keyboardlayout()
-local kbdcfg = {}
-kbdcfg.cmd = "setxkbmap"
-kbdcfg.widget = wibox.widget.textbox()
-kbdcfg.layouts = {
-    { "us", "intl" },
-    { "de", "" },
+local kbdcfg = {
+    cmd = "setxkbmap",
+    widget = wibox.widget.textbox(),
     current = 1,
-    get = function(self) return self[self.current] end,
-    set = function(self, idx)
-        if type(idx) == "number" then self.current = idx end
-        local t = kbdcfg.layouts:get()
-        local variant = (t[2] == "") and "" or "(" .. t[2] .. ")"
-        kbdcfg.widget:set_text(" " .. t[1] .. variant .. " ")
-        os.execute(kbdcfg.cmd .. " " .. t[1] .. " " .. t[2])
-    end,
-    next = function(self) self:set(self.current % #self + 1) end
+    layouts = {
+        { "us", "intl" },
+        { "de", "" },
+    },
 }
-kbdcfg.layouts:set()
-require("util").debug_msg(kbdcfg.layouts:get()[1] .. kbdcfg.layouts:get()[2])
-kbdcfg.widget:connect_signal("button::press", function()
-    kbdcfg.layouts:next()
-    require("util").debug_msg(kbdcfg.layouts:get()[1] .. kbdcfg.layouts:get()[2])
-end)
+function kbdcfg:get() return self.layouts[self.current] end
+
+function kbdcfg:set(idx)
+    if type(idx) ~= "number" then return end
+    local new = self.layouts[idx]
+    if new == nil then return end
+    self.current = idx
+    local variant = (new[2] == "") and "" or "(" .. new[2] .. ")"
+    kbdcfg.widget:set_text(" " .. new[1] .. variant .. " ")
+    os.execute(kbdcfg.cmd .. " " .. new[1] .. " " .. new[2])
+end
+
+function kbdcfg:set_next() self:set(self.current % #self.layouts + 1) end
+
+-- require("util").debug_msg(kbdcfg:get()[1] .. kbdcfg:get()[2])
+kbdcfg:set(1)
+kbdcfg.widget:connect_signal("button::press", function() kbdcfg:set_next() end)
 
 local mytextclock = wibox.widget.textclock()
 
-
 local screens = {
-    [1] = {
-        tags = { "www", "dev", 3, 4, 5, 6, "VM", 8, "conf" },
+        [1] = {
+        tags = { "www", "dev", 3, 4, 5, 6, "key", "VM", "conf" },
     },
-    [2] = {
+        [2] = {
         tags = { "Email", "Dc", 3, 4, 5, 6, 7, 8, 9 },
         layout = awful.layout.suit.tile.bottom,
     },
@@ -70,25 +72,6 @@ screen.connect_signal("request::desktop_decoration", function(s)
     local layout = screens[s.index].layout or awful.layout.suit.tile
     awful.tag(tags, s, layout)
 
-    -- Create a promptbox for each screen
-    s.mypromptbox = awful.widget.prompt()
-    -- s.mypromptbox = awful.widget.prompt({
-    --     prompt = "$ > ",
-    --     with_shell = true,
-    -- })
-
-    -- Create an imagebox widget which will contain an icon indicating which layout we're using.
-    -- We need one layoutbox per screen.
-    s.mylayoutbox = awful.widget.layoutbox {
-        screen  = s,
-        buttons = {
-            awful.button({}, 1, function() awful.layout.inc(1) end),
-            awful.button({}, 3, function() awful.layout.inc( -1) end),
-            awful.button({}, 4, function() awful.layout.inc( -1) end),
-            awful.button({}, 5, function() awful.layout.inc(1) end),
-        }
-    }
-
     -- Create a taglist widget
     s.mytaglist = awful.widget.taglist {
         screen  = s,
@@ -96,20 +79,23 @@ screen.connect_signal("request::desktop_decoration", function(s)
         buttons = {
             awful.button({}, 1, function(t) t:view_only() end),
             awful.button({ modkey }, 1, function(t)
-                if client.focus then
-                    client.focus:move_to_tag(t)
-                end
+                if client.focus then client.focus:move_to_tag(t) end
             end),
             awful.button({}, 3, awful.tag.viewtoggle),
             awful.button({ modkey }, 3, function(t)
-                if client.focus then
-                    client.focus:toggle_tag(t)
-                end
+                if client.focus then client.focus:toggle_tag(t) end
             end),
             awful.button({}, 4, function(t) awful.tag.viewprev(t.screen) end),
             awful.button({}, 5, function(t) awful.tag.viewnext(t.screen) end),
         }
     }
+
+    -- Create a promptbox for each screen
+    s.mypromptbox = awful.widget.prompt()
+    -- s.mypromptbox = awful.widget.prompt({
+    --     prompt = "$ > ",
+    --     with_shell = true,
+    -- })
 
     -- Create a tasklist widget
     s.mytasklist = awful.widget.tasklist {
@@ -120,32 +106,43 @@ screen.connect_signal("request::desktop_decoration", function(s)
                 c:activate { context = "tasklist", action = "toggle_minimization" }
             end),
             awful.button({}, 3, function() awful.menu.client_list { theme = { width = 250 } } end),
-            awful.button({}, 4, function() awful.client.focus.byidx( -1) end),
+            awful.button({}, 4, function() awful.client.focus.byidx(-1) end),
             awful.button({}, 5, function() awful.client.focus.byidx(1) end),
         }
     }
 
-    -- Create the wibox
-    s.mywibox = awful.wibar {
-        position = "top",
-        screen   = s,
-        widget   = {
-            layout = wibox.layout.align.horizontal,
-            { -- Left widgets
-                layout = wibox.layout.fixed.horizontal,
-                launcher,
-                s.mytaglist,
-                s.mypromptbox,
-            },
-            s.mytasklist, -- Middle widget
-            { -- Right widgets
-                layout = wibox.layout.fixed.horizontal,
-                kbdcfg.widget,
-                wibox.widget.systray(),
-                mytextclock,
-                s.mylayoutbox,
-            },
+    -- Create an imagebox widget which will contain an icon indicating which layout we're using.
+    -- We need one layoutbox per screen.
+    s.mylayoutbox = awful.widget.layoutbox {
+        screen  = s,
+        buttons = {
+            awful.button({}, 1, function() awful.layout.inc(1) end),
+            awful.button({}, 3, function() awful.layout.inc(-1) end),
+            awful.button({}, 4, function() awful.layout.inc(-1) end),
+            awful.button({}, 5, function() awful.layout.inc(1) end),
         }
+    }
+
+    -- Create the wibox
+    s.mywibox = awful.wibar { position = "top", screen = s }
+    s.mywibox:setup {
+        layout = wibox.layout.align.horizontal,
+        {
+            -- Left widgets
+            layout = wibox.layout.fixed.horizontal,
+            launcher,
+            s.mytaglist,
+            s.mypromptbox,
+        },
+        s.mytasklist, -- Middle widget
+        {
+            -- Right widgets
+            layout = wibox.layout.fixed.horizontal,
+            kbdcfg.widget,
+            wibox.widget.systray(),
+            mytextclock,
+            s.mylayoutbox,
+        },
     }
 end)
 
