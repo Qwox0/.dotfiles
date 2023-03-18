@@ -1,0 +1,6 @@
+sct #   - set screen temperature / blue light filter
+    default: # = 6500
+    bound: 1000 < # < 10000
+    good: # = 3000 < # < 5000
+scrcpy  - show screen of connected android devices
+

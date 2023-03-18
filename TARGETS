@@ -5,9 +5,10 @@
 ./.env                  ; ~/.env
 ./.profile              ; ~/.profile
 ./.bashrc               ; ~/.bashrc
+./.tmux.conf            ; ~/.tmux.conf
 ./nvim                  ; ~/.config/nvim
 ./.vim/templates        ; ~/.vim/templates
-./.tmux.conf            ; ~/.tmux.conf
+./scripts               ; ~/scripts
 ./mprocs                ; ~/.config/mprocs
 ./alacritty             ; ~/.config/alacritty
 ./awesomewm             ; ~/.config/awesome
