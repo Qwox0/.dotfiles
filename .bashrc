@@ -1,3 +1,15 @@
+# Bash Configuaration
+#
+# login shells -> /etc/profile -> /etc/bash.bashrc -> .login, .profile
+# interactive shells -> .bashrc
+# in Bash:
+#
+# /etc/profile: systemwide, for login shells
+# /etc/bash.bashrc: systemwide, for interactive shells
+# ~/.bash_profile: personal, for login shells
+# ~/.bashrc: personal, for interactive shells
+#   (in bash: ~/.bashrc for non-login shells)
+
 #echo ".bashrc: $PATH"
 export HISTCONTROL=ignoreboth       # no duplicate entries
 export EDITOR='nvim'                # default editor
@@ -77,6 +89,9 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias v='nvim'
 alias vi='nvim'
 alias vim='nvim'
+
+# allow \n in sed
+#alias sed='sed -z'
 
 # Colorize grep output
 alias grep='grep --color=auto'
