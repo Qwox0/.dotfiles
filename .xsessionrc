@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# ~/.xsessionrc
+# run by login managers and startx
+# executed very early
+
+# set keyboard layout
+[ -f $HOME/.keyboard/my_layout.xkb ] && xkbcomp $HOME/.keyboard/my_layout.xkb $DISPLAY &
+
+# disable bell
+xset -b
+
+# disable all power saving
+xset -dpms
+xset s off

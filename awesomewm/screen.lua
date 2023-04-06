@@ -27,6 +27,7 @@ screen.connect_signal("request::wallpaper", function(s)
     }
 end)
 
+--[[
 --local kbdcfg = awful.widget.keyboardlayout()
 local kbdcfg = {
     cmd = "setxkbmap",
@@ -54,6 +55,7 @@ function kbdcfg:set_next() self:set(self.current % #self.layouts + 1) end
 -- require("util").debug_msg(kbdcfg:get()[1] .. kbdcfg:get()[2])
 kbdcfg:set(1)
 kbdcfg.widget:connect_signal("button::press", function() kbdcfg:set_next() end)
+]]
 
 local mytextclock = wibox.widget.textclock()
 
@@ -138,7 +140,7 @@ screen.connect_signal("request::desktop_decoration", function(s)
         {
             -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            kbdcfg.widget,
+            -- kbdcfg.widget,
             wibox.widget.systray(),
             mytextclock,
             s.mylayoutbox,

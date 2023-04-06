@@ -9,6 +9,11 @@
 # ~/.bash_profile: personal, for login shells
 # ~/.bashrc: personal, for interactive shells
 #   (in bash: ~/.bashrc for non-login shells)
+#
+#
+# /etc/X11/Xsession
+#   -> /etc/X11/Xsession.d/*
+#   -> /etc/X11/Xsession.d/40x11-common_xsessionrc ->
 
 #echo ".bashrc: $PATH"
 export HISTCONTROL=ignoreboth       # no duplicate entries

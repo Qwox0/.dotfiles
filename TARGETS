@@ -1,6 +1,7 @@
 # [relative path to dotfiles] ; [link path (~ is replaced with $HOME)]
-./.Xinitrc              ; ~/.Xinitrc
-./.Xsession             ; ~/.Xsession
+./.xinitrc              ; ~/.xinitrc
+./.xsessionrc           ; ~/.xsessionrc
+./.xsession             ; ~/.xsession
 ./.Xresources           ; ~/.Xresources
 ./.env                  ; ~/.env
 ./.profile              ; ~/.profile
@@ -8,12 +9,13 @@
 ./.tmux.conf            ; ~/.tmux.conf
 ./nvim                  ; ~/.config/nvim
 ./.vim/templates        ; ~/.vim/templates
-./scripts               ; ~/scripts
 ./mprocs                ; ~/.config/mprocs
 ./alacritty             ; ~/.config/alacritty
 ./awesomewm             ; ~/.config/awesome
 ./starship.toml         ; ~/.config/starship.toml
+./scripts               ; ~/scripts
+./.keyboard             ; ~/.keyboard
+./fonts                 ; ~/.fonts
 ./gtk/gtk-3.0           ; ~/.config/gtk-3.0
 ./gtk/gtk-4.0           ; ~/.config/gtk-4.0
-./fonts                 ; ~/.fonts
 ./.sqliterc             ; ~/.sqliterc
