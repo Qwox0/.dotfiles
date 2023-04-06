@@ -71,8 +71,8 @@ ex() {
 ### Aliases
 
 # root privileges
-alias doas="doas --"
-alias sudo="doas"
+#alias doas="doas --"
+#alias sudo="doas"
 
 alias ls='ls -hF --color=auto'
 alias l='ls -CF'
