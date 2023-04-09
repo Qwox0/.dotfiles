@@ -1,4 +1,4 @@
-vim.g.mapleader = " " -- keymapping: define <leader> for mappings
+vim.g.mapleader = " "   -- keymapping: define <leader> for mappings
 vim.keymap.set({ "n", "v" }, "<leader>", "<Nop>", { desc = "Remove default behavior of the leader key" })
 vim.opt.timeout = false -- keymapping: command timeout
 
@@ -62,11 +62,8 @@ vim.keymap.set("n", "<leader>ji", "mzgg=G`z", { desc = "Indent current buffer" }
 
 
 --------------------------------- git keymaps
-local ok, telescope = pcall(require, "telescope")
-if not ok then
-    print("Warn: telescope is missing!");
-    return
-end
+if not require("qwox.util").has_plugins("telescope") then return end
+local telescope = require("telescope")
 
 local map = function(mode, keys, func, desc)
     if desc then
@@ -98,7 +95,7 @@ map("n", "<leader>gy", ":!git fetch<CR>:!git pull<CR>:!git push<CR>", "s[Y]nc (f
 map("n", "<leader>gaa", ":!git add -A<CR>", "[A]dd [A]ll")
 map("n", "<leader>ga", git_stash({ all = false }), "[A]dd")
 map("n", "<leader>gca", function()
-    local stage = vim.api.nvim_exec(":!git add -A", true) -- true: don't show output, return it!
+    local stage = vim.api.nvim_exec(":!git add -A", true)  -- true: don't show output, return it!
     local status = vim.api.nvim_exec(":!git status", true) -- true: don't show output, return it!
     local msg = vim.fn.input(tostring(stage) .. tostring(status) .. "Commit Message > ")
     if msg == "q" or msg == "Q" then return end

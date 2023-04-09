@@ -1,13 +1,4 @@
-local ok, telescope = pcall(require, "telescope")
-if not ok then return print("Warn: telescope is missing!") end
-local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-if not ok then return print("Warn: cmp_nvim_lsp is missing!") end
-local ok, mason = pcall(require, "mason")
-if not ok then return print("Warn: mason is missing!") end
-local ok, lspconfig = pcall(require, "lspconfig")
-if not ok then return print("Warn: lspconfig is missing!") end
-local ok, fidget = pcall(require, "fidget")
-if not ok then return print("Warn: fidget is missing!") end
+if not require("qwox.util").has_plugins("telescope", "cmp_nvim_lsp", "mason", "lspconfig", "fidget") then return end
 
 local custom_attach = function(client, bufnr)
     -- Create a command `:Format` local to the LSP buffer
@@ -120,7 +111,7 @@ require("mason-lspconfig").setup_handlers {
     end,
 }
 
-require("qwox.util").set_hl("RustToolsInlayHint", { fg = "#D3D3D3", bg = "#3A3A3A", italic = true})
+require("qwox.util").set_hl("RustToolsInlayHint", { fg = "#D3D3D3", bg = "#3A3A3A", italic = true })
 require("rust-tools").setup({
     tools = {
         inlay_hints = {
@@ -128,7 +119,6 @@ require("rust-tools").setup({
             parameter_hints_prefix = "<- ",
             other_hints_prefix = "» ",
             highlight = "RustToolsInlayHint"
-
         },
     },
     server = {

@@ -1,9 +1,5 @@
-local ok, cmp = pcall(require, "cmp")
-if not ok then return print("Warn: cmp is missing!") end
-local ok, luasnip = pcall(require, "luasnip")
-if not ok then return print("Warn: luasnip is missing!") end
-local ok, lspkind = pcall(require, "lspkind")
-if not ok then return print("Warn: lspkind is missing!") end
+if not require("qwox.util").has_plugins("cmp", "luasnip", "lspkind") then return end
+local cmp = require("cmp")
 
 vim.opt.completeopt = { "menu", "menuone", "preview" }
 
@@ -12,23 +8,22 @@ local confirm_opt = {
     select = true
 } -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 
-print("setup")
 cmp.setup {
     mapping = cmp.mapping.preset.insert({
-        ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-        ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-        ["<C-d>"] = cmp.mapping.scroll_docs( -4),
-        ["<C-f>"] = cmp.mapping.scroll_docs(4),
-        ["<C-e>"] = cmp.mapping.abort(),
-        ["<Tab>"] = cmp.mapping.confirm(confirm_opt),
-        ["<C-i>"] = cmp.mapping.confirm(confirm_opt),
-        ["<C-Space>"] = cmp.mapping.complete(), -- What is the difference?
+            ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+            ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+            ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+            ["<C-f>"] = cmp.mapping.scroll_docs(4),
+            ["<C-e>"] = cmp.mapping.abort(),
+            ["<Tab>"] = cmp.mapping.confirm(confirm_opt),
+            ["<C-i>"] = cmp.mapping.confirm(confirm_opt),
+            ["<C-Space>"] = cmp.mapping.complete(), -- What is the difference?
         --["<C-Space>"] = cmp.mapping.confirm(confirm_opt),
     }),
 
     snippet = {
         expand = function(args)
-            luasnip.lsp_expand(args.body)
+            require("luasnip").lsp_expand(args.body)
         end,
     },
 
@@ -103,7 +98,6 @@ cmp.setup {
 
             return kind
         end,
-
         -- format = lspkind.cmp_format({
         --     mode = "symbol",
         --     maxwidth = 50,
@@ -128,7 +122,6 @@ cmp.setup {
     experimental = {
         -- new menu = better
         native_menu = false,
-
         ghost_text = true,
     }
 }
@@ -214,9 +207,8 @@ for name, opts in pairs {
     require("qwox.util").set_hl(name, opts)
 end
 
-
-local ok, cmp_autopairs = pcall(require, "nvim-autopairs.completion.cmp")
-if not ok then return print("Warn: nvim-autopairs is missing!") end
+if not require("qwox.util").has_plugins("nvim-autopairs.completion.cmp") then return end
+local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 
 cmp.event:on(
     "confirm_done",

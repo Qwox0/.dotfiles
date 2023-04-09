@@ -1,7 +1,6 @@
-local ok, packer = pcall(require, "packer")
-if not ok then return print("Warn: packer is missing!") end
+if not require("qwox.util").has_plugins("packer") then return end
 
-return packer.startup(function(use)
+return require("packer").startup(function(use)
     use { "wbthomason/packer.nvim" } -- Packer can manage itself
 
     --use { "nvim-lua/popup.nvim" } -- dependency
@@ -43,7 +42,8 @@ return packer.startup(function(use)
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-nvim-lsp-signature-help",
             "hrsh7th/cmp-cmdline",
-            { "saecki/crates.nvim",
+            {
+                "saecki/crates.nvim",
                 requires = { "nvim-lua/plenary.nvim" },
                 config = function() require("crates").setup() end,
             },
@@ -65,8 +65,10 @@ return packer.startup(function(use)
             pcall(require("nvim-treesitter.install").update({ with_sync = true }))
         end,
     }
-    use { "nvim-treesitter/playground" } -- show treesitter AST (for plugin development)
+    use { "nvim-treesitter/playground" }     -- show treesitter AST (for plugin development)
     use { "romgrk/nvim-treesitter-context" } -- show current context (function) at the top
+
+    use { "norcalli/nvim-colorizer.lua" }    -- highlight color codes
 
     -- Undotree
     use { "mbbill/undotree" }

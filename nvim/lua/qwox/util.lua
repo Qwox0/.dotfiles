@@ -69,5 +69,17 @@ end
 
 U.get_own_hl = function() return own_hl end
 
+---@param ... string
+---@return boolean has_all
+U.has_plugins = function(...)
+    local has_all = true
+    for _, plugin in ipairs { ... } do
+        if not pcall(require, plugin) then
+            print("Warn: " .. plugin .. " is missing!")
+            has_all = false
+        end
+    end
+    return has_all
+end
 
 return U

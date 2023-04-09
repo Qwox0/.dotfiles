@@ -1,3 +1,4 @@
+
 vim.opt.list = true
 --vim.opt.listchars = "tab:-->,space: ,trail:⋅,multispace:⋅,leadmultispace:⋅⋅⋅|,extends:…,"
 vim.opt.listchars:append("eol:↴")
@@ -20,12 +21,11 @@ vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", { bg = "#4fecec" })
 --vim.api.nvim_set_hl(0, "IndentBlanklineIndent2", { bg = "bg" })
 
 
-local ok, indent_blankline = pcall(require, "indent_blankline")
-if not ok then return print("Warn: indent_blankline is missing!") end
+if not require("qwox.util").has_plugins("indent_blankline") then return end
 
--- DISABLED!
+if true then return end -- DISABLED!
 
-indent_blankline.setup({
+require("indent_blankline").setup({
     char = '│',
     --char_blankline = '┆',
     show_current_context = true,

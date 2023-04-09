@@ -1,8 +1,4 @@
-local ok, telescope = pcall(require, "telescope")
-if not ok then
-    print("Warn: telescope is missing!");
-    return
-end
+if not require("qwox.util").has_plugins("telescope") then return end
 
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
@@ -14,7 +10,7 @@ local themes = require("telescope.themes")
 
 local qwox_util = require("qwox.util")
 
-telescope.setup({
+require("telescope").setup({
     defaults = {
         --layout_strategy = "vertical",
         --layout_strategy = "center",
@@ -36,7 +32,6 @@ telescope.setup({
             hidden = true,
             no_ignore = false, -- true: show ignored files, false: hide ignored files
         }
-
     }
 })
 

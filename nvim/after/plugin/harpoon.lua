@@ -1,5 +1,4 @@
-local ok, harpoon = pcall(require, "harpoon")
-if not ok then return print("Warn: harpoon is missing!") end
+if not require("qwox.util").has_plugins("harpoon") then return end
 
 local mark = require("harpoon.mark")
 local ui = require("harpoon.ui")

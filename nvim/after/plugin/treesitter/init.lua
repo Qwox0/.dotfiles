@@ -1,8 +1,4 @@
-local ok, treesitter = pcall(require, "nvim-treesitter")
-if not ok then
-    print("Warn: nvim-treesitter is missing!");
-    return
-end
+if not require("qwox.util").has_plugins("nvim-treesitter") then return end
 
 require("nvim-treesitter.configs").setup({
     ensure_installed = { "help", "lua", "rust" },
@@ -31,7 +27,6 @@ require("nvim-treesitter.configs").setup({
             enable = true,
             lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
             keymaps = {
-                -- You can use the capture groups defined in textobjects.scm
                 ["aa"] = "@parameter.outer",
                 ["ia"] = "@parameter.inner",
                 ["af"] = "@function.outer",

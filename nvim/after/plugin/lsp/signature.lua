@@ -1,8 +1,7 @@
-local ok, lsp_signature = pcall(require, "lsp_signature")
-if not ok then return print("Warn: lsp_signature is missing!") end
+if not require("qwox.util").has_plugins("lsp_signature") then return end
 
 -- https://github.com/ray-x/lsp_signature.nvim
-lsp_signature.setup({
+require("lsp_signature").setup({
     debug = false, -- set to true to enable debug logging
     log_path = vim.fn.stdpath("cache") .. "/lsp_signature.log", -- log dir when debug is on
     verbose = false, -- show debug line number
