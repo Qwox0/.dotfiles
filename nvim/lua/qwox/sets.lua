@@ -6,6 +6,7 @@ vim.opt.hidden = true       -- hide vim in bg when closing
 vim.opt.number = true           -- show line numbers
 vim.opt.relativenumber = true   -- show relative numbers
 vim.opt.signcolumn = "yes"      -- have column for symbols
+vim.opt.colorcolumn = "100"
 
 vim.opt.tabstop = 4         -- tab: tab char length
 vim.opt.shiftwidth = 4      -- tab: indentation length

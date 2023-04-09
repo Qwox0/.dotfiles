@@ -1,23 +1,19 @@
 local default_scheme = "gruvbox"
-local default_setup = function() end
 
 local set_scheme = function(scheme)
-    if type(scheme) == "string" then
-        scheme = { name = scheme }
-    end
+    if type(scheme) == "string" then scheme = { name = scheme } end
     scheme.name = scheme.name or default_scheme
-    scheme.setup = scheme.setup or default_setup
-
-    -- local ok, _ = pcall(require, scheme.name)
-    -- if not ok then return print("Warn: " .. scheme.name .. " is missing!") end
+    scheme.setup = scheme.setup or function()
+    end
 
     vim.cmd.colorscheme(scheme.name)
-
     scheme.setup()
 
     vim.opt.background = "dark"
 
-    local hl =  require("qwox.util").set_hl
+    local hl = require("qwox.util").set_hl
+
+    -- type :highlight to show highlight groups
 
     hl("Normal", {
         bg = "none"
@@ -28,16 +24,17 @@ local set_scheme = function(scheme)
         bg = "none"
     })
     ]]
-
-
     hl("SignColumn", {
         bg = "none",
     })
 
+    --[[
     hl("ColorColumn", {
         ctermbg = 0,
-        bg = "#2B79A0",
+        bg = "#fb4934",
+        --link = "GruvboxRedSign",
     })
+    ]]
 
     hl("CursorLineNR", {
         bg = "None"
