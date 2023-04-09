@@ -1,6 +1,6 @@
-if not require("qwox.util").has_plugins("autopairs") then return end
+if not require("qwox.util").has_plugins("nvim-autopairs") then return end
 
-require("autopairs").setup({
+require("nvim-autopairs").setup({
     disable_filetype = { "TelescopePrompt" },
     disable_in_macro = false,               -- disable when recording or executing a macro
     disable_in_visualblock = false,         -- disable when insert after visual block mode
