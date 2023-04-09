@@ -1,3 +1,6 @@
+// ~/.keyboard/my_layout.xkb
+// apply with `xkbcomp ~/.keyboard/my_layout.xkb $DISPLAY`
+
 xkb_keymap {
 xkb_keycodes {
     minimum = 8;
@@ -1150,6 +1153,8 @@ xkb_symbols "pc+us(intl)+inet(evdev)" {
 
     name[group1]="English (US, intl., with dead keys)";
 
+// unicode characters: https://en.wikipedia.org/wiki/List_of_Unicode_characters
+// allowed keynames: /usr/include/X11/keysymdef.h
 
     key <9> { [ Escape ] };
     key <10> { [               1,          exclam,      exclamdown,     onesuperior ] };
@@ -1157,7 +1162,7 @@ xkb_symbols "pc+us(intl)+inet(evdev)" {
     key <12> { [               3,      numbersign,   threesuperior,     dead_macron ] };
     key <13> { [               4,          dollar,        currency,        sterling ] };
     key <14> { [               5,         percent,        EuroSign,    dead_cedilla ] };
-    key <15> { [               6, dead_circumflex,      onequarter,     asciicircum ] };
+    key <15> { [               6,     asciicircum,      onequarter, dead_circumflex ] };
     key <16> { [               7,       ampersand,         onehalf,       dead_horn ] };
     key <17> { [               8,        asterisk,   threequarters,     dead_ogonek ] };
     key <18> { [               9,       parenleft, leftsinglequotemark,      dead_breve ] };
