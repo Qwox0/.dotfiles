@@ -57,8 +57,9 @@ vim.keymap.set("n", "<leader>j", "<C-w>j", { desc = "switch screen down" })
 vim.keymap.set("n", "<leader>k", "<C-w>k", { desc = "switch screen up" })
 vim.keymap.set("n", "<leader>l", "<C-w>l", { desc = "switch screen right" })
 
-vim.keymap.set("n", "<leader>ji", "mzgg=G`z", { desc = "Indent current buffer" })
+vim.keymap.set("n", "<leader>ji", "mzgg=G`z", { desc = "[I]ndent current buffer" })
 
+vim.keymap.set("n", "<leader>ya", "mzggyG`z", { desc = "[Y]ank [A]ll in current buffer" })
 
 
 --------------------------------- git keymaps
