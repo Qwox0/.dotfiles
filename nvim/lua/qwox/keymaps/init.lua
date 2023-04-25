@@ -52,10 +52,12 @@ vim.keymap.set("n", "<leader>q", ":bdelete<CR>", { desc = "[Q]uit buffer" })
 vim.keymap.set("n", "<leader>!q", ":bdelete!<CR>", { desc = "[Q]uit buffer[!]" })
 
 -- switch between screens
+--[[
 vim.keymap.set("n", "<leader>h", "<C-w>h", { desc = "switch screen left" })
 vim.keymap.set("n", "<leader>j", "<C-w>j", { desc = "switch screen down" })
 vim.keymap.set("n", "<leader>k", "<C-w>k", { desc = "switch screen up" })
 vim.keymap.set("n", "<leader>l", "<C-w>l", { desc = "switch screen right" })
+]]
 
 vim.keymap.set("n", "<leader>ji", "mzgg=G`z", { desc = "[I]ndent current buffer" })
 
