@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
 
-dirs=("$HOME" "$HOME/.dotfiles" "$HOME/dev/src" "$HOME/dev/src/rust")
+dirs=("$HOME" "$HOME/.dotfiles" "$HOME/dev" "$HOME/dev/src" "$HOME/dev/src/rust")
 
 if [[ $# -eq 1 ]]; then
     selected=$1

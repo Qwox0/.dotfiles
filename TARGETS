@@ -6,7 +6,7 @@
 ./.env                  ; ~/.env
 ./.profile              ; ~/.profile
 ./.bashrc               ; ~/.bashrc
-./.tmux.conf            ; ~/.tmux.conf
+./tmux/.tmux.conf       ; ~/.tmux.conf
 ./nvim                  ; ~/.config/nvim
 ./.vim/templates        ; ~/.vim/templates
 ./mprocs                ; ~/.config/mprocs
