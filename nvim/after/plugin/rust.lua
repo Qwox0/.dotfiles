@@ -31,7 +31,10 @@ require("rust-tools").setup {
                 },
                 diagnostics = {
                     disabled = { "inactive-code" },
-                }
+                },
+                check = {
+                    allTargets = false,
+                },
             }
         },
     },

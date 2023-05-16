@@ -38,6 +38,19 @@ end, { desc = "[R]eplace [A]ll" })
 vim.keymap.set("n", "<leader>rw", [[:%s/<C-r><C-w>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "[R]eplace [W]ord" })
 vim.keymap.set("v", "<leader>r", [["ay<CR>:%s/<C-r>"/<C-r>"/gI<Left><Left><Left>]], { desc = "[R]eplace highlight" })
 
+
+vim.keymap.set("n", "<leader>rf", function()
+    local current_file_name = vim.api.nvim_buf_get_name(0)
+    local new_file_name = vim.fn.input {
+        prompt = current_file_name .. " | new name > ",
+        default = current_file_name,
+    }
+    if new_file_name == "" or new_file_name == current_file_name then return end
+    vim.fn.rename(current_file_name, new_file_name)
+    vim.api.nvim_buf_set_name(0, new_file_name)
+    vim.fn.execute("edit")
+end, { desc = "[R]ename [F]ile" })
+
 -- -- -- buffer, window, tab
 --[[ Explanation
     A buffer is the in-memory text of a file.   file
@@ -58,10 +71,10 @@ vim.keymap.set("n", "<leader>j", "<C-w>j", { desc = "switch screen down" })
 vim.keymap.set("n", "<leader>k", "<C-w>k", { desc = "switch screen up" })
 vim.keymap.set("n", "<leader>l", "<C-w>l", { desc = "switch screen right" })
 ]]
-
 vim.keymap.set("n", "<leader>ji", "mzgg=G`z", { desc = "[I]ndent current buffer" })
 
 vim.keymap.set("n", "<leader>ya", "mzggyG`z", { desc = "[Y]ank [A]ll in current buffer" })
+vim.keymap.set("n", "<leader>da", "mzggdG`z", { desc = "[D]elete [A]ll in current buffer" })
 
 
 --------------------------------- git keymaps
