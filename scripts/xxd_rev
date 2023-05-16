@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+repeat() { # $1: String, $2: count
+    if [ $2 -eq 0 ]; then return; fi
+    printf "$1%.0s" $(seq 1 $2)
+}
+
+print_addr_direction() {
+    echo "          <<<<<<<< address increases <<<<<<<<"
+}
+
+binary=false
+
+while getopts "b" option; do
+    case "${option}" in
+        b) binary=true;;
+    esac
+done
+
+# echo "$binary"
+
+if ( $binary ); then
+    echo "todo"
+    #xxd -b out | sed "s/\([^:]*\): $(repeat "\([01]\{8\}\) " 6).*/\1: \7 \6 \5 \4 \3 \2/"
+else
+    print_addr_direction
+    xxd -e $1 | sed "s/\([^:]*\): $(repeat "\([0-9a-f]*\) " 4).*/\1:$(printf " \%s" {5..2})/"
+    print_addr_direction
+fi
