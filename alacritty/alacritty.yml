@@ -13,7 +13,7 @@ window:
     class:
         instance: Alacritty # Application instance name
         general: Alacritty # General application class
-    decorations_theme_variant: dark
+    decorations_theme_variant: Dark
 
 scrolling:
     # Maximum number of lines in the scrollback buffer.
