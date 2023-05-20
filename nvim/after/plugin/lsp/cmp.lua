@@ -75,6 +75,8 @@ cmp.setup {
         end,
     },
 
+    preselect = cmp.PreselectMode.None,
+
     view = {
         name = "custom",
         selection_order = "near_cursor",
