@@ -74,7 +74,7 @@ vim.keymap.set("n", "<leader>l", "<C-w>l", { desc = "switch screen right" })
 vim.keymap.set("n", "<leader>ji", "mzgg=G`z", { desc = "[I]ndent current buffer" })
 
 vim.keymap.set("n", "<leader>ya", "mzggyG`z", { desc = "[Y]ank [A]ll in current buffer" })
-vim.keymap.set("n", "<leader>da", "mzggdG`z", { desc = "[D]elete [A]ll in current buffer" })
+vim.keymap.set("n", "<leader>da", "ggdG", { desc = "[D]elete [A]ll in current buffer" })
 
 
 --------------------------------- git keymaps
