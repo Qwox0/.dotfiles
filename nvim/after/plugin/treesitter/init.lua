@@ -1,7 +1,7 @@
 if not require("qwox.util").has_plugins("nvim-treesitter") then return end
 
 require("nvim-treesitter.configs").setup({
-    ensure_installed = { "help", "lua", "rust" },
+    ensure_installed = { "vimdoc", "lua", "rust" },
     sync_install = false,
     auto_install = true,
     highlight = {
