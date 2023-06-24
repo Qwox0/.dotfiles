@@ -1,7 +1,9 @@
 vim.g.mapleader = " "   -- keymapping: define <leader> for mappings
-vim.keymap.set({ "n", "v" }, "<leader>", "<Nop>", { desc = "Remove default behavior of the leader key" })
 vim.opt.timeout = false -- keymapping: command timeout
 
+
+vim.keymap.set({ "n", "v" }, "<leader>", "<Nop>", { desc = "Remove default behavior of the leader key" })
+vim.keymap.set("n", "q:", "<Nop>", { desc = "Don't open command history" })
 
 vim.keymap.set("n", "k", "v:count == 0 ? \"gk\" : \"k\"", { expr = true, desc = "jump up in wrapped lines" })
 vim.keymap.set("n", "j", "v:count == 0 ? \"gj\" : \"j\"", { expr = true, desc = "jump down in wrapped lines" })
@@ -16,17 +18,17 @@ vim.keymap.set("n", "J", "mzJ`z", { desc = "don't move cursor on J" })
 
 -- center cursor on some movements
 -- zv: some extra folding stuff
-vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "" })
-vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "" })
-vim.keymap.set("n", "n", "nzzzv", { desc = "" })
-vim.keymap.set("n", "N", "Nzzzv", { desc = "" })
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "center screen on Ctrl+d" })
+vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "center screen on Ctrl+u" })
+vim.keymap.set("n", "n", "nzzzv", { desc = "center screen on n" })
+vim.keymap.set("n", "N", "Nzzzv", { desc = "center screen on N" })
 
 vim.keymap.set("n", "<leader>e", vim.cmd.Ex, { desc = "explore with vim file manager" })
 
 vim.keymap.set("i", "<C-c>", "<Esc>", { desc = "Ctrl+C = Esc" })
 
 vim.keymap.set("x", "<leader>p", "\"_dP", { desc = "paste but keep copy buffer" })
-vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true, desc = "make file e[x]ecutable" })
 
 -- Substitute / Replace
 vim.keymap.set("n", "<leader>ra", function()
@@ -35,8 +37,12 @@ vim.keymap.set("n", "<leader>ra", function()
     local replacement = vim.fn.input("Replace with > ")
     vim.api.nvim_command(":%s/" .. search .. "/" .. replacement .. "/g")
 end, { desc = "[R]eplace [A]ll" })
-vim.keymap.set("n", "<leader>rw", [[:%s/<C-r><C-w>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "[R]eplace [W]ord" })
-vim.keymap.set("v", "<leader>r", [["ay<CR>:%s/<C-r>"/<C-r>"/gI<Left><Left><Left>]], { desc = "[R]eplace highlight" })
+vim.keymap.set("n", "<leader>rw", [[:%s/<C-r><C-w>/<C-r><C-w>/gI<Left><Left><Left>]], {
+    desc = "[R]eplace [W]ord"
+})
+vim.keymap.set("v", "<leader>r", [["ay<CR>:%s/<C-r>"/<C-r>"/gI<Left><Left><Left>]], {
+    desc = "[R]eplace highlight"
+})
 
 
 vim.keymap.set("n", "<leader>rf", function()
@@ -56,8 +62,7 @@ end, { desc = "[R]ename [F]ile" })
     A buffer is the in-memory text of a file.   file
     A window is a viewport on a buffer.         buffer view
     A tab page is a collection of windows.      window collection]]
-vim.keymap.set("n", "<leader>b", ":bprevious<CR>",
-    { desc = "previous buffer ([B]ack)" })
+vim.keymap.set("n", "<leader>b", ":bprevious<CR>", { desc = "previous buffer ([B]ack)" })
 vim.keymap.set("n", "<leader>n", ":bnext<CR>", { desc = "[N]ext buffer" })
 -- close buffer
 --vim.keymap.set("n", "<leader>q", ":bp<CR>:bd #<CR>", { desc = "" })
@@ -78,9 +83,6 @@ vim.keymap.set("n", "<leader>da", "ggdG", { desc = "[D]elete [A]ll in current bu
 
 
 --------------------------------- git keymaps
-if not require("qwox.util").has_plugins("telescope") then return end
-local telescope = require("telescope")
-
 local map = function(mode, keys, func, desc)
     if desc then
         desc = "[G]it: " .. desc
@@ -88,44 +90,15 @@ local map = function(mode, keys, func, desc)
     vim.keymap.set(mode, keys, func, { desc = desc })
 end
 
-local git_stash = function(opts)
-    if type(opts) ~= "table" then opts = {} end
-    return function()
-        if opts.all == true then
-            vim.api.nvim_exec(":!git add -A", true) -- true: don't show output, return it!
-        else
-            telescope.git_stash()
-        end
-    end
-end
+vim.keymap.set("n", "<leader>gg", vim.cmd.Git, { desc = "[G]it: open menu" })
+vim.keymap.set("n", "<leader>gs", require("telescope.builtin").git_status, { desc = "[G]it: [S]tatus" })
+vim.keymap.set("n", "<leader>gb", require("telescope.builtin").git_branches, { desc = "[G]it: [B]ranches" })
+vim.keymap.set("n", "<leader>gf", ":Git fetch<CR>", { desc = "[G]it: [F]etch" })
+vim.keymap.set("n", "<leader>gd", ":Git pull<CR>", { desc = "[G]it: Pull [D]own" })
+vim.keymap.set("n", "<leader>gu", ":Git push<CR>", { desc = "[G]it: Push [U]p" })
+vim.keymap.set("n", "<leader>gy", ":Git fetch<CR>:Git pull<CR>:Git push<CR>", {
+    desc = "[G]it: s[Y]nc (fetch, pull, push)"
+})
 
-map("n", "<leader>gg", vim.cmd.Git, "open menu")
-map("n", "<leader>gs", function() telescope.git_status() end, "[S]tatus")
-map("n", "<leader>gb", function() telescope.git_branches() end, "[B]ranches")
-
-map("n", "<leader>gf", ":!git fetch<CR>", "[F]etch")
-map("n", "<leader>gd", ":!git pull<CR>", "Pull [D]own")
-map("n", "<leader>gu", ":!git push<CR>", "Push [U]p")
-map("n", "<leader>gy", ":!git fetch<CR>:!git pull<CR>:!git push<CR>", "s[Y]nc (fetch, pull, push)")
-
-map("n", "<leader>gaa", ":!git add -A<CR>", "[A]dd [A]ll")
-map("n", "<leader>ga", git_stash({ all = false }), "[A]dd")
-map("n", "<leader>gca", function()
-    local stage = vim.api.nvim_exec(":!git add -A", true)  -- true: don't show output, return it!
-    local status = vim.api.nvim_exec(":!git status", true) -- true: don't show output, return it!
-    local msg = vim.fn.input(tostring(stage) .. tostring(status) .. "Commit Message > ")
-    if msg == "q" or msg == "Q" then return end
-    local commit_cmd = ":!git commit -m \"" .. msg .. "\""
-    local ok = vim.fn.confirm("Execute " .. commit_cmd .. "?", "&Yes\n&No") -- Yes=1; No=2
-    if ok == 2 then return end
-    vim.api.nvim_exec(commit_cmd, false)
-end, "[C]ommit [A]ll")
-map("n", "<leader>gco", function()
-    local status = vim.api.nvim_exec(":!git status", true) -- true: don't show output, return it!
-    local msg = vim.fn.input(tostring(status) .. "Commit Message > ")
-    if msg == "q" or msg == "Q" then return end
-    local commit_cmd = ":!git commit -m \"" .. msg .. "\""
-    local ok = vim.fn.confirm("Execute " .. commit_cmd .. "?", "&Yes\n&No") -- Yes=1; No=2
-    if ok == 2 then return end
-    vim.api.nvim_exec(commit_cmd, false)
-end, "[CO]mmit")
+vim.keymap.set("n", "<leader>gaa", ":!git add -A<CR>", { desc = "[G]it: [A]dd [A]ll" })
+--vim.keymap.set("n", "<leader>ga", require("telescope.builtin").git_stash, { desc = "[G]it: [A]dd" })
