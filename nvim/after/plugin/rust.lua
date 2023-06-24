@@ -8,7 +8,13 @@ local qwox_lsp = require("qwox.lsp")
 -- dap paths
 local extension_path = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension"
 local codelldb_path = extension_path .. "/adapter/codelldb"
-local liblldb_path = extension_path .. "/lldb/lib/liblldb.so"
+local liblldb_path = extension_path .. "/lldb/lib/liblldb"
+
+if qwox_util.os.is_windows then
+    codelldb_path = codelldb_path .. ".exe"
+    liblldb_path = liblldb_path .. ".dll"
+end
+if qwox_util.os.is_linux then liblldb_path = liblldb_path .. ".so" end
 
 require("rust-tools").setup {
     tools = {
