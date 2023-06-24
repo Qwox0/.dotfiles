@@ -1,10 +1,10 @@
 if not require("qwox.util").has_plugins("telescope", "cmp_nvim_lsp", "mason", "lspconfig") then return end
 
-local servers, custom_attach, capabilities = require("qwox.lsp"):unpack()
+local qwox_lsp = require("qwox.lsp")
 
 require("mason").setup()
 require("mason-lspconfig").setup {
-    ensure_installed = vim.tbl_keys(servers),
+    ensure_installed = vim.tbl_keys(qwox_lsp.servers),
     automatic_installation = false,
 }
 require("mason-lspconfig").setup_handlers {
@@ -17,9 +17,9 @@ require("mason-lspconfig").setup_handlers {
         }
         --]]
         require("lspconfig")[server_name].setup(
-            vim.tbl_deep_extend("force", servers[server_name] or {}, {
-                capabilities = capabilities,
-                on_attach = custom_attach,
+            vim.tbl_deep_extend("force", qwox_lsp.servers[server_name] or {}, {
+                capabilities = qwox_lsp.capabilities,
+                on_attach = qwox_lsp.custom_attach,
             })
         )
     end,

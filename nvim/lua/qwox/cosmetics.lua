@@ -1,15 +1,30 @@
+--[[
+
+
+
+
+
+󰝤
+
+
+󰅚
+󰀪
+󰌶
+]]
+
+
 local signs = {
     small = {
-        { name = "DiagnosticSignError", text = "" },
-        { name = "DiagnosticSignWarn", text = "" },
-        { name = "DiagnosticSignHint", text = "" }, --
-        { name = "DiagnosticSignInfo", text = "" },
+        { name = "DiagnosticSignError", text = "󰅚" },
+        { name = "DiagnosticSignWarn",  text = "󰀪" },
+        { name = "DiagnosticSignHint",  text = "󰌶" }, --
+        { name = "DiagnosticSignInfo",  text = "" },
     },
     big = {
         { name = "DiagnosticSignError", text = "" },
-        { name = "DiagnosticSignWarn", text = "" }, --
-        { name = "DiagnosticSignHint", text = "" },
-        { name = "DiagnosticSignInfo", text = "" }, --
+        { name = "DiagnosticSignWarn",  text = "" }, --
+        { name = "DiagnosticSignHint",  text = "" },
+        { name = "DiagnosticSignInfo",  text = "" }, --
     }
 }
 --[[
@@ -19,7 +34,6 @@ vim.fn.sign_define('DiagnosticSignInformation', { text = '', texthl = 'Diagno
 vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint' })
 
 ]]
-
 return {
     signs = signs,
 }

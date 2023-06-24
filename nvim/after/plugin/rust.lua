@@ -1,14 +1,14 @@
-if not require("qwox.util").has_plugins("rust-tools") then return end
+local qwox_util = require("qwox.util")
+if not qwox_util.has_plugins("rust-tools") then return end
 
-require("qwox.util").set_hl("RustToolsInlayHint", { fg = "#D3D3D3", bg = "#3A3A3A", italic = true })
-vim.keymap.set("n", "<leader>dd", ":RustDebuggables<CR>", { desc = "[D]ebug" })
+qwox_util.set_hl("RustToolsInlayHint", { fg = "#D3D3D3", bg = "#3A3A3A", italic = true })
 
-local _, custom_attach, capabilities = require("qwox.lsp"):unpack()
+local qwox_lsp = require("qwox.lsp")
 
 -- dap paths
-local extension_path = vim.fn.stdpath("data") .. '/mason/packages/codelldb/extension'
-local codelldb_path = extension_path .. '/adapter/codelldb'
-local liblldb_path = extension_path .. '/lldb/lib/liblldb.so'
+local extension_path = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension"
+local codelldb_path = extension_path .. "/adapter/codelldb"
+local liblldb_path = extension_path .. "/lldb/lib/liblldb.so"
 
 require("rust-tools").setup {
     tools = {
@@ -21,8 +21,12 @@ require("rust-tools").setup {
     },
     server = {
         cmd = { "rustup", "run", "nightly", "rust-analyzer" },
-        capabilities = capabilities,
-        on_attach = custom_attach,
+        capabilities = qwox_lsp.capabilities,
+        on_attach = function(client, bufnr)
+            vim.keymap.set("n", "<leader>dd", ":RustDebuggables<CR>", { buffer = bufnr, desc = "Rust [D]ebuggables" })
+            vim.keymap.set("n", "<leader>rr", ":RustRunnables<CR>", { buffer = bufnr, desc = "[R]ust [R]unnables" })
+            qwox_lsp.custom_attach(client, bufnr)
+        end,
         standalone = false, -- single file support
         settings = {
             ["rust-analyzer"] = {

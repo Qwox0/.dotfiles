@@ -40,7 +40,7 @@ LSP.servers = {
     },
 }
 
-LSP.custom_attach = function(client, bufnr)
+function LSP.custom_attach(client, bufnr)
     -- Create a command `:Format` local to the LSP buffer
     vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
         vim.lsp.buf.format()
@@ -58,10 +58,12 @@ LSP.custom_attach = function(client, bufnr)
     map("n", "<leader>jf", vim.lsp.buf.format, "[F]ormat buffer")
     map("n", "<leader>jd", vim.diagnostic.open_float, "Show [D]iagnostics")
 
-    map("n", "gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
-    map("n", "gI", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
-    map("n", "gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+    -- map("n", "gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
+    -- map("n", "gI", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
     -- map("n", "<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
+    map("n", "gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+    map("n", "gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+    map("n", "gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
     map("n", "gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 
     map({ "n", "i", "v" }, "<C-h>", vim.lsp.buf.hover, "Hover Documentation")
@@ -76,13 +78,8 @@ LSP.custom_attach = function(client, bufnr)
     end, "[W]orkspace [L]ist Folders")
 end
 
-
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 LSP.capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
-
-function LSP:unpack()
-    return self.servers, self.custom_attach, self.capabilities
-end
 
 return LSP

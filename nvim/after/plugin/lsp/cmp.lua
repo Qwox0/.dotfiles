@@ -10,14 +10,14 @@ local confirm_opt = {
 
 cmp.setup {
     mapping = cmp.mapping.preset.insert({
-            ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-            ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-            ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-            ["<C-f>"] = cmp.mapping.scroll_docs(4),
-            ["<C-e>"] = cmp.mapping.abort(),
-            ["<Tab>"] = cmp.mapping.confirm(confirm_opt),
-            ["<C-i>"] = cmp.mapping.confirm(confirm_opt),
-            ["<C-Space>"] = cmp.mapping.complete(), -- What is the difference?
+        ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+        ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+        ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+        ["<C-f>"] = cmp.mapping.scroll_docs(4),
+        ["<C-e>"] = cmp.mapping.abort(),
+        ["<Tab>"] = cmp.mapping.confirm(confirm_opt),
+        ["<C-i>"] = cmp.mapping.confirm(confirm_opt),
+        ["<C-Space>"] = cmp.mapping.complete(), -- What is the difference?
         --["<C-Space>"] = cmp.mapping.confirm(confirm_opt),
     }),
 
@@ -31,9 +31,10 @@ cmp.setup {
         { name = "nvim_lsp" },
         { name = "nvim_lsp_signature_help" },
         { name = "path" },
-        --{ name = "luasnip" },
+        { name = "luasnip" },
 
         { name = "nvim_lua" },
+
         { name = "crates" },
 
         { name = "buffer" },
@@ -91,7 +92,10 @@ cmp.setup {
     },
 
     formatting = {
-        fields = { "kind", "abbr" }, --, "menu" },
+        --fields = { "kind", "abbr" }, --, "menu" },
+        fields = { "kind", "abbr", "menu" },
+        --[[
+
         format = function(entry, vim_item)
             local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
             local strings = vim.split(kind.kind, "%s", { trimempty = true })
@@ -100,25 +104,24 @@ cmp.setup {
 
             return kind
         end,
-        -- format = lspkind.cmp_format({
-        --     mode = "symbol",
-        --     maxwidth = 50,
-        --     ellipsis_char = "…", -- must define maxwidth first!
-        --     --[[
-        --     menu = {
-        --         buffer = "[Buf]",
-        --         nvim_lsp = "[LSP]",
-        --         nvim_lua = "[api]",
-        --         path = "[path]",
-        --         luasnip = "[snip]",
-        --         gh_issues = "[issues]",
-        --         tn = "[TabNine]",
-        --     },
-        --     ]]
-        --     before = function(entry, vim_item)
-        --         return vim_item
-        --     end
-        -- }),
+        ]]
+        format = require("lspkind").cmp_format({
+            mode = "symbol",
+            maxwidth = 50,
+            ellipsis_char = "…", -- must define maxwidth first!
+            menu = {
+                buffer = "[Buf]",
+                nvim_lsp = "[LSP]",
+                nvim_lua = "[api]",
+                path = "[path]",
+                luasnip = "[snip]",
+                gh_issues = "[issues]",
+                tn = "[TabNine]",
+            },
+            before = function(entry, vim_item)
+                return vim_item
+            end
+        }),
     },
 
     experimental = {
@@ -129,6 +132,15 @@ cmp.setup {
 }
 
 -- Set configuration for specific filetype.
+cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+    sources = {
+        { name = "dap" },
+        { name = "nvim_lsp" },
+        { name = "nvim_lsp_signature_help" },
+        { name = "buffer" },
+    }
+})
+
 cmp.setup.filetype("gitcommit", {
     sources = cmp.config.sources({
         { name = "cmp_git" }, -- You can specify the `cmp_git` source if you were installed it.
