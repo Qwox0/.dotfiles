@@ -1,12 +1,16 @@
 local U = {}
 
-U.home = os.getenv("HOME")
+local home = os.getenv("HOME")
+local nvim_data = vim.fn.stdpath("data")
 
 U.paths = {
-    configs = "~/.dotfiles", -- for nvim specific vim.fn.stdpath("config"),
-    src = U.home .. "/dev/src"
+    home = home,
+    dotfiles = home .. "/.dotfiles",
+    nvim_config = vim.fn.stdpath("config"),
+    nvim_data = nvim_data,
+    src = home .. "/dev/src",
+    packer = nvim_data .. "/site/pack/packer/start/packer.nvim",
 }
---print(vim.fn.stdpath("config")) --test
 
 local sysname = vim.loop.os_uname().sysname -- "Linux", "Windows_NT"
 U.os = {

@@ -1,4 +1,10 @@
-if not require("qwox.util").has_plugins("packer") then return end
+local packer_path = require("qwox.util").paths.packer
+
+local packer_bootstrap = vim.fn.empty(vim.fn.glob(packer_path)) > 0
+if packer_bootstrap then
+    vim.fn.system { "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", packer_path }
+    vim.cmd([[packadd packer.nvim]])
+end
 
 return require("packer").startup(function(use)
     use { "wbthomason/packer.nvim" } -- Packer can manage itself
@@ -89,4 +95,6 @@ return require("packer").startup(function(use)
     use { "gruvbox-community/gruvbox" }
     use { "catppuccin/nvim", as = "catppuccin" }
     use { "rose-pine/neovim", as = "rose-pine" }
+
+    if packer_bootstrap then require("packer").sync() end
 end)

@@ -34,12 +34,6 @@
       args:
         chdir: "{{ bin }}/neovim"
 
-- name: Installing Packer
-  ansible.builtin.git:
-    repo: "https://github.com/wbthomason/packer.nvim"
-    dest: "{{ home }}/.local/share/nvim/site/pack/packer/start/packer.nvim"
-
-
 # - name: Build neovim
 #   shell: "cd {{ bin }}/neovim && make -j 20"
 #   tags:
