@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
-./ansible/install-ansible
+
+dotfiles_path=${0%/*}
+
+$dotfiles_path/ansible/install-ansible
 
 if [ $? -ne 0 ]; then exit $?; fi
 
-./ansible/run.sh -K dotfiles
+$dotfiles_path/ansible/run.sh -K dotfiles
