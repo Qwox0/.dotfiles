@@ -1,0 +1,146 @@
+# vim: set filetype=yaml.ansible :/
+- name: Local
+  hosts: localhost
+  vars:
+    user: "{{ lookup('env', 'USER') }}"
+    home: "{{ lookup('env', 'HOME') }}"
+    bin: "{{ home }}/bin"
+  pre_tasks:
+    - name: Update Apt
+      become: true
+      ansible.builtin.apt:
+        force_apt_get: true
+        update_cache: true
+        state: present
+  tasks:
+    ########
+    # Core #
+    - name: Core
+      block:
+        - name: Install basic Utils (curl, git, unzip, fzf)
+          become: true
+          ansible.builtin.apt:
+            name:
+              - curl
+              - git
+              - unzip
+              - fzf
+          tags:
+            - nogui
+            - gui
+            - dotfiles
+            - neovim
+            - tmux
+            - rust
+            - brave
+
+        - name: Install build utils (checkinstall)
+          become: true
+          ansible.builtin.apt:
+            name: ["checkinstall"]
+          tags:
+            - nogui
+            - neovim
+
+        # - name: Install Doas
+        #   ansible.builtin.import_tasks: tasks/doas.yml
+        #   tags:
+        #     - doas
+        #     - bash
+        #     - dotfiles
+
+        - name: Install Openssl (dev)
+          become: true
+          ansible.builtin.apt:
+            name:
+              - pkg-config
+              - libssl-dev
+          tags:
+            - nogui
+            - openssl
+
+    #############
+    # Languages #
+    - name: Rust
+      tags:
+        - rust
+        - nogui
+        - terminal
+        - neovim
+      block:
+        - name: Rust Environment
+          ansible.builtin.import_tasks: tasks/rust-env.yml
+          tags: dotfiles
+
+        - name: Rust-lang
+          ansible.builtin.import_tasks: tasks/rust.yml
+
+    - name: Node.js
+      ansible.builtin.import_tasks: tasks/node.yml
+      tags:
+        - node
+        - nogui
+        - neovim
+
+    ###########
+    # Configs #
+    - name: Git Config
+      ansible.builtin.import_tasks: tasks/git.yml
+      tags:
+        - git
+        - nogui
+
+    - name: Dotfiles
+      ansible.builtin.import_tasks: tasks/dotfiles.yml
+      tags:
+        - dotfiles
+        - nogui
+        - gui
+        - neovim
+        - terminal
+        - tmux
+        - awesome
+
+    ################
+    # Applications #
+    - name: Rust tools
+      ansible.builtin.import_tasks: tasks/rust-tools.yml
+      tags:
+        - rust
+        - nogui
+        - terminal
+        - neovim
+
+    - name: Neovim
+      ansible.builtin.import_tasks: tasks/neovim.yml
+      tags:
+        - neovim
+        - nogui
+
+    - name: Terminal
+      ansible.builtin.import_tasks: tasks/terminal.yml
+      tags:
+        - terminal
+        - nogui
+
+    - name: Tmux
+      ansible.builtin.import_tasks: tasks/tmux.yml
+      tags:
+        - tmux
+        - nogui
+
+    - name: AwesomeWM
+      ansible.builtin.import_tasks: tasks/awesome.yml
+      tags:
+        - awesome
+        - gui
+
+    - name: Qemu
+      ansible.builtin.import_tasks: tasks/qemu.yml
+      tags:
+        - qemu
+        - gui
+
+    # - name: Brave
+    #   ansible.builtin.import_tasks: tasks/brave.yml
+    #   tags: brave
