@@ -4,4 +4,4 @@
 
 if [ $? -ne 0 ]; then exit $?; fi
 
-./ansible/run.sh dotfiles
+./ansible/run.sh -K dotfiles
