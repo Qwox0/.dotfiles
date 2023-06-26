@@ -101,6 +101,7 @@ require("telescope").setup {
             specific_opts = {
                 ["rust-tools/debuggables"] = numbered_ui_select,
                 ["rust-tools/runnables"] = numbered_ui_select,
+                ["qwox/debug-prompt"] = numbered_ui_select,
             },
         },
     },
@@ -128,3 +129,4 @@ nmap("<leader>fm", builtin.keymaps, { desc = "[F]ind [M]appings" })
 
 -- extensions
 require("telescope").load_extension("ui-select")
+require("telescope").load_extension("dap")

@@ -29,7 +29,6 @@ require("rust-tools").setup {
         cmd = { "rustup", "run", "nightly", "rust-analyzer" },
         capabilities = qwox_lsp.capabilities,
         on_attach = function(client, bufnr)
-            vim.keymap.set("n", "<leader>dd", ":RustDebuggables<CR>", { buffer = bufnr, desc = "Rust [D]ebuggables" })
             vim.keymap.set("n", "<leader>rr", ":RustRunnables<CR>", { buffer = bufnr, desc = "[R]ust [R]unnables" })
             qwox_lsp.custom_attach(client, bufnr)
         end,

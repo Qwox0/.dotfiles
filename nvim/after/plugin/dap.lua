@@ -3,14 +3,36 @@ if not qwox_util.has_plugins("dap") then return end
 
 local dap = require("dap")
 
-local function is_active()
-    return dap.session() ~= nil
-end
+local function is_active() return dap.session() ~= nil end
 
 local function continue()
-    if is_active() or not qwox_util.is_filetype("rust") then return dap.continue() end
-    vim.api.nvim_command("RustDebuggables")
+    if is_active() or not qwox_util.is_filetype("rust") then
+        dap.continue()
+    else
+        vim.api.nvim_command("RustDebuggables")
+    end
 end
+
+local debug_prompt = {
+    ---@type table<string, fun():nil>
+    _items = {
+        ["List Breakpoints"] = require("telescope").extensions.dap.list_breakpoints,
+        --["List Variables"] = require("telescope").extensions.dap.variables,
+        ["Stack/Frames"] = require("telescope").extensions.dap.frames,
+        ["RustDebuggables"] = function() require("rust-tools").debuggables.debuggables() end,
+    },
+    opts = {
+        prompt = "Debugger",
+        kind = "qwox/debug-prompt",
+    },
+    items = function(self) return vim.tbl_keys(self._items) end,
+    select = function(self, choice) self._items[choice]() end,
+    open = function(self)
+        vim.ui.select(self:items(), self.opts, function(choice) self:select(choice) end)
+    end
+}
+
+vim.keymap.set("n", "<leader>dd", function() debug_prompt:open() end, { desc = "Open [D]ebug Menu" })
 
 vim.keymap.set("n", "<leader>dc", continue, { desc = "[D]ap [C]ontinue" })
 vim.keymap.set("n", "<leader>dr", dap.restart, { desc = "[D]ap [R]estart" })
@@ -35,7 +57,8 @@ dap.configurations.rust = { {
         args = { "build" },
     },
 } }
-]] -- replaced with: `:RustDebuggables`
+]]
+-- replaced with: `:RustDebuggables`
 
 
 --[[
@@ -111,6 +134,6 @@ dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close()
 dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
 ]]
 require("nvim-dap-virtual-text").setup {
-    --virt_text_pos = vim.fn.has 'nvim-0.10' == 1 and 'inline' or 'eol',
-    virt_text_pos = 'eol',
+    --virt_text_pos = vim.fn.has "nvim-0.10" == 1 and "inline" or "eol",
+    virt_text_pos = "eol",
 }
