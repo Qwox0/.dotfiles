@@ -16,9 +16,11 @@ end
 local debug_prompt = {
     ---@type table<string, fun():nil>
     _items = {
-        ["List Breakpoints"] = require("telescope").extensions.dap.list_breakpoints,
+        ["List Breakpoints"] = function()
+            require("telescope").extensions.dap.list_breakpoints()
+        end,
         --["List Variables"] = require("telescope").extensions.dap.variables,
-        ["Stack/Frames"] = require("telescope").extensions.dap.frames,
+        ["Stack/Frames"] = function() require("telescope").extensions.dap.frames() end,
         ["RustDebuggables"] = function() require("rust-tools").debuggables.debuggables() end,
     },
     opts = {
