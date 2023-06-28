@@ -128,5 +128,12 @@ nmap("<leader>/", function() builtin.current_buffer_fuzzy_find(small_dropdown) e
 nmap("<leader>fm", builtin.keymaps, { desc = "[F]ind [M]appings" })
 
 -- extensions
-require("telescope").load_extension("ui-select")
-require("telescope").load_extension("dap")
+
+local extensions = { "ui-select", "dap" }
+for _, ext in ipairs(extensions) do
+    if pcall(require, "telescope._extensions." .. ext) then
+        require("telescope").load_extension(ext)
+    else
+        print("Warn: telescope extension \"" .. ext .. "\" is missing!")
+    end
+end
