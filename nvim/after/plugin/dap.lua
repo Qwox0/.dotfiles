@@ -63,11 +63,11 @@ dap.configurations.rust = { {
 -- replaced with: `:RustDebuggables`
 
 
---[[
 -- rcarriga/nvim-dap-ui
 if not require("qwox.util").has_plugins("dapui") then return end
+local dapui = require("dapui")
 
-require("dapui").setup {
+dapui.setup {
     controls = {
         element = "repl",
         enabled = true,
@@ -99,17 +99,17 @@ require("dapui").setup {
     },
     layouts = { {
         elements = {
-            { id = "scopes",  size = 0.40 },
+            { id = "scopes",  size = 0.70 },
             -- { id = "breakpoints", size = 0.25 },
-            { id = "stacks",  size = 0.20 },
-            { id = "watches", size = 0.40 }
+            -- { id = "stacks",  size = 0.20 },
+            { id = "watches", size = 0.30 }
         },
         position = "right",
         size = 60
     }, {
         elements = {
-            { id = "repl",    size = 0.9 },
-            { id = "console", size = 0.1 }
+            { id = "repl",    size = 0.7 },
+            { id = "console", size = 0.3 }
         },
         position = "bottom",
         size = 10
@@ -128,13 +128,14 @@ require("dapui").setup {
     }
 }
 
-vim.keymap.set("n", "<leader>dt", require("dapui").toggle, { desc = "toggle dap ui" }) -- nil or "sidebar" or "tray"
+vim.keymap.set("n", "<leader>df", function() dapui.float_element() end, { desc = "[D]ap [F]loat UI" })
+vim.keymap.set("n", "<leader>de", function() dapui.eval() end, { desc = "[D]ap [F]loat UI" })
+vim.keymap.set("n", "<leader>dt", dapui.toggle, { desc = "[D]ap toggle [U]I" }) -- nil or "sidebar" or "tray"
 
-local dapui = require("dapui")
 dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
 dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
 dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
-]]
+
 require("nvim-dap-virtual-text").setup {
     --virt_text_pos = vim.fn.has "nvim-0.10" == 1 and "inline" or "eol",
     virt_text_pos = "eol",
