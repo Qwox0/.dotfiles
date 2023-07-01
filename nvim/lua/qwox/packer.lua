@@ -47,6 +47,7 @@ return require("packer").startup(function(use)
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-nvim-lsp-signature-help",
             "hrsh7th/cmp-cmdline",
+            "rcarriga/cmp-dap",
             {
                 "saecki/crates.nvim",
                 requires = { "nvim-lua/plenary.nvim" },

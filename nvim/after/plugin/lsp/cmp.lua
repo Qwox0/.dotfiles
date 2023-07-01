@@ -9,6 +9,10 @@ local confirm_opt = {
 } -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 
 cmp.setup {
+    enabled = function()
+        return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
+            or require("cmp_dap").is_dap_buffer()
+    end,
     mapping = cmp.mapping.preset.insert({
         ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
         ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
@@ -143,8 +147,7 @@ cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
 
 cmp.setup.filetype("gitcommit", {
     sources = cmp.config.sources({
-        { name = "cmp_git" }, -- You can specify the `cmp_git` source if you were installed it.
-    }, {
+        { name = "cmp_git" },
         { name = "buffer" },
     })
 })
