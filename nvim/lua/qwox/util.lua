@@ -20,14 +20,11 @@ U.os = {
 
 local api = vim.api
 
-function U.file_exists(name)
-    local f = io.open(name, "r")
-    if f ~= nil then
-        io.close(f)
-        return true
-    else
-        return false
-    end
+--- @param path string path to file or directory
+--- @return boolean
+function U.file_exists(path)
+  local _, error = vim.loop.fs_stat(path)
+  return error == nil
 end
 
 function U.open_window(lines)
