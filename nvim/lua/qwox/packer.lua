@@ -6,48 +6,27 @@ if packer_bootstrap then
     vim.cmd([[packadd packer.nvim]])
 end
 
+vim.keymap.set("n", "<leader>ps", require("packer").sync, { desc = "[P]acker [S]ync" })
+
 return require("packer").startup(function(use)
     use { "wbthomason/packer.nvim" } -- Packer can manage itself
 
-    --use { "nvim-lua/popup.nvim" } -- dependency
-
     use {
         "nvim-telescope/telescope.nvim",
-        "nvim-telescope/telescope-ui-select.nvim",
-        "nvim-telescope/telescope-dap.nvim",
-        requires = { "nvim-lua/plenary.nvim" }
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope-ui-select.nvim",
+        }
     }
 
-    use {
-        -- LSP
-        "neovim/nvim-lspconfig",
-        "williamboman/mason.nvim",
-        "williamboman/mason-lspconfig.nvim",
-        "j-hui/fidget.nvim",        -- Useful status UI for LSP
-        "ray-x/lsp_signature.nvim", -- show block signature
-        "onsails/lspkind-nvim",     -- LSP Symbols
-
-        -- Debugger
-        "mfussenegger/nvim-dap",
-        "rcarriga/nvim-dap-ui",            -- configuaration for nvim-dap
-        "theHamsta/nvim-dap-virtual-text", -- show debugger state as virtual text
-
-        -- rust
-        "simrat39/rust-tools.nvim",
-
-    }
-
-    -- -- -- CMP
     use { "hrsh7th/nvim-cmp",
         requires = {
-            -- completion sources
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
             "hrsh7th/cmp-nvim-lua",
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-nvim-lsp-signature-help",
             "hrsh7th/cmp-cmdline",
-            "rcarriga/cmp-dap",
             {
                 "saecki/crates.nvim",
                 requires = { "nvim-lua/plenary.nvim" },
@@ -61,36 +40,48 @@ return require("packer").startup(function(use)
         }
     }
 
-    -- -- -- Harpoon
-    use { "theprimeagen/harpoon" }
-    use { "ThePrimeagen/vim-be-good" }
+    use { "neovim/nvim-lspconfig",
+        requires = {
+            "williamboman/mason.nvim",
+            "williamboman/mason-lspconfig.nvim",
+            { "j-hui/fidget.nvim", tag = "legacy" }, -- Useful status UI for LSP
+            "ray-x/lsp_signature.nvim",              -- show block signature
+            "onsails/lspkind-nvim",                  -- LSP Symbols
+        }
+    }
+
+    use { "mfussenegger/nvim-dap",
+        requires = {
+            "rcarriga/nvim-dap-ui",            -- configuaration for nvim-dap
+            "theHamsta/nvim-dap-virtual-text", -- show debugger state as virtual text
+
+            "nvim-telescope/telescope-dap.nvim",
+            "rcarriga/cmp-dap",
+        }
+    }
+
 
     -- Treesitter: Syntax highlighting (see after/plugins/treesitter.lua
     use { "nvim-treesitter/nvim-treesitter",
+        requires = {
+            "nvim-treesitter/playground",    -- show treesitter AST (for plugin development)
+            "romgrk/nvim-treesitter-context" -- show current context (function) at the top
+        },
         run = function()
             pcall(require("nvim-treesitter.install").update { with_sync = true })
         end,
     }
-    use { "nvim-treesitter/playground" }     -- show treesitter AST (for plugin development)
-    use { "romgrk/nvim-treesitter-context" } -- show current context (function) at the top
 
-    use { "norcalli/nvim-colorizer.lua" }    -- highlight color codes
+    use("simrat39/rust-tools.nvim")
+    use("theprimeagen/harpoon")
+    use("tpope/vim-fugitive")          -- Git
+    use("mbbill/undotree")
+    use("windwp/nvim-autopairs")       -- alternative: "jiangmiao/auto-pairs"
+    use("tpope/vim-surround")          -- ds": "word" -> word; cs"(: "word" -> ( word )
+    use("norcalli/nvim-colorizer.lua") -- highlight color codes
 
-    use { "mbbill/undotree" }
-
-    use { "tpope/vim-fugitive" } -- Git
-
-    use { "tpope/vim-surround" } -- ds": "word" -> word | cs"(: "word" -> ( word )
-    --use { "jiangmiao/auto-pairs" }
-    use { "windwp/nvim-autopairs" }
-
-    use {
-        "nvim-lualine/lualine.nvim",    -- bottom statusline
-        "akinsho/bufferline.nvim",      -- show open buffers at the top
-
-        "kyazdani42/nvim-web-devicons", -- needed icons
-    }
-    --use { "lukas-reineke/indent-blankline.nvim" } -- show indentation
+    use { "nvim-lualine/lualine.nvim", requires = { "nvim-tree/nvim-web-devicons" } }
+    use { "akinsho/bufferline.nvim", requires = { "nvim-tree/nvim-web-devicons" } }
 
     -- Themes
     use { "folke/tokyonight.nvim" }

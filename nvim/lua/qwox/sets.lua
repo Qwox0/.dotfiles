@@ -22,7 +22,16 @@ vim.opt.termguicolors = true -- colors: all 24-bit RGB colors
 
 vim.opt.errorbells = false   -- audio: no bells
 
--- for listchars: see after/plugin/indent.lua
+vim.opt.list = true
+vim.opt.listchars:append("eol:↴")
+vim.opt.listchars:append("tab:-->")
+vim.opt.listchars:append("space: ")
+vim.opt.listchars:append("multispace:⋅")
+vim.opt.listchars:append("leadmultispace:⋅⋅⋅│")
+vim.opt.listchars:append("trail:⋅")
+vim.opt.listchars:append("extends:…")
+vim.opt.listchars:append("precedes:…")
+vim.opt.listchars:append("nbsp:+")        --Character to show for a non-breakable space character (0xA0 (160 decimal) and U+202F).
 
 vim.opt.swapfile = false                  -- swap: buffer in memory not swap
 vim.opt.updatetime = 50                   --
