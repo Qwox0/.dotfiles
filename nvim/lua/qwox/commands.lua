@@ -1,4 +1,5 @@
 vim.api.nvim_create_user_command("W", "w", { desc = "Prevent misstype of :w" })
+vim.api.nvim_create_user_command("Q", "q", { desc = "Prevent misstype of :q" })
 vim.api.nvim_create_user_command("Wa", "wa", { desc = "Prevent misstype of :wa" })
 vim.api.nvim_create_user_command("WA", "wa", { desc = "Prevent misstype of :wa" })
 vim.api.nvim_create_user_command("Wq", "wq", { desc = "Prevent misstype of :wq" })

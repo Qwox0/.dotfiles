@@ -124,6 +124,7 @@ nmap("<leader>fs", function() builtin.grep_string { search = vim.fn.input("Grep 
 nmap("<leader>/", function() builtin.current_buffer_fuzzy_find(small_dropdown) end, {
     desc = "[/] Fuzzily search in current buffer]",
 })
+nmap("<leader>ft", builtin.treesitter, { desc = "[F]ind [T]reesitter items" })
 
 nmap("<leader>fm", builtin.keymaps, { desc = "[F]ind [M]appings" })
 

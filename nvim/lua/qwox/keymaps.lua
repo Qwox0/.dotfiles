@@ -1,9 +1,12 @@
+local qwox_util = require("qwox.util")
+
 vim.g.mapleader = " "   -- keymapping: define <leader> for mappings
 vim.opt.timeout = false -- keymapping: command timeout
 
 
 vim.keymap.set({ "n", "v" }, "<leader>", "<Nop>", { desc = "Remove default behavior of the leader key" })
-vim.keymap.set("n", "q:", "<Nop>", { desc = "Don't open command history" })
+vim.keymap.set("n", "q:", "<Nop>", { desc = "Disable command history" })
+vim.keymap.set("n", "Q", "<Nop>", { desc = "Disable Q" })
 
 vim.keymap.set("n", "k", "v:count == 0 ? \"gk\" : \"k\"", { expr = true, desc = "jump up in wrapped lines" })
 vim.keymap.set("n", "j", "v:count == 0 ? \"gj\" : \"j\"", { expr = true, desc = "jump down in wrapped lines" })
@@ -16,8 +19,6 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "move entire line up" })
 
 vim.keymap.set("n", "J", "mzJ`z", { desc = "don't move cursor on J" })
 
--- center cursor on some movements
--- zv: some extra folding stuff
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "center screen on Ctrl+d" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "center screen on Ctrl+u" })
 vim.keymap.set("n", "n", "nzzzv", { desc = "center screen on n" })
@@ -57,38 +58,49 @@ vim.keymap.set("n", "<leader>rf", function()
     vim.fn.execute("edit")
 end, { desc = "[R]ename [F]ile" })
 
--- -- -- buffer, window, tab
---[[ Explanation
-    A buffer is the in-memory text of a file.   file
-    A window is a viewport on a buffer.         buffer view
-    A tab page is a collection of windows.      window collection]]
 vim.keymap.set("n", "<leader>b", ":bprevious<CR>", { desc = "previous buffer ([B]ack)" })
 vim.keymap.set("n", "<leader>n", ":bnext<CR>", { desc = "[N]ext buffer" })
--- close buffer
---vim.keymap.set("n", "<leader>q", ":bp<CR>:bd #<CR>", { desc = "" })
 vim.keymap.set("n", "<leader>q", ":bdelete<CR>", { desc = "[Q]uit buffer" })
 vim.keymap.set("n", "<leader>!q", ":bdelete!<CR>", { desc = "[Q]uit buffer[!]" })
 
--- switch between screens
---[[
-vim.keymap.set("n", "<leader>h", "<C-w>h", { desc = "switch screen left" })
-vim.keymap.set("n", "<leader>j", "<C-w>j", { desc = "switch screen down" })
-vim.keymap.set("n", "<leader>k", "<C-w>k", { desc = "switch screen up" })
-vim.keymap.set("n", "<leader>l", "<C-w>l", { desc = "switch screen right" })
-]]
 vim.keymap.set("n", "<leader>ji", "mzgg=G`z", { desc = "[I]ndent current buffer" })
 
 vim.keymap.set("n", "<leader>ya", "mzggyG`z", { desc = "[Y]ank [A]ll in current buffer" })
 vim.keymap.set("n", "<leader>da", "ggdG", { desc = "[D]elete [A]ll in current buffer" })
 
+--#region surround
 
---------------------------------- git keymaps
-local map = function(mode, keys, func, desc)
-    if desc then
-        desc = "[G]it: " .. desc
+vim.keymap.set("n", "<leader>s", function()
+    ---@type string
+    local input = vim.fn.input("Surround word with > ")
+    if input == "" then return end
+
+    local before, word, after = qwox_util.get_cursor_word()
+
+    vim.api.nvim_set_current_line(before .. input .. word .. input:fancy_reverse() .. after)
+end, { desc = "[S]urround word" })
+
+vim.keymap.set("v", "<leader>s", function()
+    ---@type string
+    local input = vim.fn.input("Surround selection with > ")
+    if input == "" then return end
+    local start_row, start_col, end_row, end_col = qwox_util.get_visual_pos()
+    start_col = start_col - 1
+
+    if start_row == end_row then
+        ---@type string
+        local line = vim.api.nvim_get_current_line()
+        local before, selection, after = line:cut_out(start_col, end_col)
+        vim.api.nvim_set_current_line(before .. input .. selection .. input:fancy_reverse() .. after)
+    else
+        print("todo")
     end
-    vim.keymap.set(mode, keys, func, { desc = desc })
-end
+    qwox_util.enter_normal_mode() -- alternative: move/expand selection
+end, { desc = "[S]urround selection" })
+
+--#endregion surround
+
+--#region Git keymaps
 
 vim.keymap.set("n", "<leader>gg", vim.cmd.Git, { desc = "[G]it: open menu" })
 vim.keymap.set("n", "<leader>gs", require("telescope.builtin").git_status, { desc = "[G]it: [S]tatus" })
@@ -102,3 +114,5 @@ vim.keymap.set("n", "<leader>gy", ":Git fetch<CR>:Git pull<CR>:Git push<CR>", {
 
 vim.keymap.set("n", "<leader>gaa", ":!git add -A<CR>", { desc = "[G]it: [A]dd [A]ll" })
 --vim.keymap.set("n", "<leader>ga", require("telescope.builtin").git_stash, { desc = "[G]it: [A]dd" })
+
+--#endregion Git keymaps

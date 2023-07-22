@@ -23,8 +23,8 @@ local api = vim.api
 --- @param path string path to file or directory
 --- @return boolean
 function U.file_exists(path)
-  local _, error = vim.loop.fs_stat(path)
-  return error == nil
+    local _, error = vim.loop.fs_stat(path)
+    return error == nil
 end
 
 function U.open_window(lines)
@@ -96,6 +96,69 @@ function U.dump(o)
         s = s .. "[" .. k .. "] = " .. U.dump(v) .. ", "
     end
     return s .. "}"
+end
+
+--- Get position of the cursor
+---@return integer row 1-indexed
+---@return integer col 0-indexed
+function U.get_cursor_pos()
+    return table.unpack(vim.api.nvim_win_get_cursor(0))
+end
+
+--- Get position of the word under the current cursor
+---@return integer word_start 0-indexed; inclusive
+---@return integer word_end 0-indexed; exclusive
+function U.get_cursor_word_pos()
+    local _, col = U.get_cursor_pos()
+    local line = vim.api.nvim_get_current_line()
+    return line:get_word_pos(col)
+end
+
+--- Get current line split around word under cursor.
+---@return string before
+---@return string word
+---@return string after
+function U.get_cursor_word()
+    ---@type string
+    local line = vim.api.nvim_get_current_line()
+    local word_start, word_end = U.get_cursor_word_pos()
+    return line:cut_out(word_start, word_end)
+end
+
+--- Get position of the selected area in visual mode
+--- start is inclusive, end is inclusive
+---@return integer start_row 1-indexed
+---@return integer start_col 0-indexed
+---@return integer end_row 1-indexed
+---@return integer end_col 0-indexed
+function U.get_visual_pos()
+    local row1, col1 = table.unpack(vim.fn.getpos('v'), 2, 3)
+    local row2, col2 = table.unpack(vim.fn.getcurpos(), 2, 3)
+    local start_row = math.min(row1, row2)
+    local start_col = math.min(col1, col2)
+    local end_row = math.max(row1, row2)
+    local end_col = math.max(col1, col2)
+
+    if U.is_visual_line_mode() then
+        start_col = 1
+        end_col = vim.fn.getline(end_row):len()
+    end
+
+    return start_row, start_col, end_row, end_col
+end
+
+---@return boolean
+function U.is_visual_mode() return vim.fn.mode() == "v" end
+
+---@return boolean
+function U.is_visual_line_mode() return vim.fn.mode() == "V" end
+
+---@return boolean
+function U.is_visual_block_mode() return vim.fn.mode():byte() == 22 end
+
+function U.enter_normal_mode()
+    local esc = vim.api.nvim_replace_termcodes('<esc>', true, false, true)
+    vim.api.nvim_feedkeys(esc, 'x', false)
 end
 
 return U
