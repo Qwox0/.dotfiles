@@ -1,17 +1,20 @@
 if not require("qwox.util").has_plugins("bufferline") then return end
 
+local enabled = false
+if not enabled then return end
+
 require("bufferline").setup {
     options = {
-        mode = "buffers",                              -- set to "tabs" to only show tabpages instead
+        mode = "buffers", -- set to "tabs" to only show tabpages instead
         --style_preset = require("bufferline").presets.default,     -- or bufferline.presets.minimal,
         --themable = true | false, -- allows highlight groups to be overriden i.e. sets highlights as default
         --numbers = "none" | "ordinal" | "buffer_id" | "both" | function({ ordinal, id, lower, raise }): string,
-        close_command = "bdelete! %d",           -- can be a string | function, | false see "Mouse actions"
-        right_mouse_command = "bdelete! %d",     -- can be a string | function | false, see "Mouse actions"
-        left_mouse_command = "buffer %d",        -- can be a string | function, | false see "Mouse actions"
-        middle_mouse_command = nil,              -- can be a string | function, | false see "Mouse actions"
+        close_command = "bdelete! %d",       -- can be a string | function, | false see "Mouse actions"
+        right_mouse_command = "bdelete! %d", -- can be a string | function | false, see "Mouse actions"
+        left_mouse_command = "buffer %d",    -- can be a string | function, | false see "Mouse actions"
+        middle_mouse_command = nil,          -- can be a string | function, | false see "Mouse actions"
         indicator = {
-            icon = '▎',                        -- this should be omitted if indicator style is not 'icon'
+            icon = '▎',                    -- this should be omitted if indicator style is not 'icon'
             --style = 'icon' | 'underline' | 'none',
         },
         buffer_close_icon = '',
@@ -23,7 +26,7 @@ require("bufferline").setup {
         --- Please note some names can/will break the
         --- bufferline so use this at your discretion knowing that it has
         --- some limitations that will *NOT* be fixed.
-        name_formatter = function(buf)     -- buf contains:
+        name_formatter = function(buf) -- buf contains:
             -- name                | str        | the basename of the active file
             -- path                | str        | the full path of the active file
             -- bufnr (buffer only) | int        | the number of the active buffer
@@ -31,8 +34,8 @@ require("bufferline").setup {
             -- tabnr (tabs only)   | int        | the "handle" of the tab, can be converted to its ordinal number using: `vim.api.nvim_tabpage_get_number(buf.tabnr)`
         end,
         max_name_length = 18,
-        max_prefix_length = 15,     -- prefix used when a buffer is de-duplicated
-        truncate_names = true,      -- whether or not tab names should be truncated
+        max_prefix_length = 15,   -- prefix used when a buffer is de-duplicated
+        truncate_names = true,    -- whether or not tab names should be truncated
         tab_size = 18,
         diagnostics = "nvim_lsp", -- | false | "coc"
         diagnostics_update_in_insert = true,
@@ -85,7 +88,7 @@ require("bufferline").setup {
         show_close_icon = false,
         -- show_tab_indicators = true | false,
         -- show_duplicate_prefix = true | false, -- whether to show duplicate buffer prefix
-        persist_buffer_sort = true,     -- whether or not custom sorted buffers should persist
+        persist_buffer_sort = true, -- whether or not custom sorted buffers should persist
         -- can also be a table containing 2 custom separators
         -- [focused and unfocused]. eg: { '|', '|' }
         --separator_style = "slant" | "slope" | "thick" | "thin" | { 'any', 'any' },
