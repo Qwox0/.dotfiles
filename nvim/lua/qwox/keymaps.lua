@@ -77,23 +77,34 @@ vim.keymap.set("n", "<leader>s", function()
 
     local before, word, after = qwox_util.get_cursor_word()
 
-    vim.api.nvim_set_current_line(before .. input .. word .. input:fancy_reverse() .. after)
+    qwox_util.set_line(nil, before .. input .. word .. input:fancy_reverse() .. after)
 end, { desc = "[S]urround word" })
 
 vim.keymap.set("v", "<leader>s", function()
     ---@type string
     local input = vim.fn.input("Surround selection with > ")
     if input == "" then return end
+
     local start_row, start_col, end_row, end_col = qwox_util.get_visual_pos()
     start_col = start_col - 1
 
     if start_row == end_row then
         ---@type string
-        local line = vim.api.nvim_get_current_line()
-        local before, selection, after = line:cut_out(start_col, end_col)
-        vim.api.nvim_set_current_line(before .. input .. selection .. input:fancy_reverse() .. after)
+        local line = qwox_util.get_line()
+        local before, selection, after = line:multi_split(start_col, end_col)
+        qwox_util.set_line(nil, before .. input .. selection .. input:fancy_reverse() .. after)
+    elseif qwox_util.is_visual_block_mode() then
+        for row = start_row, end_row, 1 do
+            local before, selection, after = qwox_util.get_line(row):multi_split(start_col, end_col)
+            if selection == nil or selection == "" then goto continue end
+            qwox_util.set_line(row, before .. input .. selection .. input:fancy_reverse() .. (after or ""))
+            ::continue::
+        end
     else
-        print("todo")
+        local before, selection_start = qwox_util.get_line(start_row):multi_split(start_col)
+        local selection_end, after = qwox_util.get_line(end_row):multi_split(end_col)
+        qwox_util.set_line(start_row, before .. input .. selection_start)
+        qwox_util.set_line(end_row, selection_end .. input:fancy_reverse() .. after)
     end
     qwox_util.enter_normal_mode() -- alternative: move/expand selection
 end, { desc = "[S]urround selection" })

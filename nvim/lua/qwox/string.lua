@@ -13,18 +13,22 @@ function string.get_word_pos(string, pos)
     return word_start, word_end
 end
 
---- Get current line split around word under cursor.
+--- Split `string` multiple times.
+--- [start, end[; indices: `0`, `...`, `string.len()`;
 ---@param string string
----@param start integer 0-indexed; inclusive
----@param end_ integer 0-indexed; exclusive
----@return string before part before `start`
----@return string word part between start and `end_`
----@return string after part after `end_
-function string.cut_out(string, start, end_)
-    local before = string:sub0(0, start)
-    local word = string:sub0(start, end_)
-    local after = string:sub0(end_)
-    return before, word, after
+---@param ... integer
+---@return string ...
+function string.multi_split(string, ...)
+    ---@type integer[]
+    local idxs = vim.tbl_filter(function(x) return x <= string:len() end, { string:len(), ... })
+    table.sort(idxs)
+    ---@type string[]
+    local out = {}
+    for k, idx in ipairs(idxs) do
+        local prev = idxs[k - 1] or 0
+        table.insert(out, string:sub0(prev, idx))
+    end
+    return table.unpack(out)
 end
 
 local reverse_map = {

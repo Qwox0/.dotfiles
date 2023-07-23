@@ -98,6 +98,27 @@ function U.dump(o)
     return s .. "}"
 end
 
+--#region edit text
+
+--- Get content of line `linenum` or the current line as a string.
+---@param linenum integer|nil 1-indexed
+---@return string
+function U.get_line(linenum)
+    if linenum == nil then return vim.api.nvim_get_current_line() end
+    return vim.fn.getline(linenum)
+end
+
+--- Set content of line `linenum` or the current line.
+---@param linenum integer|nil 1-indexed
+---@param text string
+function U.set_line(linenum, text)
+    if linenum == nil then
+        vim.api.nvim_set_current_line(text)
+    else
+        vim.fn.setline(linenum, text)
+    end
+end
+
 --- Get position of the cursor
 ---@return integer row 1-indexed
 ---@return integer col 0-indexed
@@ -110,7 +131,7 @@ end
 ---@return integer word_end 0-indexed; exclusive
 function U.get_cursor_word_pos()
     local _, col = U.get_cursor_pos()
-    local line = vim.api.nvim_get_current_line()
+    local line = U.get_line()
     return line:get_word_pos(col)
 end
 
@@ -120,9 +141,9 @@ end
 ---@return string after
 function U.get_cursor_word()
     ---@type string
-    local line = vim.api.nvim_get_current_line()
+    local line = U.get_line()
     local word_start, word_end = U.get_cursor_word_pos()
-    return line:cut_out(word_start, word_end)
+    return line:multi_split(word_start, word_end)
 end
 
 --- Get position of the selected area in visual mode
@@ -141,11 +162,13 @@ function U.get_visual_pos()
 
     if U.is_visual_line_mode() then
         start_col = 1
-        end_col = vim.fn.getline(end_row):len()
+        end_col = U.get_line(end_row):len()
     end
 
     return start_row, start_col, end_row, end_col
 end
+
+--#endregion edit text
 
 ---@return boolean
 function U.is_visual_mode() return vim.fn.mode() == "v" end
