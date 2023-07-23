@@ -18,6 +18,8 @@ vim.opt.smartindent = true   -- tab:
 
 vim.opt.scrolloff = 8        -- scroll before cursor reaches edge
 
+vim.opt.wrap = false         -- set nowrap
+
 vim.opt.termguicolors = true -- colors: all 24-bit RGB colors
 
 vim.opt.errorbells = false   -- audio: no bells
