@@ -113,6 +113,8 @@ end, { desc = "[S]urround selection" })
 
 --#region Git keymaps
 
+-- if not qwox_util.has_plugins("vim-fugitive") then return end
+
 vim.keymap.set("n", "<leader>gg", vim.cmd.Git, { desc = "[G]it: open menu" })
 vim.keymap.set("n", "<leader>gs", require("telescope.builtin").git_status, { desc = "[G]it: [S]tatus" })
 vim.keymap.set("n", "<leader>gb", require("telescope.builtin").git_branches, { desc = "[G]it: [B]ranches" })
@@ -124,6 +126,14 @@ vim.keymap.set("n", "<leader>gy", ":Git fetch<CR>:Git pull<CR>:Git push<CR>", {
 })
 
 vim.keymap.set("n", "<leader>gaa", ":!git add -A<CR>", { desc = "[G]it: [A]dd [A]ll" })
+
+-- for fugitive:
+vim.keymap.set("n", "gh", ":diffget //2<CR>", { desc = "fugitive split: [G]et left(2)" })
+vim.keymap.set("n", "gj", ":diffget //3<CR>", { desc = "fugitive split: [G]et down(3)" })
+vim.keymap.set("n", "gk", ":diffget //2<CR>", { desc = "fugitive split: [G]et up(2)" })
+vim.keymap.set("n", "gl", ":diffget //3<CR>", { desc = "fugitive split: [G]et right(3)" })
+
+
 --vim.keymap.set("n", "<leader>ga", require("telescope.builtin").git_stash, { desc = "[G]it: [A]dd" })
 
 --#endregion Git keymaps
