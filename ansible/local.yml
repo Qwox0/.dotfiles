@@ -84,12 +84,6 @@
 
     ###########
     # Configs #
-    - name: Git Config
-      ansible.builtin.import_tasks: tasks/git.yml
-      tags:
-        - git
-        - nogui
-
     - name: Dotfiles
       ansible.builtin.import_tasks: tasks/dotfiles.yml
       tags:

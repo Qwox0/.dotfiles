@@ -20,3 +20,4 @@
 ./gtk/gtk-3.0            ; ~/.config/gtk-3.0
 ./gtk/gtk-4.0            ; ~/.config/gtk-4.0
 ./sqlite/.sqliterc       ; ~/.sqliterc
+./git/.gitconfig         ; ~/.gitconfig

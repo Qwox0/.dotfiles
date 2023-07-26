@@ -1,0 +1,10 @@
+[user]
+	name = Qwox
+	email = qwox@qwox.com
+[credential]
+	helper = store
+[init]
+	defaultBranch = master
+[alias]
+    tree = tree-self --all
+    tree-self = log --graph --decorate --oneline --format=format:'%C(auto)%h%d %C(white)%s %C(dim white)- %an %C(green)(%ar)%C(reset)'
