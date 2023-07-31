@@ -66,16 +66,19 @@ awful.keyboard.append_global_keybindings({
     addkey({ mod, "Shift" }, "j", actions.client.swap.global_direction("down")),
     addkey({ mod, "Shift" }, "k", actions.client.swap.global_direction("up")),
     addkey({ mod, "Shift" }, "l", actions.client.swap.global_direction("right")),
+    awful.key({ mod, "Control" }, "l", function() awful.tag.incmwfact(0.05) end,
+        { description = "increase master width factor", group = "layout" }),
+    awful.key({ mod, "Control" }, "h", function() awful.tag.incmwfact(-0.05) end,
+        { description = "decrease master width factor", group = "layout" }),
+
+    awful.key({ mod, }, "space", function() awful.layout.inc(1) end, { description = "select next", group = "layout" }),
+    awful.key({ mod, "Shift" }, "space", function() awful.layout.inc(-1) end, { description = "select previous", group = "layout" }),
 
     --[[
-    awful.key({ modkey, }, "l", function() awful.tag.incmwfact(0.05) end, { description = "increase master width factor", group = "layout" }),
-    awful.key({ modkey, }, "h", function() awful.tag.incmwfact(-0.05) end, { description = "decrease master width factor", group = "layout" }),
-    awful.key({ modkey, "Shift" }, "h", function() awful.tag.incnmaster(1, nil, true) end, { description = "increase the number of master clients", group = "layout" }),
-    awful.key({ modkey, "Shift" }, "l", function() awful.tag.incnmaster(-1, nil, true) end, { description = "decrease the number of master clients", group = "layout" }),
-    awful.key({ modkey, "Control" }, "h", function() awful.tag.incncol(1, nil, true) end, { description = "increase the number of columns", group = "layout" }),
-    awful.key({ modkey, "Control" }, "l", function() awful.tag.incncol(-1, nil, true) end, { description = "decrease the number of columns", group = "layout" }),
-    awful.key({ modkey, }, "space", function() awful.layout.inc(1) end, { description = "select next", group = "layout" }),
-    awful.key({ modkey, "Shift" }, "space", function() awful.layout.inc(-1) end, { description = "select previous", group = "layout" }),
+    awful.key({ mod, "Shift" }, "h", function() awful.tag.incnmaster(1, nil, true) end, { description = "increase the number of master clients", group = "layout" }),
+    awful.key({ mod, "Shift" }, "l", function() awful.tag.incnmaster(-1, nil, true) end, { description = "decrease the number of master clients", group = "layout" }),
+    awful.key({ mod, "Control" }, "h", function() awful.tag.incncol(1, nil, true) end, { description = "increase the number of columns", group = "layout" }),
+    awful.key({ mod, "Control" }, "l", function() awful.tag.incncol(-1, nil, true) end, { description = "decrease the number of columns", group = "layout" }),
     ]]
 })
 
@@ -150,7 +153,7 @@ client.connect_signal("request::default_keybindings", function()
         end, { description = "toggle fullscreen", group = "client" }),
         awful.key({ mod }, "m", function(c) c.minimized = true end, { description = "minimize", group = "client" }), -- The client currently has the input focus, so it cannot be minimized, since minimized clients can't have the focus.
         awful.key({ mod }, "o", function(c) c:move_to_screen() end,
-        { description = "move to other screen", group = "client" }),
+            { description = "move to other screen", group = "client" }),
 
         -- awful.key({ mod, "Control" }, "space", awful.client.floating.toggle, { description = "toggle floating", group = "client" }),
         -- awful.key({ mod }, "t", function(c) c.ontop = not c.ontop end, { description = "toggle keep on top", group = "client" }),
@@ -194,13 +197,6 @@ local globalkeys = gears.table.join(
         { description = "go back", group = "client" }),
 
     -- Standard program
-    awful.key({ modkey, }, "Return", function() awful.spawn(terminal) end,
-        { description = "open a terminal", group = "launcher" }),
-    awful.key({ modkey, "Control" }, "r", awesome.restart,
-        { description = "reload awesome", group = "awesome" }),
-    awful.key({ modkey, "Shift" }, "q", awesome.quit,
-        { description = "quit awesome", group = "awesome" }),
-
     --[[
     awful.key({ modkey, }, "l", function() awful.tag.incmwfact(0.05) end,
         { description = "increase master width factor", group = "layout" }),
