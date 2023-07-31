@@ -107,6 +107,14 @@ require("telescope").setup {
     },
 }
 
+vim.api.nvim_create_autocmd("WinLeave", {
+    callback = function()
+        if qwox_util.is_filetype("TelescopePrompt") and vim.fn.mode() == "i" then
+            qwox_util.enter_normal_mode()
+        end
+    end,
+})
+
 local function nmap(...) vim.keymap.set("n", ...) end
 
 nmap("<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })

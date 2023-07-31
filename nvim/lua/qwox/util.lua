@@ -180,8 +180,8 @@ function U.is_visual_line_mode() return vim.fn.mode() == "V" end
 function U.is_visual_block_mode() return vim.fn.mode():byte() == 22 end
 
 function U.enter_normal_mode()
-    local esc = vim.api.nvim_replace_termcodes('<esc>', true, false, true)
-    vim.api.nvim_feedkeys(esc, 'x', false)
+    local esc = vim.api.nvim_replace_termcodes("<Esc>", true, false, true)
+    vim.api.nvim_feedkeys(esc, "x", false)
 end
 
 return U
