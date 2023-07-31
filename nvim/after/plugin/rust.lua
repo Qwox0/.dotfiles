@@ -6,10 +6,13 @@ qwox_util.set_hl("RustToolsInlayHint", { fg = "#D3D3D3", bg = "#3A3A3A", italic 
 local qwox_lsp = require("qwox.lsp")
 
 -- dap paths
+--[[
+local extension_path = vim.fn.stdpath("data") .. "/mason/packages/cpptools/extension"
+local debugger_path = extension_path .. "/debugAdapters/bin/OpenDebugAD7"
+]]
 local extension_path = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension"
 local codelldb_path = extension_path .. "/adapter/codelldb"
 local liblldb_path = extension_path .. "/lldb/lib/liblldb"
-
 if qwox_util.os.is_windows then
     codelldb_path = codelldb_path .. ".exe"
     liblldb_path = liblldb_path .. ".dll"
@@ -51,5 +54,16 @@ require("rust-tools").setup {
     },
     dap = {
         adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path)
+        --[[
+        adapter = {
+            type = "server",
+            port = "${port}",
+            host = "127.0.0.1",
+            executable = {
+                command = debugger_path,
+                args = { "--server=${port}", "--pauseForDebugger" },
+            },
+        }
+        ]]
     },
 }

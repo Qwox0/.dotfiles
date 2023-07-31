@@ -136,7 +136,43 @@ dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() 
 dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
 dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
 
+--[[
+
 require("nvim-dap-virtual-text").setup {
     --virt_text_pos = vim.fn.has "nvim-0.10" == 1 and "inline" or "eol",
     virt_text_pos = "eol",
+}
+]]
+require("nvim-dap-virtual-text").setup {
+    enabled = true,
+    enabled_commands = false, -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did not notify its termination)
+    highlight_changed_variables = true,
+    highlight_new_as_changed = false,
+    show_stop_reason = true,
+    commented = false,             -- prefix virtual text with comment string
+    only_first_definition = false, -- only show virtual text at first definition (if there are multiple)
+    all_references = true,
+    clear_on_continue = false,     -- clear virtual text on "continue" (might cause flickering when stepping)
+    --- A callback that determines how a variable is displayed or whether it should be omitted
+    --- @param variable Variable https://microsoft.github.io/debug-adapter-protocol/specification#Types_Variable
+    --- @param buf number
+    --- @param stackframe dap.StackFrame https://microsoft.github.io/debug-adapter-protocol/specification#Types_StackFrame
+    --- @param node userdata tree-sitter node identified as variable definition of reference (see `:h tsnode`)
+    --- @param options nvim_dap_virtual_text_options Current options for nvim-dap-virtual-text
+    --- @return string|nil A text how the virtual text should be displayed or nil, if this variable shouldn't be displayed
+    display_callback = function(variable, buf, stackframe, node, options)
+        if options.virt_text_pos == 'inline' then
+            return ' = ' .. variable.value
+        else
+            return variable.name .. ' = ' .. variable.value
+        end
+    end,
+    --virt_text_pos = vim.fn.has 'nvim-0.10' == 1 and 'inline' or 'eol', -- see `:h nvim_buf_set_extmark()`
+    virt_text_pos = "eol",
+
+    -- experimental features:
+    all_frames = false,     -- show virtual text for all stack frames not only current. Only works for debugpy on my machine.
+    virt_lines = false,     -- show virtual lines instead of virtual text (will flicker!)
+    virt_text_win_col = nil -- position the virtual text at a fixed window column (starting from the first text column) ,
+    -- e.g. 80 to position at column 80, see `:h nvim_buf_set_extmark()`
 }
