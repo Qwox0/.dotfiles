@@ -4,7 +4,14 @@ local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
 -- skeletons
-autocmd("BufNewFile", { pattern = "*.sh", command = "0r ~/.vim/templates/sh" })
+local f = io.popen("find " .. require("qwox.util").paths.nvim_config .. "/templates -mindepth 1")
+if f ~= nil then
+    for path in f:lines() do
+        ---@type string
+        local ext = path:sub0((path:rfind0("%.") or -1) + 1)
+        autocmd("BufNewFile", { pattern = "*." .. ext, command = ":0r " .. path })
+    end
+end
 
 -- no relative line numbers in Insert mode
 autocmd("InsertEnter", { pattern = "*", command = ":set norelativenumber" })

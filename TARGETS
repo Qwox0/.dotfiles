@@ -8,7 +8,6 @@
 ./bash/.bashrc           ; ~/.bashrc
 ./tmux/.tmux.conf        ; ~/.tmux.conf
 ./nvim                   ; ~/.config/nvim
-./.vim/templates         ; ~/.vim/templates
 ./rustfmt                ; ~/.config/rustfmt
 ./mprocs                 ; ~/.config/mprocs
 ./alacritty              ; ~/.config/alacritty
