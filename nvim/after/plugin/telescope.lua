@@ -89,9 +89,12 @@ require("telescope").setup {
         file_ignore_patterns = { "^.git/" },
     },
     pickers = { -- Default configuration for builtin pickers
-        find_files = {
-            hidden = true,
-            no_ignore = false, -- true: show ignored files, false: hide ignored files
+        find_files = { hidden = true, },
+        grep_string = {
+            additional_args = { "--hidden" },
+        },
+        live_grep = {
+            additional_args = { "--hidden" },
         },
         planets = { show_moon = true, show_pluto = true },
     },
