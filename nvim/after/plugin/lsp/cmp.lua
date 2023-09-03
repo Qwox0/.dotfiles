@@ -31,18 +31,21 @@ cmp.setup {
         end,
     },
 
-    sources = { -- order == priority !!
+    -- order == priority
+    -- multiple args == grouping
+    sources = cmp.config.sources({
+        { name = "nvim_lua" },
         { name = "nvim_lsp" },
         { name = "nvim_lsp_signature_help" },
         { name = "path" },
         { name = "luasnip" },
 
-        { name = "nvim_lua" },
+        -- }, {
 
         { name = "crates" },
 
         { name = "buffer" },
-    },
+    }),
 
     matching = {
         disallow_fuzzy_matching = false,
@@ -53,32 +56,35 @@ cmp.setup {
     },
 
     sorting = {
-        comperatos = function(entry1, entry2)
-            print("a")
-            local types = require("cmp.types")
-            local kind1 = entry1:get_kind()
-            kind1 = kind1 == types.lsp.CompletionItemKind.Text and 100 or kind1
-            local kind2 = entry2:get_kind()
-            kind2 = kind2 == types.lsp.CompletionItemKind.Text and 100 or kind2
-            if kind1 ~= kind2 then
-                --[[
+        comparators = {
+            cmp.config.compare.offset,
+            cmp.config.compare.exact,
+            cmp.config.compare.kind,
+            cmp.config.compare.score,
+            --cmp.config.compare.kind,
 
-                if kind1 == types.lsp.CompletionItemKind.Snippet then
+            -- from lukas-reineke/cmp-under-comparator.
+            function(entry1, entry2)
+                local _, entry1_under = entry1.completion_item.label:find "^_+"
+                local _, entry2_under = entry2.completion_item.label:find "^_+"
+                entry1_under = entry1_under or 0
+                entry2_under = entry2_under or 0
+                if entry1_under > entry2_under then
+                    return false
+                elseif entry1_under < entry2_under then
                     return true
                 end
-                if kind2 == types.lsp.CompletionItemKind.Snippet then
-                    return false
-                end
-                --]]
-                local diff = kind1 - kind2
-                if diff < 0 then
-                    return true
-                elseif diff > 0 then
-                    return false
-                end
-            end
-        end,
+            end,
+
+            -- cmp.config.compare.recently_used,
+            -- cmp.config.compare.locality,
+            -- cmp.config.compare.kind,
+            cmp.config.compare.length,
+            -- cmp.config.compare.order,
+        },
     },
+
+
 
     preselect = cmp.PreselectMode.None,
 
@@ -152,11 +158,11 @@ cmp.setup.filetype("gitcommit", {
     })
 })
 
--- Use buffer source for `/` (if you enabled `native_menu`, this won"t work anymore).
+-- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline({ "/", "?" }, {
     mapping = cmp.mapping.preset.cmdline(),
     sources = {
-        { name = "buffer" }
+        { name = "buffer" },
     }
 })
 
@@ -164,9 +170,9 @@ cmp.setup.cmdline({ "/", "?" }, {
 cmp.setup.cmdline(":", {
     mapping = cmp.mapping.preset.cmdline(),
     sources = cmp.config.sources({
-        { name = "path" }
-    }, {
-        { name = "cmdline" }
+        { name = "path" },
+        { name = "buffer" },
+        { name = "cmdline" },
     })
 })
 
