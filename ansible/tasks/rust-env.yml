@@ -29,3 +29,18 @@
     - .cache/sccache
   loop_control:
     label: "{{ dest }} -> {{ src }}"
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: "{{ home }}/.local/share/bash-completion/completions"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+
+- name: Bash rustup completions
+  ansible.builtin.shell:
+    cmd: "rustup completions bash       > ~/.local/share/bash-completion/completions/rustup"
+
+- name: Bash cargo completions
+  ansible.builtin.shell:
+    cmd: "rustup completions bash cargo > ~/.local/share/bash-completion/completions/cargo"
