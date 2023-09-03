@@ -8,22 +8,37 @@ local confirm_opt = {
     select = true
 } -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 
+--- create mapping for insert and cmdline mode
+local function cmdlinemap(mappings)
+    for k, map in pairs(mappings) do
+        if type(map) == 'function' then
+            mappings[k] = {
+                i = map,
+                c = map,
+            }
+        end
+    end
+    return mappings
+end
+
+local mapping = cmp.mapping.preset.insert(cmdlinemap {
+    ["<C-j>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
+    ["<C-k>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
+    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-f>"] = cmp.mapping.scroll_docs(4),
+    ["<C-e>"] = cmp.mapping.abort(),
+    ["<Tab>"] = cmp.mapping.confirm(confirm_opt),
+    ["<C-i>"] = cmp.mapping.confirm(confirm_opt),
+    ["<C-Space>"] = cmp.mapping.complete(), -- What is the difference?
+    --["<C-Space>"] = cmp.mapping.confirm(confirm_opt),
+})
+
 cmp.setup {
     enabled = function()
         return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
             or require("cmp_dap").is_dap_buffer()
     end,
-    mapping = cmp.mapping.preset.insert({
-        ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-        ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-        ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-        ["<C-f>"] = cmp.mapping.scroll_docs(4),
-        ["<C-e>"] = cmp.mapping.abort(),
-        ["<Tab>"] = cmp.mapping.confirm(confirm_opt),
-        ["<C-i>"] = cmp.mapping.confirm(confirm_opt),
-        ["<C-Space>"] = cmp.mapping.complete(), -- What is the difference?
-        --["<C-Space>"] = cmp.mapping.confirm(confirm_opt),
-    }),
+    mapping = mapping,
 
     snippet = {
         expand = function(args)
@@ -160,7 +175,14 @@ cmp.setup.filetype("gitcommit", {
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline({ "/", "?" }, {
-    mapping = cmp.mapping.preset.cmdline(),
+    mapping = cmp.mapping.preset.cmdline({
+        ["<C-j>"] = {
+            c = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
+        },
+        ["<Tab>"] = {
+            c = cmp.mapping.confirm({ select = false }),
+        }
+    }),
     sources = {
         { name = "buffer" },
     }
@@ -168,7 +190,8 @@ cmp.setup.cmdline({ "/", "?" }, {
 
 -- Use cmdline & path source for ":" (if you enabled `native_menu`, this won"t work anymore).
 cmp.setup.cmdline(":", {
-    mapping = cmp.mapping.preset.cmdline(),
+    -- mapping = mapping,
+    mapping = cmp.mapping.preset.cmdline(mapping),
     sources = cmp.config.sources({
         { name = "path" },
         { name = "buffer" },
