@@ -31,4 +31,7 @@ css_file="$script_path/github.css"
 #     $in_file \
 #     -o "$in_file_name.pdf"
 
-pandoc -f markdown+pipe_tables -t html5 --metadata pagetitle="${in_file##*/}" $in_file -o "$in_file_name.pdf"
+for ext in "html" "pdf"; do
+    echo "Generate $ext."
+    pandoc -f markdown+pipe_tables --mathml -t html5 --metadata pagetitle="${in_file##*/}" $in_file -o "$in_file_name.$ext"
+done
