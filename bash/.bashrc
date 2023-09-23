@@ -106,6 +106,10 @@ alias fgrep='fgrep --color=auto'
 alias git-lines='git ls-files | xargs wc -l'
 alias swap-clear='sudo swapoff -a; sudo swapon -a'
 
+git-changes() {
+    git log --shortstat $@ | awk '/^ [0-9]/ { f += $1; i += $4; d += $6 } END { printf("%d files changed, %d insertions(+), %d deletions(-)", f, i, d) }'
+}
+
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
 HISTFILESIZE=2000
