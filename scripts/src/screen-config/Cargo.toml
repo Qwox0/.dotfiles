@@ -7,5 +7,5 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.66"
-display_macro = { version = "0.1.0", path = "../../dev/lib/rust/display_macro" }
+display_macro = { version = "0.1.0", path = "~/dev/rust/display_me" }
 thiserror = "1.0.37"

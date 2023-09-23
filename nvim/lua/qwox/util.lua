@@ -8,7 +8,7 @@ U.paths = {
     dotfiles = home .. "/.dotfiles",
     nvim_config = vim.fn.stdpath("config"),
     nvim_data = nvim_data,
-    src = home .. "/dev/src",
+    dev = home .. "/dev",
     packer = nvim_data .. "/site/pack/packer/start/packer.nvim",
 }
 
