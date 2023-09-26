@@ -20,7 +20,7 @@ if [ -z $in_file ]; then
     exit 2
 fi
 
-in_file_name="${in_file%.*}"
+name="${in_file%.*}"
 
 css_file="$script_path/github.css"
 
@@ -29,9 +29,14 @@ css_file="$script_path/github.css"
 #     --pdf-engine-opt=--enable-local-file-access \
 #     --css $css_file \
 #     $in_file \
-#     -o "$in_file_name.pdf"
+#     -o "$name.pdf"
 
 for ext in "html" "pdf"; do
-    echo "Generate $ext."
-    pandoc -f markdown+pipe_tables --mathml -t html5 --metadata pagetitle="${in_file##*/}" $in_file -o "$in_file_name.$ext"
+    echo "Generate $ext"
+    pandoc -f markdown+pipe_tables -t html5 \
+        --metadata pagetitle="${in_file##*/}" \
+        --mathml \
+        --pdf-engine-opt=--enable-local-file-access \
+        $in_file \
+        -o "$name.$ext"
 done
