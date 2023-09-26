@@ -1,1 +1,2 @@
-vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
+local nmap = require("qwox.keymap").nmap
+nmap("<leader>u", vim.cmd.UndotreeToggle)

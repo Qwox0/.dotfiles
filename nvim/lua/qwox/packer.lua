@@ -6,7 +6,8 @@ if packer_bootstrap then
     vim.cmd([[packadd packer.nvim]])
 end
 
-vim.keymap.set("n", "<leader>ps", require("packer").sync, { desc = "[P]acker [S]ync" })
+local nmap = require("qwox.keymap").nmap
+nmap("<leader>ps", require("packer").sync, { desc = "[P]acker [S]ync" })
 
 return require("packer").startup(function(use)
     use { "wbthomason/packer.nvim" } -- Packer can manage itself

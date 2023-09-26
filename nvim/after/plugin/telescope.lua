@@ -118,7 +118,7 @@ vim.api.nvim_create_autocmd("WinLeave", {
     end,
 })
 
-local function nmap(...) vim.keymap.set("n", ...) end
+local nmap = require("qwox.keymap").nmap
 
 nmap("<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
 --nmap("<C-p>", builtin.git_files)

@@ -34,16 +34,18 @@ local debug_prompt = {
     end
 }
 
-vim.keymap.set("n", "<leader>dd", function() debug_prompt:open() end, { desc = "Open [D]ebug Menu" })
+local nmap = require("qwox.keymap").nmap
 
-vim.keymap.set("n", "<leader>dc", continue, { desc = "[D]ap [C]ontinue" })
-vim.keymap.set("n", "<leader>dr", dap.restart, { desc = "[D]ap [R]estart" })
-vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "[D]ap [B]reakpoint" })
-vim.keymap.set("n", "<leader>dj", dap.step_over, { desc = "[D]ap step over" })
-vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "[D]ap step [I]nto" })
-vim.keymap.set("n", "<leader>do", dap.step_out, { desc = "[D]ap step [O]ut" })
-vim.keymap.set("n", "<leader>dq", dap.terminate, { desc = "[D]ap [Q]uit" })
---vim.keymap.set("n", "<leader>dqd", dap.disconnect, { desc = "" })
+nmap("<leader>dd", function() debug_prompt:open() end, { desc = "Open [D]ebug Menu" })
+
+nmap("<leader>dc", continue, { desc = "[D]ap [C]ontinue" })
+nmap("<leader>dr", dap.restart, { desc = "[D]ap [R]estart" })
+nmap("<leader>db", dap.toggle_breakpoint, { desc = "[D]ap [B]reakpoint" })
+nmap("<leader>dj", dap.step_over, { desc = "[D]ap step over" })
+nmap("<leader>di", dap.step_into, { desc = "[D]ap step [I]nto" })
+nmap("<leader>do", dap.step_out, { desc = "[D]ap step [O]ut" })
+nmap("<leader>dq", dap.terminate, { desc = "[D]ap [Q]uit" })
+--nmap("<leader>dqd", dap.disconnect, { desc = "" })
 
 -- dap.adapters.rt_lldb is set in after/plugin/rust.lua : require("rust-tools").setup { ... }
 -- see https://github.com/leoluz/nvim-dap-go/blob/main/lua/dap-go.lua
@@ -128,9 +130,9 @@ dapui.setup {
     }
 }
 
-vim.keymap.set("n", "<leader>df", function() dapui.float_element() end, { desc = "[D]ap [F]loat UI" })
-vim.keymap.set("n", "<leader>de", function() dapui.eval() end, { desc = "[D]ap [F]loat UI" })
-vim.keymap.set("n", "<leader>dt", dapui.toggle, { desc = "[D]ap toggle [U]I" }) -- nil or "sidebar" or "tray"
+nmap("<leader>df", function() dapui.float_element() end, { desc = "[D]ap [F]loat UI" })
+nmap("<leader>de", function() dapui.eval() end, { desc = "[D]ap [F]loat UI" })
+nmap("<leader>dt", dapui.toggle, { desc = "[D]ap toggle [U]I" }) -- nil or "sidebar" or "tray"
 
 dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
 dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end

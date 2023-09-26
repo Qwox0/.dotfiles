@@ -4,6 +4,7 @@ if not qwox_util.has_plugins("rust-tools") then return end
 qwox_util.set_hl("RustToolsInlayHint", { fg = "#D3D3D3", bg = "#3A3A3A", italic = true })
 
 local qwox_lsp = require("qwox.lsp")
+local nmap = require("qwox.keymap").nmap
 
 -- dap paths
 --[[
@@ -32,7 +33,7 @@ require("rust-tools").setup {
         cmd = { "rustup", "run", "nightly", "rust-analyzer" },
         capabilities = qwox_lsp.capabilities,
         on_attach = function(client, bufnr)
-            vim.keymap.set("n", "<leader>rr", ":RustRunnables<CR>", { buffer = bufnr, desc = "[R]ust [R]unnables" })
+            nmap("<leader>rr", ":RustRunnables<CR>", { buffer = bufnr, desc = "[R]ust [R]unnables" })
             qwox_lsp.custom_attach(client, bufnr)
         end,
         standalone = false, -- single file support
