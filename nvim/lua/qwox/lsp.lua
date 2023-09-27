@@ -42,9 +42,10 @@ LSP.servers = {
 
 function LSP.custom_attach(client, bufnr)
     -- Create a command `:Format` local to the LSP buffer
-    vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
+    local create_command = require("qwox.command")
+    create_command("Format", function(_)
         vim.lsp.buf.format()
-    end, { desc = "Format current buffer with LSP" })
+    end, { buffer = bufnr, desc = "Format current buffer with LSP" })
 
     local map = function(mode, keys, func, desc)
         if desc then
