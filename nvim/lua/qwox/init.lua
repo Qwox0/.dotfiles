@@ -1,3 +1,4 @@
+require("qwox.table")
 require("qwox.string")
 
 require("qwox.sets")
