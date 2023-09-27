@@ -1,7 +1,7 @@
 local non_word_pattern = "[^%a%d_]"
 
---- get start and end of word under position `pos`
---- see `require("qwox.string")`
+---get start and end of word under position `pos`
+---see `require("qwox.string")`
 ---@param string string
 ---@param pos integer
 ---@return integer word_start 0-indexed; inclusive
@@ -13,8 +13,8 @@ function string.get_word_pos(string, pos)
     return word_start, word_end
 end
 
---- Split `string` multiple times.
---- [start, end[; indices: `0`, `...`, `string.len()`;
+---Split `string` multiple times.
+---[start, end[; indices: `0`, `...`, `string.len()`;
 ---@param string string
 ---@param ... integer
 ---@return string ...
@@ -40,7 +40,7 @@ local reverse_map = {
     -- ["<!--"] = "-->",
 }
 
---- see `require("qwox.string")`
+---see `require("qwox.string")`
 ---@param str string
 ---@return string
 function string.fancy_reverse(str)
@@ -51,19 +51,22 @@ function string.fancy_reverse(str)
     return buf
 end
 
---- zero-indexed `string.sub`
---- see `require("qwox.string")`
+---zero-indexed `string.sub`
+---see `require("qwox.string")`
+---negative indices work like in python.
 ---@param str string
 ---@param low integer 0-indexed; inclusive
 ---@param high? integer 0-indexed; exclusive
 ---@return string
 function string.sub0(str, low, high)
-    return str:sub(low + 1, high)
+    if low >= 0 then low = low + 1 end
+    if high and high < 0 then high = high - 1 end
+    return str:sub(low, high)
 end
 
---- Returns the byte index (zero-indexed) for the first character of the first match of `pat`.
---- For pattern see [§5.4.1](http://www.lua.org/manual/5.1/manual.html#5.4.1)
---- see `require("qwox.string")`
+---Returns the byte index (zero-indexed) for the first character of the first match of `pat`.
+---For pattern see [§5.4.1](http://www.lua.org/manual/5.1/manual.html#5.4.1)
+---see `require("qwox.string")`
 ---@param str string
 ---@param pat string
 ---@return integer | nil
@@ -73,9 +76,9 @@ function string.find0(str, pat)
     return pos - 1
 end
 
---- Returns the byte index (zero-indexed) for the first character of the *last* match of `pat`.
---- For pattern see [§5.4.1](http://www.lua.org/manual/5.1/manual.html#5.4.1)
---- see `require("qwox.string")`
+---Returns the byte index (zero-indexed) for the first character of the *last* match of `pat`.
+---For pattern see [§5.4.1](http://www.lua.org/manual/5.1/manual.html#5.4.1)
+---see `require("qwox.string")`
 ---@param str string
 ---@param pat string
 ---@return integer | nil

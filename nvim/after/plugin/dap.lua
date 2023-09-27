@@ -155,13 +155,13 @@ require("nvim-dap-virtual-text").setup {
     only_first_definition = false, -- only show virtual text at first definition (if there are multiple)
     all_references = true,
     clear_on_continue = false,     -- clear virtual text on "continue" (might cause flickering when stepping)
-    --- A callback that determines how a variable is displayed or whether it should be omitted
-    --- @param variable Variable https://microsoft.github.io/debug-adapter-protocol/specification#Types_Variable
-    --- @param buf number
-    --- @param stackframe dap.StackFrame https://microsoft.github.io/debug-adapter-protocol/specification#Types_StackFrame
-    --- @param node userdata tree-sitter node identified as variable definition of reference (see `:h tsnode`)
-    --- @param options nvim_dap_virtual_text_options Current options for nvim-dap-virtual-text
-    --- @return string|nil A text how the virtual text should be displayed or nil, if this variable shouldn't be displayed
+    ---A callback that determines how a variable is displayed or whether it should be omitted
+    ---@param variable Variable https://microsoft.github.io/debug-adapter-protocol/specification#Types_Variable
+    ---@param buf number
+    ---@param stackframe dap.StackFrame https://microsoft.github.io/debug-adapter-protocol/specification#Types_StackFrame
+    ---@param node userdata tree-sitter node identified as variable definition of reference (see `:h tsnode`)
+    ---@param options nvim_dap_virtual_text_options Current options for nvim-dap-virtual-text
+    ---@return string|nil A text how the virtual text should be displayed or nil, if this variable shouldn't be displayed
     display_callback = function(variable, buf, stackframe, node, options)
         if options.virt_text_pos == 'inline' then
             return ' = ' .. variable.value

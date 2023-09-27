@@ -8,7 +8,7 @@ local confirm_opt = {
     select = true
 } -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 
---- create mapping for insert and cmdline mode
+---create mapping for insert and cmdline mode
 local function cmdlinemap(mappings)
     for k, map in pairs(mappings) do
         if type(map) == 'function' then
