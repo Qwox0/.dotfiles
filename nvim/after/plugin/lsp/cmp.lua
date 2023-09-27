@@ -250,7 +250,7 @@ for name, opts in pairs {
     --CmpItemKindTypeParameter = { fg = "#22252A", bg = "#58B5A8" },
 
 } do
-    require("qwox.util").set_hl(name, opts)
+    require("qwox.util").hl.set(name, opts)
 end
 
 if not require("qwox.util").has_plugins("nvim-autopairs.completion.cmp") then return end

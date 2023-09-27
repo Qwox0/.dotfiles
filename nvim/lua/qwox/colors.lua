@@ -11,7 +11,7 @@ local set_scheme = function(scheme)
 
     vim.opt.background = "dark"
 
-    local hl = require("qwox.util").set_hl
+    local hl = require("qwox.util").hl.set
 
     -- type :highlight to show highlight groups
 

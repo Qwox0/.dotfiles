@@ -18,16 +18,8 @@ U.os = {
     is_linux = sysname == "Linux",
 }
 
-local api = vim.api
-
---- @param path string path to file or directory
---- @return boolean
-function U.file_exists(path)
-    local _, error = vim.loop.fs_stat(path)
-    return error == nil
-end
-
 function U.open_window(lines)
+    local api = vim.api
     local buf = api.nvim_create_buf(false, true) -- create new emtpy buffer
 
     api.nvim_buf_set_option(buf, "bufhidden", "wipe")
@@ -58,15 +50,16 @@ function U.open_window(lines)
     local win = api.nvim_open_win(buf, true, opts)
 end
 
--- set highlight groups
-local own_hl = {};
-function U.set_hl(name, opts)
+U.hl = {}
+U.hl.groups = {}
+
+function U.hl.set(name, opts)
     -- 0: global space (for every window)
     vim.api.nvim_set_hl(0, name, opts)
-    own_hl[name] = opts
+    U.hl.groups[name] = opts
 end
 
-function U.get_own_hl() return own_hl end
+function U.hl.get_all() return U.hl.groups end
 
 ---@param ... string
 ---@return boolean
@@ -79,6 +72,15 @@ function U.has_plugins(...)
         end
     end
     return has_all
+end
+
+U.file = {}
+
+---@param path string
+---@return boolean
+function U.file.exists(path)
+    local _, error = vim.loop.fs_stat(path)
+    return error == nil
 end
 
 ---@param filetype string

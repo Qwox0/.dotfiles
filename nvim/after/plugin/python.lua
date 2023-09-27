@@ -2,7 +2,7 @@ local qwox_util = require("qwox.util")
 if not qwox_util.has_plugins("dap") then return end
 
 local debugpy_path = vim.fn.stdpath("data") .. "/mason/packages/debugpy"
-if not qwox_util.file_exists(debugpy_path) then return end
+if not qwox_util.file.exists(debugpy_path) then return end
 
 require("dap").adapters.python = function(cb, config)
     if config.request == 'attach' then
