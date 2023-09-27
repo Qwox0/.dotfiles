@@ -1,17 +1,20 @@
 #!/usr/bin/env bash
 
-export PATH="/usr/local/bin:/usr/bin:/bin"
+# ${...-}: sets undefined to empty string
+if [ -z "${PATH-}" ]; then export PATH=""; fi
+
+PATH="/usr/local/bin:/usr/bin:/bin"
 
 add_to_path() {
     path="$1"
     # affix colons on either side of $PATH to simplify matching
     case ":${PATH}:" in
         *:"$path":*)    ;; # already in path
-        *)              export PATH="$path:$PATH" ;;
+        *)              PATH="$PATH:$path" ;;
     esac
 }
 
 add_to_path "$HOME/bin"
-add_to_path "$HOME/.dotfiles/scripts"
 add_to_path "$HOME/.local/bin"
+add_to_path "$HOME/.dotfiles/scripts"
 add_to_path "$HOME/.cargo/bin"
