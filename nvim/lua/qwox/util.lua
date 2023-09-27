@@ -1,14 +1,20 @@
 local U = {}
 
+---@param what string
+---@return string
+local function stdpath(what)
+    return vim.fn.stdpath(what)
+end
+
 local home = os.getenv("HOME")
-local nvim_data = vim.fn.stdpath("data")
+local nvim_data = stdpath("data")
 
 U.paths = {
     home = home,
     dotfiles = home .. "/.dotfiles",
-    nvim_config = vim.fn.stdpath("config"),
+    nvim_config = stdpath("config"),
     nvim_data = nvim_data,
-    dev = home .. "/dev",
+    src = home .. "/src",
     packer = nvim_data .. "/site/pack/packer/start/packer.nvim",
 }
 
@@ -102,7 +108,7 @@ end
 
 --#region edit text
 
---- Get content of line `linenum` or the current line as a string.
+---Get content of line `linenum` or the current line as a string.
 ---@param linenum integer|nil 1-indexed
 ---@return string
 function U.get_line(linenum)
@@ -110,7 +116,7 @@ function U.get_line(linenum)
     return vim.fn.getline(linenum)
 end
 
---- Set content of line `linenum` or the current line.
+---Set content of line `linenum` or the current line.
 ---@param linenum integer|nil 1-indexed
 ---@param text string
 function U.set_line(linenum, text)
@@ -121,14 +127,14 @@ function U.set_line(linenum, text)
     end
 end
 
---- Get position of the cursor
+---Get position of the cursor
 ---@return integer row 1-indexed
 ---@return integer col 0-indexed
 function U.get_cursor_pos()
     return table.unpack(vim.api.nvim_win_get_cursor(0))
 end
 
---- Get position of the word under the current cursor
+---Get position of the word under the current cursor
 ---@return integer word_start 0-indexed; inclusive
 ---@return integer word_end 0-indexed; exclusive
 function U.get_cursor_word_pos()
@@ -137,7 +143,7 @@ function U.get_cursor_word_pos()
     return line:get_word_pos(col)
 end
 
---- Get current line split around word under cursor.
+---Get current line split around word under cursor.
 ---@return string before
 ---@return string word
 ---@return string after
@@ -148,8 +154,8 @@ function U.get_cursor_word()
     return line:multi_split(word_start, word_end)
 end
 
---- Get position of the selected area in visual mode
---- start is inclusive, end is inclusive
+---Get position of the selected area in visual mode
+---start is inclusive, end is inclusive
 ---@return integer start_row 1-indexed
 ---@return integer start_col 0-indexed
 ---@return integer end_row 1-indexed

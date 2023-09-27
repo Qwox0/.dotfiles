@@ -87,3 +87,17 @@ function string.rfind0(str, pat)
     if rev_pos == nil then return nil end
     return str:len() - rev_pos
 end
+
+---@param str string
+---@param pat string
+function string.ends_with(str, pat)
+    return str:sub0(-pat:len()) == pat
+end
+
+---@param str string
+---@param pat string
+---@return string
+function string.remove_end(str, pat)
+    local new, end_ = str:multi_split(-pat:len())
+    return end_ == pat and new or str
+end
