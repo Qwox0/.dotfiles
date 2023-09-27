@@ -48,19 +48,20 @@ cmp.setup {
 
     -- order == priority
     -- multiple args == grouping
-    sources = cmp.config.sources({
+    sources = cmp.config.sources {
+        -- special
         { name = "nvim_lua" },
+        { name = "crates" },
+        { name = "obsidian" },
+
+        -- lsp
         { name = "nvim_lsp" },
         { name = "nvim_lsp_signature_help" },
         { name = "path" },
         { name = "luasnip" },
 
-        -- }, {
-
-        { name = "crates" },
-
         { name = "buffer" },
-    }),
+    },
 
     matching = {
         disallow_fuzzy_matching = false,

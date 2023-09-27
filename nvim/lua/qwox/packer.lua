@@ -74,6 +74,12 @@ return require("packer").startup(function(use)
     }
 
     use("simrat39/rust-tools.nvim")
+
+    use {
+        "epwalsh/obsidian.nvim",
+        requires = { "nvim-lua/plenary.nvim", },
+    }
+
     use("theprimeagen/harpoon")
     use("tpope/vim-fugitive")          -- Git
     use("mbbill/undotree")
