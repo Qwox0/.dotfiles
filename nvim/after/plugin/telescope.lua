@@ -2,11 +2,12 @@ local qwox_util = require("qwox.util")
 if not qwox_util.has_plugins("telescope") then return end
 
 local actions = require("telescope.actions")
-local action_state = require("telescope.actions.state")
+actions.layout = require("telescope.actions.layout")
+actions.state = require("telescope.actions.state")
 local builtin = require("telescope.builtin")
+local pickers = require("telescope.pickers")
 local entry_display = require("telescope.pickers.entry_display")
 local finders = require("telescope.finders")
-local pickers = require("telescope.pickers")
 local previewers = require("telescope.previewers")
 local themes = require("telescope.themes")
 
@@ -55,9 +56,11 @@ local numbered_ui_select = {
     end,
 }
 
+local default_strategy = "flex"
+
 require("telescope").setup {
     defaults = { -- Default configuration for telescope
-        layout_strategy = "flex",
+        layout_strategy = default_strategy,
         layout_config = {
             anchor = "CENTER",
             height = 0.9,
@@ -78,12 +81,14 @@ require("telescope").setup {
                 -- flip_lines = 1, -- The number of lines required to move to horizontal mode
             },
         },
+        cycle_layout_list = { "vertical", default_strategy },
 
         mappings = {
             i = {
                 ["<ESC>"] = actions.close,
                 ["<C-j>"] = actions.move_selection_next,
                 ["<C-k>"] = actions.move_selection_previous,
+                ["<C-l>"] = actions.layout.cycle_layout_next,
             }
         },
         file_ignore_patterns = { "^.git/" },
@@ -135,7 +140,7 @@ nmap("<leader>fs", function() builtin.grep_string { search = vim.fn.input("Grep 
     desc = "[F]ind [S]tring",
 })
 nmap("<leader>/", function() builtin.current_buffer_fuzzy_find(small_dropdown) end, {
-    desc = "[/] Fuzzily search in current buffer]",
+    desc = "[/] Fuzzily search in current buffer",
 })
 nmap("<leader>ft", builtin.treesitter, { desc = "[F]ind [T]reesitter items" })
 
