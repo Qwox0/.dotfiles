@@ -29,6 +29,13 @@ require("obsidian").setup {
     },
 }
 
+local autocmd = require("qwox.autocmd")
+
+-- line wrap in obsidian
+autocmd("BufEnter", { pattern = obsidian_dir .. "/*.md", command = ":set wrap" })
+autocmd("BufLeave", { pattern = obsidian_dir .. "/*.md", command = ":set nowrap" })
+
+
 local nmap = require("qwox.keymap").nmap
 
 nmap("<leader>ot", vim.cmd.ObsidianTemplate, { desc = "[O]bsidian [T]emplate" })
@@ -42,6 +49,7 @@ nmap("<leader>on", function()
     vim.cmd.edit(file)
     vim.cmd.ObsidianTemplate()
 end, { desc = "[O]bsidian [N]ew" })
+nmap("<leader>of", vim.cmd.ObsidianSearch, { desc = "[O]bsidian [F]ind" })
 
 local default = {
     dir = "~/obsidian",
