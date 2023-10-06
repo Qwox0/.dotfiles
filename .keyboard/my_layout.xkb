@@ -1195,8 +1195,8 @@ xkb_symbols "pc+us(intl)+inet(evdev)" {
     key <45> { [               k,               K,              oe,              OE ] };
     key <46> { [               l,               L,          oslash,          Oslash ] };
     key <47> { [       semicolon,           colon,       paragraph,          degree ] };
-    key <48> { [      apostrophe,        quotedbl,      apostrophe,        quotedbl ] };
-    key <49> { [           grave,      asciitilde,           grave,      asciitilde ] };
+    key <48> { [      apostrophe,        quotedbl,      dead_acute,        quotedbl ] };
+    key <49> { [           grave,      asciitilde,      dead_grave,      dead_tilde ] };
     key <50> { [         Shift_L ] };
     key <51> { [       backslash,             bar,         notsign,       brokenbar ] };
     key <52> { [               z,               Z,              ae,              AE ] };
