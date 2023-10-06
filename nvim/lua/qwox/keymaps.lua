@@ -31,6 +31,7 @@ nmap("N", "Nzzzv", { desc = "center screen on N" })
 nmap("<leader>e", vim.cmd.Ex, { desc = "explore with vim file manager" })
 
 imap("<C-c>", "<Esc>", { desc = "Ctrl+C = Esc" })
+imap("<C-v>", "<C-r>\"", { desc = "Ctrl+V = Paste" })
 
 xmap("<leader>p", "\"_dP", { desc = "paste but keep copy buffer" })
 nmap("<leader>x", "<cmd>!chmod +x %<CR>", { silent = true, desc = "make file e[x]ecutable" })
