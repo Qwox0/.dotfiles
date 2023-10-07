@@ -5,6 +5,10 @@ local colorschemes = {
         name = "gruvbox",
         setup = function()
             vim.g.gruvbox_contrast_dark = "hard"
+
+            for _, color in ipairs({ "Red", "Yellow", "Green", "Orange", "Blue", "Aqua" }) do
+                colors.update_hl("Gruvbox" .. color .. "Sign", { bg = "none" })
+            end
         end
     },
     tokyonight = {
@@ -29,7 +33,6 @@ local colorschemes = {
     },
 }
 
---colors.set_scheme("gruvbox")
 colors.set_scheme(colorschemes.gruvbox)
 
 -- setup norcalli/nvim-colorizer.lua

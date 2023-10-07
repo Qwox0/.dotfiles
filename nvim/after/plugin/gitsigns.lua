@@ -42,10 +42,10 @@ require("gitsigns").setup {
 }
 
 local colors = require("qwox.colors")
-colors.update_hl("GitSignsAdd", { fg = "#50fa7b", bg = "none" })
-colors.update_hl("GitSignsChange", { link = "GruvboxYellowSign", bg = "none" })
-colors.update_hl("GitSignsDelete", { link = "GruvboxRedSign", bg = "none" }) -- fg = "#ff5555"
-colors.update_hl("GitSignsChangedelete", { link = "GruvboxOrangeSign", bg = "none" })
+colors.update_hl("GitSignsAdd", { link = "GruvboxGreenSign", fg = "#50fa7b" })
+colors.update_hl("GitSignsChange", { link = "GruvboxYellowSign" })
+--colors.update_hl("GitSignsDelete", { link = "GruvboxRedSign" }) -- fg = "#ff5555"
+colors.update_hl("GitSignsChangedelete", { link = "GruvboxOrangeSign" })
 colors.update_hl("GitSignsChangedeleteNr", { link = "GitSignsChangedelete" })
 
 local inline = { underdotted = true }
