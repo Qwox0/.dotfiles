@@ -3,17 +3,17 @@ require("gitsigns").setup {
     signs                        = {
         add          = { text = "│" },
         change       = { text = "│" },
-        delete       = { text = "_" },
-        topdelete    = { text = "‾" },
+        delete       = { text = "⬎" },
+        topdelete    = { text = "⬏" },
         changedelete = { text = "~" },
-        untracked    = { text = "┆" },
+        untracked    = { text = "│" }, -- ┆
     },
-    signcolumn                   = false, -- Toggle with `:Gitsigns toggle_signs`
-    numhl                        = true,  -- Toggle with `:Gitsigns toggle_numhl`
+    signcolumn                   = true, -- Toggle with `:Gitsigns toggle_signs`
+    numhl                        = true, -- Toggle with `:Gitsigns toggle_numhl`
     linehl                       = false, -- Toggle with `:Gitsigns toggle_linehl`
-    word_diff                    = false, -- Toggle with `:Gitsigns toggle_word_diff`
+    word_diff                    = true, -- Toggle with `:Gitsigns toggle_word_diff`
     watch_gitdir                 = {
-        follow_files = true
+        follow_files = true,
     },
     attach_to_untracked          = true,
     current_line_blame           = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
@@ -42,23 +42,13 @@ require("gitsigns").setup {
 }
 
 local colors = require("qwox.colors")
+colors.update_hl("GitSignsAdd", { fg = "#50fa7b", bg = "none" })
+colors.update_hl("GitSignsChange", { link = "GruvboxYellowSign", bg = "none" })
+colors.update_hl("GitSignsDelete", { link = "GruvboxRedSign", bg = "none" }) -- fg = "#ff5555"
+colors.update_hl("GitSignsChangedelete", { link = "GruvboxOrangeSign", bg = "none" })
+colors.update_hl("GitSignsChangedeleteNr", { link = "GitSignsChangedelete" })
 
-for _, x in ipairs({ "Add", "Change", "Delete" }) do
-    colors.update_hl("GitSigns" .. x, { bg = "none" })
-end
-
-
---[[
-local c = require("qwox.colors")
-local hl = c.set_hl
-
-hl("GitSignsUntracked", { bg = "none", ctermbg = 234, ctermfg = 142, fg = 12106534 })
-hl("GitSignsAdd", { bg = "none", ctermbg = 234, ctermfg = 142, fg = 12106534 })
-
-c.get_hl("GitSignsUntrackedLn")
-]]
--- setup "mhinz/vim-signify"
--- vim.g.signify_sign_add = "│"
--- vim.g.signify_sign_delete = "│"
--- vim.g.signify_sign_change = "│"
---
+local inline = { underdotted = true }
+colors.update_hl("GitSignsAddInline", inline)
+colors.update_hl("GitSignsChangeInline", inline)
+colors.update_hl("GitSignsDeleteInline", inline)

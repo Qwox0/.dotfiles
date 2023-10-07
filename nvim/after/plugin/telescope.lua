@@ -136,6 +136,7 @@ require("telescope").setup {
 }
 
 local nmap = require("qwox.keymap").nmap
+local vmap = require("qwox.keymap").vmap
 
 nmap("<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
 --nmap("<C-p>", builtin.git_files)
@@ -148,6 +149,9 @@ nmap("<leader>fd", builtin.diagnostics, { desc = "[F]ind [D]iagnostics" })
 nmap("<leader>fe", function() builtin.diagnostics { severity_limit = 1 } end, { desc = "[F]ind [E]rrors" })
 nmap("<leader>fs", function() builtin.grep_string { search = vim.fn.input("Grep For > ") } end, {
     desc = "[F]ind [S]tring",
+})
+vmap("<leader>f", function() builtin.grep_string { search = qwox_util.get_visual_text() } end, {
+    desc = "[F]ind Selection"
 })
 nmap("<leader>/", function() builtin.current_buffer_fuzzy_find(small_dropdown) end, {
     desc = "[/] Fuzzily search in current buffer",

@@ -14,7 +14,20 @@ function Colors.get_hl(name)
     return color
 end
 
+---If link is `nil` this does nothing.
+---If you want to remove the `name` group use `set_hl(name, nil)` instead.
+---@see Color.sethl
+---@param name string Highlight group name
+---@param link? string target group name
+function Colors.link_hl(name, link)
+    if link == nil then return end
+    Colors.set_hl(name, { link = link })
+end
+
 ---uses `vim.api.nvim_set_hl`. See |nvim_set_hl()|
+---This removes any existing configurations of the highlight group `name`.
+---If you want to update the existing configuration, use `update_hl` instead.
+---@see Color.update_hl
 ---@param name string Highlight group name
 ---@param color Color
 function Colors.set_hl(name, color)
@@ -23,12 +36,21 @@ function Colors.set_hl(name, color)
     Colors.hl_groups[name] = color
 end
 
+---This removes any existing configurations of the highlight group `name`.
+---If you want to replace any existing configuration, use `set_hl` instead.
+---@see Color.set_hl
+---
+---If the `color` table contains the `link` field, the group is linked (and overwritten) first.
+---
 ---@param name string Highlight group name
 ---@param color Color
 function Colors.update_hl(name, color)
+    Colors.link_hl(name, color.link)
+    color.link = nil
+
     local old = Colors.get_hl(name)
     local new = vim.tbl_deep_extend("force", old, color)
-    Colors.replace_hl(name, new)
+    Colors.set_hl(name, new)
 end
 
 ---@type string|table
