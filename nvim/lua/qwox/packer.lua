@@ -9,6 +9,7 @@ end
 local nmap = require("qwox.keymap").nmap
 nmap("<leader>ps", require("packer").sync, { desc = "[P]acker [S]ync" })
 
+---@param use fun(opts: Plugin|(Plugin)[]): nil
 return require("packer").startup(function(use)
     use { "wbthomason/packer.nvim" } -- Packer can manage itself
 
@@ -99,3 +100,53 @@ return require("packer").startup(function(use)
 
     if packer_bootstrap then require("packer").sync() end
 end)
+
+---use()		                                       *packer.use()*
+---`use` allows you to add one or more plugins to the managed set. It can be
+---invoked as follows:
+---- With a single plugin location string, e.g. `use <STRING>`
+---- With a single plugin specification table, e.g. >lua
+---  use {
+---    'myusername/example',        -- The plugin location string
+---    -- The following keys are all optional
+---    -- The following keys all imply lazy-loading
+---    cmd = string or list,        -- Specifies commands which load this plugin.  Can be an autocmd pattern.
+---    ft = string or list,         -- Specifies filetypes which load this plugin.
+---    keys = string or list,       -- Specifies maps which load this plugin. See |packer-plugin-keybindings|
+---    event = string or list,      -- Specifies autocommand events which load this plugin.
+---    fn = string or list          -- Specifies functions which load this plugin.
+---    cond = string, function, or list of strings/functions,   -- Specifies a conditional test to load this plugin
+---    setup = string or function,  -- Specifies code to run before this plugin is loaded. The code is ran even if -- the plugin is waiting for other conditions (ft, cond...) to be met.
+---    module = string or list      -- Specifies Lua module names for require. When requiring a string which starts -- with one of these module names, the plugin will be loaded.
+---    module_pattern = string/list -- Specifies Lua pattern of Lua module names for require. When requiring a string -- which matches one of these patterns, the plugin will be loaded.
+---  }
+---- With a list of plugins specified in either of the above two forms
+---
+---For the *cmd* option, the command may be a full command, or an autocommand pattern. If the command contains any
+---non-alphanumeric characters, it is assumed to be a pattern, and instead of creating a stub command, it creates
+---a CmdUndefined autocmd to load the plugin when a command that matches the pattern is invoked.
+---
+--- vim:tw=78:ts=2:ft=help:norl:
+---@class PluginTable
+---@field [1] string
+---@field disable? boolean                  Mark a plugin as inactive
+---@field as? string                        Specifies an alias under which to install the plugin
+---@field installer? function               Specifies custom installer. See |packer-custom-installers|
+---@field updater? function                 Specifies custom updater. See |packer-custom-installers|
+---@field after? string|string[]            Specifies plugin names to load before this plugin.
+---@field rtp? string                       Specifies a subdirectory of the plugin to add to runtimepath.
+---@field opt? boolean                      Manually marks a plugin as optional.
+---@field bufread? boolean                  Manually specifying if a plugin needs BufRead after being loaded
+---@field branch? string                    Specifies a git branch to use
+---@field tag? string                       Specifies a git tag to use. Supports '*' for "latest tag"
+---@field commit? string                    Specifies a git commit to use
+---@field lock? boolean                     Skip updating this plugin in updates/syncs. Still cleans.
+---@field run? RunFun|(RunFun)[]            Post-update/install hook. See |packer-plugin-hooks|
+---@field requires? string|(Plugin)[]       Specifies plugin dependencies. See |packer-plugin-dependencies|
+---@field config? string|fun()              Specifies code to run after this plugin is loaded.
+---@field rocks? string|(string|string[])[] Specifies Luarocks dependencies for the plugin
+
+---@alias Plugin string|PluginTable
+
+---`o` includes `PluginTable` and more. See |packer-plugin-hooks|
+---@alias RunFun string|fun(o: PluginTable)
