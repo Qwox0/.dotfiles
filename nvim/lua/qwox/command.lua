@@ -24,6 +24,14 @@
 ---@field bar? boolean |:command-bar|
 ---@field complete? string|fun(ArgLead: unknown, CmdLine: string, CursorPos: integer): string[] see |:command-complete| or |:command-completion-customlist|.
 
+local function _create_command(buffer, n, command, opts)
+    if buffer == nil then
+        return vim.api.nvim_create_user_command(n, command, opts)
+    else
+        return vim.api.nvim_buf_create_user_command(buffer, n, command, opts)
+    end
+end
+
 ---Like `vim.api.nvim_create_user_command` or `vim.api.nvim_buf_create_user_command`.
 ---
 ---Creates a global or buffer-local command |user-commands| based on `opts.buffer`.
@@ -49,7 +57,7 @@
 --- --> FOO
 ---```
 ---
----@param name string Name of the new user command. Must begin with an uppercase letter.
+---@param name string|string[] Name of the new user command. Must begin with an uppercase letter.
 ---@param command (string|CommandCallback) Replacement command to execute when this user command is executed. When called from Lua, the command can also be a Lua function. The function is called with a single table argument that contains the following keys:
 ---@param opts? CreateCommandOpts See |command-attributes|
 ---@see vim.api.nvim_create_user_command
@@ -57,11 +65,11 @@
 local function create_command(name, command, opts)
     opts = opts or {}
     local buffer = opts.buffer
-    if buffer == nil then
-        return vim.api.nvim_create_user_command(name, command, opts)
-    else
-        opts.buffer = nil
-        return vim.api.nvim_buf_create_user_command(buffer, name, command, opts)
+    opts.buffer = nil
+
+    if type(name) == "string" then name = { name } end
+    for _, n in ipairs(name) do
+        _create_command(buffer, n, command, opts)
     end
 end
 

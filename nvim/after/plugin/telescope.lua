@@ -91,9 +91,27 @@ require("telescope").setup {
                 ["<C-l>"] = actions.layout.cycle_layout_next,
                 ["<C-v>"] = false,
                 ["<C-s>"] = actions.file_vsplit, -- <C-v>
-            }
+                ["<C-c>"] = function(prompt_bufnr)
+                    local selection = actions.state.get_selected_entry()
+                    local dir = vim.fn.fnamemodify(selection.path, ":p:h")
+                    actions.close(prompt_bufnr)
+                    -- Depending on what you want put `cd`, `lcd`, `tcd`
+                    vim.cmd(string.format("silent lcd %s", dir))
+                end
+            },
         },
         file_ignore_patterns = { "^.git/" },
+
+        vimgrep_arguments = {
+            "rg",
+            "--color=never",
+            "--no-heading",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
+            "--trim"
+        },
     },
     pickers = { -- Default configuration for builtin pickers
         find_files = { hidden = true, },
@@ -117,16 +135,6 @@ require("telescope").setup {
     },
 }
 
-local autocmd = require("qwox.autocmd")
-
-autocmd("WinLeave", {
-    callback = function()
-        if qwox_util.is_filetype("TelescopePrompt") and vim.fn.mode() == "i" then
-            qwox_util.enter_normal_mode()
-        end
-    end,
-})
-
 local nmap = require("qwox.keymap").nmap
 
 nmap("<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
@@ -147,6 +155,22 @@ nmap("<leader>/", function() builtin.current_buffer_fuzzy_find(small_dropdown) e
 nmap("<leader>ft", builtin.treesitter, { desc = "[F]ind [T]reesitter items" })
 
 nmap("<leader>fm", builtin.keymaps, { desc = "[F]ind [M]appings" })
+
+local autocmd = require("qwox.autocmd")
+
+autocmd("WinLeave", {
+    callback = function()
+        if qwox_util.is_filetype("TelescopePrompt") and vim.fn.mode() == "i" then
+            qwox_util.enter_normal_mode()
+        end
+    end,
+})
+
+local create_command = require("qwox.command")
+
+create_command({ "Hi", "Highlights" }, function(_)
+    builtin.highlights()
+end, { desc = "Lists all available highlights" })
 
 -- extensions
 
