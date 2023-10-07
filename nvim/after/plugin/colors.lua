@@ -14,7 +14,7 @@ local colorschemes = {
             vim.g.tokyonight_transparent = true
         end
     },
-        ["rose-pine"] = {
+    ["rose-pine"] = {
         name = "rose-pine",
         setup = function()
             require("rose-pine").setup({

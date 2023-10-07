@@ -56,17 +56,6 @@ function U.open_window(lines)
     local win = api.nvim_open_win(buf, true, opts)
 end
 
-U.hl = {}
-U.hl.groups = {}
-
-function U.hl.set(name, opts)
-    -- 0: global space (for every window)
-    vim.api.nvim_set_hl(0, name, opts)
-    U.hl.groups[name] = opts
-end
-
-function U.hl.get_all() return U.hl.groups end
-
 ---@param ... string
 ---@return boolean
 function U.has_plugins(...)

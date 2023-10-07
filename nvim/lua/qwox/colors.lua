@@ -1,17 +1,52 @@
-local default_scheme = "gruvbox"
+local Colors = {}
 
-local set_scheme = function(scheme)
+Colors.hl_groups = {}
+
+---@class Color
+
+---@param name string Highlight group name
+---@return Color
+function Colors.get_hl(name)
+    local color = vim.api.nvim_get_hl(0, { name = name })
+
+    if color.link ~= nil then return Colors.get_hl(color.link) end
+
+    return color
+end
+
+---uses `vim.api.nvim_set_hl`. See |nvim_set_hl()|
+---@param name string Highlight group name
+---@param color Color
+function Colors.set_hl(name, color)
+    -- 0: global space (for every window)
+    vim.api.nvim_set_hl(0, name, color)
+    Colors.hl_groups[name] = color
+end
+
+---@param name string Highlight group name
+---@param color Color
+function Colors.update_hl(name, color)
+    local old = Colors.get_hl(name)
+    local new = vim.tbl_deep_extend("force", old, color)
+    Colors.replace_hl(name, new)
+end
+
+---@type string|table
+Colors.scheme = "gruvbox"
+
+---@param scheme string|table
+function Colors.set_scheme(scheme)
     if type(scheme) == "string" then scheme = { name = scheme } end
-    scheme.name = scheme.name or default_scheme
-    scheme.setup = scheme.setup or function()
-    end
+    if scheme.name == nil then return end
 
     vim.cmd.colorscheme(scheme.name)
-    scheme.setup()
+    if scheme.setup == "function" then scheme.setup() end
+
+    Colors.scheme = scheme
 
     vim.opt.background = "dark"
 
-    local hl = require("qwox.util").hl.set
+    local hl = Colors.update_hl
 
     -- type :highlight to show highlight groups
 
@@ -49,11 +84,6 @@ local set_scheme = function(scheme)
         fg = "#5eacd3"
     })
     ]]
-    return "Ok"
 end
 
-
-return {
-    -- colorschemes = colorschemes,
-    set_scheme = set_scheme,
-}
+return Colors

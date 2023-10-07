@@ -81,7 +81,8 @@ return require("packer").startup(function(use)
     }
 
     use("theprimeagen/harpoon")
-    use("tpope/vim-fugitive")          -- Git
+    use("tpope/vim-fugitive")          -- Git Ui
+    use("lewis6991/gitsigns.nvim")     -- Git: show changes is signcolumn
     use("mbbill/undotree")
     use("windwp/nvim-autopairs")       -- alternative: "jiangmiao/auto-pairs"
     use("tpope/vim-surround")          -- ds": "word" -> word; cs"(: "word" -> ( word )
