@@ -1,7 +1,6 @@
 format = """\
 $all$character
- $directory\
-[➜](bold green) """
+ $directory [➜](bold green) """
 
 add_newline = true
 
@@ -22,25 +21,26 @@ format = "@[$hostname](bold purple) "
 trim_at = "."
 disabled = false
 
-# ❯ ➜ \\$
+# ❯ $
 [character]
 format = "$symbol "
 #success_symbol = "[➜](bold green)"
-success_symbol = "[✔️](bold green)"
-error_symbol = "[✗](bold red)"
+success_symbol = "[](bold green)"
+error_symbol = "[](bold red)"     # ✗
 
 # configure directory
 [directory]
 truncation_length = 10
 truncate_to_repo = false
-read_only = " "
+format = '[$path]($style)[$read_only]($read_only_style)'
+read_only = " 󰌾"
+read_only_style = 'red'
 style = "bold italic blue"
 
 [cmd_duration]
 min_time = 4
 show_milliseconds = false
 disabled = false
-#style = "bold italic red"
 
 [docker_context]
 symbol = " "
@@ -52,14 +52,20 @@ detect_folders = []
 disabled = false
 
 [git_branch]
-format = 'on [$symbol$branch(:$remote_branch)](bold 202) '
+format = "on [$symbol$branch(:$remote_branch)]($style) "
 symbol = " "
+style = "bold 202"
+
+[git_commit]
+format = 'on [\( $hash$tag\)]($style) '
+style = "bold 202"
+only_detached = true
 
 [git_status]
 format = '([\[$conflicted$stashed$deleted$renamed$modified$untracked$staged$ahead_behind\]](bold) )'
-conflicted =  "[!${count}!](red bold)"
-stashed = "[${count}\\$](yellow)"
-deleted =  "[-${count}](red)"
+conflicted = "[↯${count}](red bold)" # !
+stashed = "[📦${count}](yellow)"
+deleted = "[-${count}](red)"
 renamed = "[~${count}](blue)"
 modified = "[~${count}](yellow)"
 untracked = "[+${count}](green)"
@@ -72,7 +78,7 @@ format = "[$state( $progress_current/$progress_total) ](bold red)"
 rebase = "rebase"
 merge = "merge"
 revert = "revert"
-cherry_pick = "cherry"
+cherry_pick = "🍒"
 bisect = "bisect"
 am = "am"
 am_or_rebase = "am/rebase"
