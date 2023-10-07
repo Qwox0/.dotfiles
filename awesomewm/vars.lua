@@ -9,7 +9,7 @@ local keys = {
 keys.modkey = keys.super
 
 local home = os.getenv("HOME")
-local terminal = "alacritty"
+local terminal = "kitty" -- "alacritty"
 local editor = os.getenv("EDITOR") or "nvim"
 
 return {
