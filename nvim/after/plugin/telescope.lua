@@ -133,7 +133,7 @@ require("telescope").setup {
             },
         },
         undo = {
-          -- telescope-undo.nvim config, see below
+            -- telescope-undo.nvim config, see below
         },
     },
 }
@@ -163,7 +163,9 @@ nmap("<leader>ft", builtin.treesitter, { desc = "[F]ind [T]reesitter items" })
 
 nmap("<leader>fm", builtin.keymaps, { desc = "[F]ind [M]appings" })
 
-nmap("<leader>fu", require("telescope").extensions.undo.undo, { desc = "[F]ind [T]reesitter items" })
+nmap("<leader>fu", function() require("telescope").extensions.undo.undo() end, {
+    desc = "[F]ind [T]reesitter items"
+})
 
 local autocmd = require("qwox.autocmd")
 

@@ -1,13 +1,14 @@
 local U = {}
 
 ---@param what string
----@return string
+---@return string|string[]
 local function stdpath(what)
     return vim.fn.stdpath(what)
 end
 
 local home = os.getenv("HOME")
 local nvim_data = stdpath("data")
+local mason = nvim_data .. "/mason"
 
 U.paths = {
     home = home,
@@ -16,6 +17,8 @@ U.paths = {
     nvim_data = nvim_data,
     src = home .. "/src",
     packer = nvim_data .. "/site/pack/packer/start/packer.nvim",
+    mason = mason,
+    mason_packages = mason .. "/packages",
 }
 
 local sysname = vim.loop.os_uname().sysname -- "Linux", "Windows_NT"
