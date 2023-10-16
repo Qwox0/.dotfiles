@@ -1,5 +1,5 @@
 format = """\
-$all$character
+$username$hostname$os$all$character
  $directory [➜](bold green) """
 
 add_newline = true
@@ -89,6 +89,13 @@ symbol = " "
 [package]
 symbol = " "
 disabled = true
+
+[os]
+style = "bold blue"
+disabled = false
+
+[os.symbols]
+Windows = " "
 
 [php]
 symbol = " "
