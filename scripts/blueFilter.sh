@@ -2,4 +2,4 @@
 
 # default: 6500
 # lower = stronger filter
-sct 4000
+sct 3900

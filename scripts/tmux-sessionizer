@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
+# <https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer>
 
 dirs=("$HOME" "$HOME/.dotfiles" "$HOME/src" "$HOME/src/rust")
 
@@ -26,4 +26,8 @@ if ! tmux has-session -t=$selected_name 2> /dev/null; then
 fi
 
 tmux switch-client -t $selected_name
+
+if [ $? != 0 ]; then
+    tmux attach-session -t $selected_name
+fi
 
