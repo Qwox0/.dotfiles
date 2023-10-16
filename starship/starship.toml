@@ -1,3 +1,5 @@
+#:schema ./taplo_starship.json
+
 format = """\
 $username$hostname$os$all$character
  $directory [➜](bold green) """
@@ -96,6 +98,8 @@ disabled = false
 
 [os.symbols]
 Windows = " "
+Debian = " "
+Ubuntu = " " #   #
 
 [php]
 symbol = " "
