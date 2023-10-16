@@ -132,6 +132,9 @@ require("telescope").setup {
                 ["qwox/debug-prompt"] = numbered_ui_select,
             },
         },
+        undo = {
+          -- telescope-undo.nvim config, see below
+        },
     },
 }
 
@@ -160,6 +163,8 @@ nmap("<leader>ft", builtin.treesitter, { desc = "[F]ind [T]reesitter items" })
 
 nmap("<leader>fm", builtin.keymaps, { desc = "[F]ind [M]appings" })
 
+nmap("<leader>fu", require("telescope").extensions.undo.undo, { desc = "[F]ind [T]reesitter items" })
+
 local autocmd = require("qwox.autocmd")
 
 autocmd("WinLeave", {
@@ -178,7 +183,7 @@ end, { desc = "Lists all available highlights" })
 
 -- extensions
 
-local extensions = { "ui-select", "dap" }
+local extensions = { "ui-select", "dap", "undo" }
 for _, ext in ipairs(extensions) do
     if pcall(require, "telescope._extensions." .. ext) then
         require("telescope").load_extension(ext)

@@ -18,6 +18,7 @@ return require("packer").startup(function(use)
         requires = {
             "nvim-lua/plenary.nvim",
             "nvim-telescope/telescope-ui-select.nvim",
+            "debugloop/telescope-undo.nvim",
         }
     }
 
