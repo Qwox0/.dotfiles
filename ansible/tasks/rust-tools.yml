@@ -1,11 +1,48 @@
 # vim: set filetype=yaml.ansible :/
+
+- name: Install cargo-binstall
+  block:
+    - name: Try to get current cargo-binstall version installed
+      ansible.builtin.command: cargo binstall -V
+      register: current
+      ignore_errors: true
+      changed_when: false
+
+    - name: Try to get current newest cargo-binstall version
+      ansible.builtin.shell: cargo search cargo-binstall | head -n 1 | sed 's/^cargo-binstall = "\([0-9\.]*\)"\s*#.*$/\1/'
+      register: newest
+      ignore_errors: true
+      changed_when: false
+
+    - name: Set current_version and newest_version
+      set_fact:
+        current_version: "{{ current.stdout | default('none', true) }}"
+        newest_version: "{{ newest.stdout | default('unknown', true) }}"
+
+    - name: Set newest_version
+      ansible.builtin.shell: cargo search cargo-binstall | head -n 1 | sed 's/^cargo-binstall = "\([0-9\.]*\)"\s*#.*$/\1/'
+      register: newest_out
+      changed_when: false
+
+    - name: Install cargo-binstall with `cargo install`
+      community.general.cargo:
+        name: cargo-binstall
+      when: current_version == "none"
+
+    - name: Update cargo-binstall with `cargo binstall`
+      community.general.cargo:
+        name: cargo-binstall
+      when: current_version != "none" and current_version != newest_version
+
 - name: Install sccache
   ansible.builtin.command: cargo binstall sccache
   environment:
     RUSTC_WRAPPER: ""
 
 - name: Install mprocs
-  ansible.builtin.command: cargo install mprocs
+  community.general.cargo:
+    name: mprocs
 
 - name: Install ripgrep
-  ansible.builtin.command: cargo install ripgrep
+  community.general.cargo:
+    name: ripgrep

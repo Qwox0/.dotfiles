@@ -107,6 +107,7 @@
     - name: Rust tools
       ansible.builtin.import_tasks: tasks/rust-tools.yml
       tags:
+        - rust-tools
         - rust
         - nogui
         - terminal

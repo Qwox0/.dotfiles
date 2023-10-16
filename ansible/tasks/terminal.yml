@@ -1,7 +1,8 @@
 # vim: set filetype=yaml.ansible :/
 - name: Installing Starship Shell
-  ansible.builtin.command: cargo install starship --locked
-
+  community.general.cargo:
+    name: starship
+    locked: true
 
 - name: Installing Alacritty font dependencies
   become: true
@@ -11,7 +12,8 @@
       - libfontconfig1
 
 - name: Installing Alacritty Terminal
-  ansible.builtin.command: cargo install alacritty
+  community.general.cargo:
+    name: alacritty
   environment:
     PKG_CONFIG_PATH: "/usr/lib/x86_64-linux-gnu/pkgconfig"
 
