@@ -1,0 +1,11 @@
+# vim: set filetype=yaml.ansible :/
+
+- name: Set vars
+  set_fact:
+    prefix: "prefix"
+    text: "{{ prefix }} - text" # doesn't work
+
+- name: Debug
+  debug:
+    var:
+      - text

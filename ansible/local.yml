@@ -15,6 +15,12 @@
   tasks:
     ########
     # Core #
+    - name: Ansible
+      ansible.builtin.import_tasks: tasks/ansible.yml
+      tags:
+        - always
+        - ansible
+
     - name: Core
       block:
         - name: Install basic Utils (curl, git, unzip, fzf)
@@ -146,3 +152,8 @@
     # - name: Brave
     #   ansible.builtin.import_tasks: tasks/brave.yml
     #   tags: brave
+
+    - name: Test
+      ansible.builtin.import_tasks: tasks/test.yml
+      tags:
+        - test
