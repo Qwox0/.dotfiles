@@ -1,5 +1,5 @@
 # vim: set filetype=yaml.ansible :/
-- name: Creating extern .cargo and .rustup direcories
+- name: "Rust: Creating extern .cargo and .rustup direcories"
   become: true
   vars:
     dest: "/usr/share/rust/{{ item }}"
@@ -15,7 +15,7 @@
   loop_control:
     label: "{{ dest }}/"
 
-- name: Linking .cargo and .rustup
+- name: "Rust: Linking .cargo and .rustup"
   vars:
     dest: "{{ home }}/{{ item }}"
     src: "/usr/share/rust/{{ item }}"
@@ -30,17 +30,17 @@
   loop_control:
     label: "{{ dest }} -> {{ src }}"
 
-- name: Create a directory if it does not exist
+- name: "Rust: Create bash completions directory"
   ansible.builtin.file:
     path: "{{ home }}/.local/share/bash-completion/completions"
     state: directory
     owner: "{{ user }}"
     group: "{{ user }}"
 
-- name: Bash rustup completions
+- name: "Rust: Bash rustup completions"
   ansible.builtin.shell:
     cmd: "rustup completions bash       > ~/.local/share/bash-completion/completions/rustup"
 
-- name: Bash cargo completions
+- name: "Rust: Bash cargo completions"
   ansible.builtin.shell:
     cmd: "rustup completions bash cargo > ~/.local/share/bash-completion/completions/cargo"

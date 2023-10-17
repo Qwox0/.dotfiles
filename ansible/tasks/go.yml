@@ -1,33 +1,32 @@
 # vim: set filetype=yaml.ansible :/
-- name: Install Go
+- name: "Go: Installing Go"
   vars:
     os: linux
     arch: amd64
     latest_version_url: "https://golang.org/VERSION?m=text"
-    archive_name: "{{ filename_prefix }}.{{ os }}-{{ arch }}.tar.gz"
+    archive_name: "{{ latest_version }}.{{ os }}-{{ arch }}.tar.gz"
     download_url: "https://go.dev/dl/{{ archive_name }}"
     current_version: "none"
-
   block:
-    - name: Get filename prefix for latest version
+    - name: "Go: Get latest version"
       set_fact:
-        filename_prefix: "{{ (lookup('url', latest_version_url, split_lines=False) | split('\n'))[0] }}"
+        latest_version: "{{ (lookup('url', latest_version_url, split_lines=False) | split('\n'))[0] }}"
 
-    - name: Try to get current go version installed
+    - name: "Go: Try to get current go version installed"
       ansible.builtin.command: go version
       register: result
       ignore_errors: true
       changed_when: false
 
-    - name: Set current_version var to the current
+    - name: "Go: Set current_version variable"
       set_fact:
         current_version: "{{ result.stdout.split(' ')[2] }}"
       when: not result.failed
 
-    - name: Download and extract the archive {{ archive_name }}
+    - name: "Go: Download and extract the archive {{ archive_name }}"
       become: true
       ansible.builtin.unarchive:
         src: "{{ download_url }}"
         dest: /usr/local
         remote_src: true
-      when: current_version != filename_prefix
+      when: current_version != latest_version

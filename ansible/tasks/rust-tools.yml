@@ -1,48 +1,47 @@
 # vim: set filetype=yaml.ansible :/
-
-- name: Install cargo-binstall
+- name: "Install cargo-binstall"
   block:
-    - name: Try to get current cargo-binstall version installed
+    - name: "Try to get current cargo-binstall version installed"
       ansible.builtin.command: cargo binstall -V
       register: current
       ignore_errors: true
       changed_when: false
 
-    - name: Try to get current newest cargo-binstall version
+    - name: "Try to get current latest cargo-binstall version"
       ansible.builtin.shell: cargo search cargo-binstall | head -n 1 | sed 's/^cargo-binstall = "\([0-9\.]*\)"\s*#.*$/\1/'
-      register: newest
+      register: latest
       ignore_errors: true
       changed_when: false
 
-    - name: Set current_version and newest_version
+    - name: "Set current_version and latest_version"
       set_fact:
         current_version: "{{ current.stdout | default('none', true) }}"
-        newest_version: "{{ newest.stdout | default('unknown', true) }}"
+        latest_version: "{{ latest.stdout | default('unknown', true) }}"
 
-    - name: Set newest_version
+    - name: "Set latest_version"
       ansible.builtin.shell: cargo search cargo-binstall | head -n 1 | sed 's/^cargo-binstall = "\([0-9\.]*\)"\s*#.*$/\1/'
-      register: newest_out
+      register: latest_out
       changed_when: false
 
-    - name: Install cargo-binstall with `cargo install`
+    - name: "Install cargo-binstall with `cargo install`"
       community.general.cargo:
         name: cargo-binstall
       when: current_version == "none"
 
-    - name: Update cargo-binstall with `cargo binstall`
+    - name: "Update cargo-binstall with `cargo binstall`"
       community.general.cargo:
         name: cargo-binstall
-      when: current_version != "none" and current_version != newest_version
+      when: current_version != "none" and current_version != latest_version
 
-- name: Install sccache
+- name: "Install sccache"
   ansible.builtin.command: cargo binstall -y sccache
   environment:
     RUSTC_WRAPPER: ""
 
-- name: Install mprocs
+- name: "Install mprocs"
   community.general.cargo:
     name: mprocs
 
-- name: Install ripgrep
+- name: "Install ripgrep"
   community.general.cargo:
     name: ripgrep

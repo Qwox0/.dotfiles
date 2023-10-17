@@ -1,11 +1,11 @@
 # vim: set filetype=yaml.ansible :/
-- name: Installing Neovim build dependencies
+- name: "Nvim: Installing Neovim build dependencies"
   become: true
   ansible.builtin.apt:
     name: neovim
     state: build-dep
 
-- name: Cloning Neovim
+- name: "Nvim: Cloning Neovim"
   ansible.builtin.git:
     repo: "https://github.com/neovim/neovim"
     dest: "{{ bin }}/neovim"
@@ -13,48 +13,23 @@
     force: true
   register: git_result
 
-- name: Neovim Build Process
+- name: "Nvim: Neovim Build Process"
   when: git_result.changed
   block:
-    - name: Removing old build directory
+    - name: "Nvim: Removing old build directory"
       ansible.builtin.file:
         path: "{{ bin }}/neovim/build"
         state: absent
 
-    - name: Building Neovim
+    - name: "Nvim: Building Neovim"
       ansible.builtin.command: make
       args:
         chdir: "{{ bin }}/neovim"
       environment:
         CMAKE_BUILD_TYPE: RelWithDebInfo
 
-    - name: Creating and Installing Neovim .deb package
+    - name: "Nvim: Creating and Installing Neovim .deb package"
       become: true
       ansible.builtin.command: "checkinstall --default --pakdir={{ bin }}/neovim/build"
       args:
         chdir: "{{ bin }}/neovim"
-
-# - name: Build neovim
-#   shell: "cd {{ bin }}/neovim && make -j 20"
-#   tags:
-#     - neovim
-#
-# - name: Install neovim
-#   become: true
-#   shell: "cd {{ bin }}/neovim && make install"
-#   tags:
-#     - neovim
-
-# - name: Neovim Plugin Development 1
-#   become: true
-#   ansible.builtin.apt: name=luarocks
-#   tags:
-#     - install
-#     - neovim
-#
-# - name: Neovim Plugin Development 2 luacheck
-#   become: true
-#   shell: luarocks install luacheck
-#   tags:
-#     - install
-#     - neovim

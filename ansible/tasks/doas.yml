@@ -1,16 +1,16 @@
 # vim: set filetype=yaml.ansible :/
-- name: Installing Doas
+- name: "Doas: Installing Doas"
   become: true
   ansible.builtin.apt:
     name: doas
 
-- name: Searching /etc/doas.conf
+- name: "Doas: Searching /etc/doas.conf"
   become: true
   ansible.builtin.stat:
     path: /etc/doas.conf
   register: conf_stat
 
-- name: Creating /etc/doas.conf
+- name: "Doas: Creating /etc/doas.conf"
   become: true
   ansible.builtin.shell: echo "permit :sudo" | tee /etc/doas.conf # "permit :wheel"
   when: not conf_stat.stat.exists

@@ -1,5 +1,5 @@
 # vim: set filetype=yaml.ansible :/
-- name: Installing Qemu and Virt-Manager
+- name: "Qemu: Installing Qemu and Virt-Manager"
   become: true
   ansible.builtin.apt:
     name:
@@ -12,7 +12,7 @@
       - netcat-openbsd
       - libguestfs-tools
 
-- name: Add User to libvirt group
+- name: "Qemu: Add User to libvirt group"
   become: true
   ansible.builtin.user:
     name: "{{ user }}"

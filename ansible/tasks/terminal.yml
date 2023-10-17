@@ -1,27 +1,27 @@
 # vim: set filetype=yaml.ansible :/
-- name: Installing Starship Shell
+- name: "Starship: Installing Starship Shell"
   community.general.cargo:
     name: starship
     locked: true
 
-- name: Installing Alacritty font dependencies
+- name: "Alacritty: Installing font dependencies"
   become: true
   ansible.builtin.apt:
     name:
       - libfontconfig1-dev
       - libfontconfig1
 
-- name: Installing Alacritty Terminal
+- name: "Alacritty: Installing Alacritty Terminal"
   community.general.cargo:
     name: alacritty
   environment:
     PKG_CONFIG_PATH: "/usr/lib/x86_64-linux-gnu/pkgconfig"
 
-- name: Installing kitty Terminal
+- name: "Kitty: Installing kitty Terminal"
   ansible.builtin.shell:
     cmd: "curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin"
 
-- name: "Link into PATH: {{ item }}"
+- name: "Kitty: Link into PATH: {{ item }}"
   ansible.builtin.file:
     path: "~/.local/bin/{{ item }}"
     src: "~/.local/kitty.app/bin/{{ item }}"
@@ -31,13 +31,13 @@
     - "kitty"
     - "kitten"
 
-# - name: Installing kitty build dependencies
+# - name: "Installing kitty build dependencies"
 #   become: true
 #   ansible.builtin.apt:
 #     name: kitty
 #     state: build-dep
 #
-# - name: Cloning kitty Terminal
+# - name: "Cloning kitty Terminal"
 #   ansible.builtin.git:
 #     repo: "https://github.com/kovidgoyal/kitty.git"
 #     dest: "{{ bin }}/kitty"
@@ -45,7 +45,7 @@
 #     force: true
 #   register: git_result
 #
-# - name: Building kitty Terminal
+# - name: "Building kitty Terminal"
 #   ansible.builtin.command:
 #     cmd: ./dev.sh build
 #     chdir: "{{ bin }}/kitty"

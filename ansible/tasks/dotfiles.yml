@@ -3,7 +3,7 @@
   vars:
     dotfiles: "{{ home }}/.dotfiles"
   block:
-    - name: Cloning .dotfiles
+    - name: ".dotfiles: Cloning"
       ansible.builtin.git:
         repo: "https://github.com/Qwox0/.dotfiles"
         dest: "{{ dotfiles }}"
@@ -11,7 +11,7 @@
         update: true
       ignore_errors: true # skip this step on error
 
-    - name: "Preparing to link .dotfiles"
+    - name: ".dotfiles: Preparing symbolic links"
       vars:
         is_valid_line: "{{ (item | trim)[:1] != '#' }}"
         dest: "{{ item.split(';')[1] | trim | regex_replace('~', home) }}"
@@ -29,7 +29,7 @@
       loop_control:
         label: "{{ dest }}"
 
-    - name: Linking .dotfiles
+    - name: ".dotfiles: Creating symbolic links"
       vars:
         is_valid_line: "{{ (item | trim)[:1] != '#' }}"
         dest: "{{ item.split(';')[1] | trim | regex_replace('~', home) }}"
@@ -46,14 +46,14 @@
         label: "{{ dest }} -> {{ src }}"
 
   # stow
-  # - name: Installing stow
+  # - name: "Installing stow"
   #   apt:
   #     name: stow
   #   tags:
   #     - dotfiles
   #     - stow
   #
-  # - name: Stow dotfiles
+  # - name: "Stow dotfiles"
   #   shell: cd $HOME/.dotfiles && ./ubuntu
   #   tags:
   #     - dotfiles
