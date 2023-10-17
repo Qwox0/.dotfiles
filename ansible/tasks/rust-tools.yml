@@ -35,7 +35,7 @@
       when: current_version != "none" and current_version != newest_version
 
 - name: Install sccache
-  ansible.builtin.command: cargo binstall sccache
+  ansible.builtin.command: cargo binstall -y sccache
   environment:
     RUSTC_WRAPPER: ""
 
