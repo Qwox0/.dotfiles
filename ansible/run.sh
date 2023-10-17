@@ -5,15 +5,20 @@ ansible_path=${0%/*}
 local_yml="$ansible_path/local.yml"
 
 # BECOME password
-ask_pw=false
-while getopts "Kprs" OPTION; do
+ask_pw=true
+while getopts "Kprsnu" OPTION; do
     case "$OPTION" in
         K) ask_pw=true ;;
         p) ask_pw=true ;;
         r) ask_pw=true ;;
         s) ask_pw=true ;;
+        n) ask_pw=false ;;
+        u) ask_pw=false ;;
         ?)
-            echo "script usage: $(basename $0) [-K] [-p] [-r] [-s] tag" >&2
+            echo "script usage: $(basename $0) [opt] tag" >&2
+            echo "[opt]:"
+            echo "  -K, -p, -r, -s: ask for BECOME password (default)"
+            echo "  -n, -u        : try to run script without BECOME password"
             exit 1
             ;;
     esac
