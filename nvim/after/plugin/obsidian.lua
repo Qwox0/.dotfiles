@@ -3,7 +3,8 @@
 local qwox_util = require("qwox.util")
 if not qwox_util.has_plugins("obsidian") then return end
 
-local obsidian_dir = vim.loop.fs_realpath(qwox_util.paths.home .. "/obsidian")
+local obsidian_dir = qwox_util.paths.home .. "/obsidian"
+obsidian_dir = vim.loop.fs_realpath(qwox_util.paths.home .. "/obsidian") or obsidian_dir
 
 require("obsidian").setup {
     dir = obsidian_dir,
