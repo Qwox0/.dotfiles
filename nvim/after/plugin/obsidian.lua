@@ -6,6 +6,11 @@ if not qwox_util.has_plugins("obsidian") then return end
 local obsidian_dir = qwox_util.paths.home .. "/obsidian"
 obsidian_dir = vim.loop.fs_realpath(qwox_util.paths.home .. "/obsidian") or obsidian_dir
 
+local templates_subdir = "templates"
+
+local enabled = qwox_util.file.exists(obsidian_dir .. "/" .. templates_subdir)
+if not enabled then return end
+
 require("obsidian").setup {
     dir = obsidian_dir,
 
@@ -23,7 +28,7 @@ require("obsidian").setup {
     },
 
     templates = {
-        subdir = "templates",
+        subdir = templates_subdir,
         date_format = "%Y-%m-%d",
         time_format = "%H:%M",
         substitutions = {}
