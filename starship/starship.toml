@@ -43,12 +43,6 @@ disabled = false
 
 [docker_context]
 symbol = " "
-format = "via [$symbol$context]($style) "
-style = "blue bold"
-only_with_files = true
-detect_files = ["docker-compose.yml", "docker-compose.yaml", "Dockerfile"]
-detect_folders = []
-disabled = false
 
 [git_branch]
 format = "on [$symbol$branch(:$remote_branch)]($style) "
@@ -98,8 +92,17 @@ Windows = " "
 Debian = " "
 Ubuntu = " " #   #
 
-[php]
-symbol = " "
+## Languages
+
+[rust]
+symbol = " " #  #
+style = "bold 202"
+
+[lua]
+symbol = " "
+
+[golang]
+symbol = " " # 󰟓 #
 
 [python]
 #pyenv_version_name = true
@@ -109,10 +112,3 @@ pyenv_prefix = "venv "
 python_binary = ["./venv/bin/python", "python", "python3", "python2"]
 detect_extensions = ["py"]
 version_format = "v${raw}"
-
-[rust]
-symbol = " " #  #
-style = "bold 202"
-
-[lua]
-symbol = " "
