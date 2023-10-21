@@ -18,25 +18,22 @@ disabled = false
 
 [hostname]
 ssh_only = false
-#format = "on [$hostname](bold purple) "
-format = "@[$hostname](bold purple) "
-trim_at = "."
-disabled = false
+format = "@[$hostname]($style) "
+style = "bold purple"
 
-# ❯ $
 [character]
 format = "$symbol "
 #success_symbol = "[➜](bold green)"
 success_symbol = "[](bold green)"
-error_symbol = "[](bold red)"     # ✗
+error_symbol = "[](bold red)"
 
 # configure directory
 [directory]
 truncation_length = 10
 truncate_to_repo = false
-format = '[$path]($style)[$read_only]($read_only_style)'
+format = "[$path]($style)[$read_only]($read_only_style)"
 read_only = " 󰌾"
-read_only_style = 'red'
+read_only_style = "red"
 style = "bold italic blue"
 
 [cmd_duration]
@@ -86,10 +83,10 @@ am = "am"
 am_or_rebase = "am/rebase"
 
 [memory_usage]
-symbol = " "
+symbol = "󰍛 "
 
 [package]
-symbol = " "
+symbol = "󰏗 "
 disabled = true
 
 [os]
@@ -105,7 +102,6 @@ Ubuntu = " " #   #
 symbol = " "
 
 [python]
-#symbol = "🐍 "
 #pyenv_version_name = true
 format = 'via [${symbol}python (${version} )(\($virtualenv\) )]($style)'
 style = "bold yellow"
@@ -115,10 +111,8 @@ detect_extensions = ["py"]
 version_format = "v${raw}"
 
 [rust]
-#symbol = " "
+symbol = " " #  #
 style = "bold 202"
 
-[nodejs]
-format = "via [ Node.js $version](bold green) "
-detect_files = ["package.json", ".node-version"]
-detect_folders = ["node_modules"]
+[lua]
+symbol = " "
