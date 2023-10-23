@@ -96,6 +96,7 @@ vmap("<leader>s", function()
         ---@type string
         local line = qwox_util.get_line()
         local before, selection, after = line:multi_split(start_col, end_col)
+        after = after or ""
         qwox_util.set_line(nil, before .. input .. selection .. input:fancy_reverse() .. after)
     elseif qwox_util.is_visual_block_mode() then
         for row = start_row, end_row, 1 do
