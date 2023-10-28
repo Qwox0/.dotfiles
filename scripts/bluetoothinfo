@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+NC=$(tput op)
+
+# color substrings `yes` and `no`
+# yes - GREEN
+# no - RED
+color_yn() {
+    local stdin="$(< /dev/stdin)"
+    echo "$stdin" |
+        sed "s/yes/${GREEN}yes$NC/g" |
+        sed "s/no/${RED}no$NC/g"
+}
+
+echo "# local controllers:"
+bluetoothctl list
+
+echo -e "\n# default local controller info:"
+bluetoothctl show
+
+echo -e "\n# devices: "
+bluetoothctl devices | sed 's/^Device \(\S*\).*/\1/' | while read -r uuid; do
+    info="$(bluetoothctl info $uuid)"
+    name=$(echo "$info" | grep "Name:" | sed 's/.*Name: \(.*\)/\1/')
+    connected=$(echo "$info" | grep "Connected:" | sed 's/\s*\(.*\)/\1/')
+    paired=$(echo "$info" | grep "Paired:" | sed 's/\s*\(.*\)/\1/')
+    echo "$uuid | $name | $connected | $paired" | color_yn
+done
