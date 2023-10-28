@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# kill all subprocesses
+trap 'kill $(jobs -p) 2>/dev/null' EXIT
+# trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
+
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
 NC=$(tput op)
@@ -14,17 +18,40 @@ color_yn() {
         sed "s/no/${RED}no$NC/g"
 }
 
+remove_last_lines() {
+    local count="$1"
+    for _ in $(seq $count); do
+        printf "\r\033[1A\033[0K"
+    done
+}
+
+get_devices() {
+    bluetoothctl devices | sed 's/^Device \(\S*\) \(.*\)$/\1 \2/' | while read -r item; do
+        # item == "$uuid $name"
+        IFS=' ' read -r uuid name <<< "$item"
+        info="$(bluetoothctl info $uuid)"
+        connected=$(echo "$info" | grep "Connected:" | sed 's/\s*\(.*\)/\1/')
+        paired=$(echo "$info" | grep "Paired:" | sed 's/\s*\(.*\)/\1/')
+        echo "$uuid | $name | $connected | $paired" | color_yn
+    done
+}
+
+# main:
+
 echo "# local controllers:"
 bluetoothctl list
 
 echo -e "\n# default local controller info:"
 bluetoothctl show
 
+bluetoothctl scan on 1>/dev/null 2>&1 &
+
 echo -e "\n# devices: "
-bluetoothctl devices | sed 's/^Device \(\S*\).*/\1/' | while read -r uuid; do
-    info="$(bluetoothctl info $uuid)"
-    name=$(echo "$info" | grep "Name:" | sed 's/.*Name: \(.*\)/\1/')
-    connected=$(echo "$info" | grep "Connected:" | sed 's/\s*\(.*\)/\1/')
-    paired=$(echo "$info" | grep "Paired:" | sed 's/\s*\(.*\)/\1/')
-    echo "$uuid | $name | $connected | $paired" | color_yn
+lines=0
+while true; do
+    text=$(get_devices)
+    remove_last_lines $lines
+    ((lines=$(wc -l <<< "$text")))
+    echo "$text"
+    sleep 1
 done
