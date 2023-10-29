@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+gpu_busy_percent=$(< /sys/class/drm/card0/device/gpu_busy_percent)
+
+echo "$gpu_busy_percent%"
