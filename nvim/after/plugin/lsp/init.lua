@@ -9,13 +9,6 @@ require("mason-lspconfig").setup {
 }
 require("mason-lspconfig").setup_handlers {
     function(server_name)
-        --[[
-        require("lspconfig")[server_name].setup {
-            capabilities = capabilities,
-            on_attach = custom_attach,
-            settings = servers[server_name],
-        }
-        --]]
         require("lspconfig")[server_name].setup(
             vim.tbl_deep_extend("force", qwox_lsp.servers[server_name] or {}, {
                 capabilities = qwox_lsp.capabilities,

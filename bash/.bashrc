@@ -15,6 +15,9 @@
 #   -> /etc/X11/Xsession.d/*
 #   -> /etc/X11/Xsession.d/40x11-common_xsessionrc ->
 
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
 #echo ".bashrc: $PATH"
 export HISTCONTROL=ignoreboth       # no duplicate entries
 export EDITOR='nvim'                # default editor
@@ -24,14 +27,11 @@ export EDITOR='nvim'                # default editor
 #bind -m vi-command 'Control-l: clear-screen'
 #bind -m vi-insert 'Control-l: clear-screen'
 
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
-
 ### PATH
 export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig"
 
 for a in $(find $HOME/.env/ -regex '.*/[^\.]+$'); do
-    . "$a"
+    source "$a"
 done
 
 ### SHOPT
@@ -47,7 +47,36 @@ shopt -s checkwinsize       # checks term size when bash regains control
 
 bind "set completion-ignore-case on" #ignore upper and lowercase when TAB completion
 
-### ARCHIVE EXTRACTION
+### Aliases
+
+# root privileges
+#alias doas="doas --"
+#alias sudo="doas"
+
+alias ls='ls -hF --color=auto'
+alias l='ls -CF'
+alias ll='ls -alhF'
+alias la='ls -A'
+alias ks='ls' # prevent misstypes
+
+alias mkdir='mkdir -p'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+alias v='nvim'
+alias vi='nvim'
+alias vim='nvim'
+
+# Colorize grep output
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+alias git-lines='git ls-files | xargs wc -l'
+alias swap-clear='sudo swapoff -a; sudo swapon -a'
+
 # usage: ex <file>
 ex() {
     if [ -f "$1" ] ; then
@@ -74,39 +103,6 @@ ex() {
         echo "'$1' is not a valid file"
     fi
 }
-
-### Aliases
-
-# root privileges
-#alias doas="doas --"
-#alias sudo="doas"
-
-alias ls='ls -hF --color=auto'
-alias l='ls -CF'
-alias ll='ls -alhF'
-alias la='ls -A'
-alias ks='ls' # prevent misstypes
-
-alias mkdir='mkdir -p'
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-alias v='nvim'
-alias vi='nvim'
-alias vim='nvim'
-
-# allow \n in sed
-#alias sed='sed -z'
-
-# Colorize grep output
-alias grep='grep --color=auto'
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
-
-alias git-lines='git ls-files | xargs wc -l'
-alias swap-clear='sudo swapoff -a; sudo swapon -a'
 
 git-changes() {
     git log --shortstat $@ | awk '/^ [0-9]/ { f += $1; i += $4; d += $6 } END { printf("%d files changed, %d insertions(+), %d deletions(-)", f, i, d) }'
