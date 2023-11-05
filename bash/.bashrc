@@ -77,6 +77,9 @@ alias fgrep='fgrep --color=auto'
 alias git-lines='git ls-files | xargs wc -l'
 alias swap-clear='sudo swapoff -a; sudo swapon -a'
 
+alias bt='bluetoothctl'
+alias btinfo='bluetoothinfo' # see `.dotfiles/scripts/bluetoothinfo`
+
 # usage: ex <file>
 ex() {
     if [ -f "$1" ] ; then
