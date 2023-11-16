@@ -1,6 +1,3 @@
--- vim.g    = let (in vimscript)
--- vim.opt  = set (in vimscript)
-
 vim.opt.hidden = true         -- hide vim in bg when closing
 
 vim.opt.number = true         -- show line numbers
