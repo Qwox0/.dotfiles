@@ -6,7 +6,7 @@ if packer_bootstrap then
     vim.cmd([[packadd packer.nvim]])
 end
 
-local nmap = require("qwox.keymap").nmap
+local nmap = require("typed.keymap").nmap
 nmap("<leader>ps", require("packer").sync, { desc = "[P]acker [S]ync" })
 
 ---@param use fun(opts: Plugin|(Plugin)[]): nil

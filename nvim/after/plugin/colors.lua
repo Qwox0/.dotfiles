@@ -1,4 +1,5 @@
-local colors = require("qwox.colors")
+local mycolors = require("qwox.mycolors")
+local colors = require("typed.colors")
 
 local colorschemes = {
     gruvbox = {
@@ -33,7 +34,7 @@ local colorschemes = {
     },
 }
 
-colors.set_scheme(colorschemes.gruvbox)
+mycolors.set_scheme(colorschemes.gruvbox)
 
 -- setup norcalli/nvim-colorizer.lua
 if not require("qwox.util").has_plugins("colorizer") then return end

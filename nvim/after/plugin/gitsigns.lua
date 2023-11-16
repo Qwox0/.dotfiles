@@ -41,7 +41,7 @@ require("gitsigns").setup {
     },
 }
 
-local colors = require("qwox.colors")
+local colors = require("typed.colors")
 colors.update_hl("GitSignsAdd", { link = "GruvboxGreenSign", fg = "#50fa7b" })
 colors.update_hl("GitSignsChange", { link = "GruvboxYellowSign" })
 --colors.update_hl("GitSignsDelete", { link = "GruvboxRedSign" }) -- fg = "#ff5555"

@@ -3,7 +3,7 @@ if not require("qwox.util").has_plugins("harpoon") then return end
 local mark = require("harpoon.mark")
 local ui = require("harpoon.ui")
 
-local nmap = require("qwox.keymap").nmap
+local nmap = require("typed.keymap").nmap
 
 nmap("<leader>a", function() mark.add_file() end, { desc = "[A]dd Harpoon mark" })
 nmap("<C-e>", function() ui.toggle_quick_menu() end, { desc = "Open Harpoon [E]dit menu" })

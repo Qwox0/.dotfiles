@@ -1,5 +1,5 @@
-require("qwox.table")
-require("qwox.string")
+require("typed.table")
+require("typed.string")
 
 require("qwox.sets")
 require("qwox.keymaps")

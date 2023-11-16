@@ -1,9 +1,9 @@
 local qwox_util = require("qwox.util")
-local map = require("qwox.keymap").map
-local nmap = require("qwox.keymap").nmap
-local imap = require("qwox.keymap").imap
-local vmap = require("qwox.keymap").vmap
-local xmap = require("qwox.keymap").xmap
+local map = require("typed.keymap").map
+local nmap = require("typed.keymap").nmap
+local imap = require("typed.keymap").imap
+local vmap = require("typed.keymap").vmap
+local xmap = require("typed.keymap").xmap
 
 vim.g.mapleader = " "   -- keymapping: define <leader> for mappings
 vim.opt.timeout = false -- keymapping: command timeout

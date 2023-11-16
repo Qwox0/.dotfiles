@@ -1,4 +1,4 @@
-local create_command = require("qwox.command")
+local create_command = require("typed.command")
 
 create_command("W", "w", { desc = "Prevent misstype of :w" })
 create_command("Q", "q", { desc = "Prevent misstype of :q" })

@@ -3,6 +3,8 @@ if not qwox_util.has_plugins("dap") then return end
 
 local dap = require("dap")
 
+local nmap = require("typed.keymap").nmap
+
 local function is_active() return dap.session() ~= nil end
 
 local function continue()
@@ -33,8 +35,6 @@ local debug_prompt = {
         vim.ui.select(self:items(), self.opts, function(choice) self:select(choice) end)
     end
 }
-
-local nmap = require("qwox.keymap").nmap
 
 nmap("<leader>dd", function() debug_prompt:open() end, { desc = "Open [D]ebug Menu" })
 
@@ -138,13 +138,15 @@ dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() 
 dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
 dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
 
---[[
+if not qwox_util.has_plugins("nvim-dap-virtual-text") then return end
 
+--[[
 require("nvim-dap-virtual-text").setup {
     --virt_text_pos = vim.fn.has "nvim-0.10" == 1 and "inline" or "eol",
     virt_text_pos = "eol",
 }
 ]]
+
 require("nvim-dap-virtual-text").setup {
     enabled = true,
     enabled_commands = false, -- create commands DapVirtualTextEnable, DapVirtualTextDisable, DapVirtualTextToggle, (DapVirtualTextForceRefresh for refreshing when debug adapter did not notify its termination)

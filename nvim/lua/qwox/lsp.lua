@@ -44,7 +44,7 @@ LSP.servers = {
 
 function LSP.custom_attach(client, bufnr)
     -- Create a command `:Format` local to the LSP buffer
-    local create_command = require("qwox.command")
+    local create_command = require("typed.command")
     create_command("Format", function(_)
         vim.lsp.buf.format()
     end, { buffer = bufnr, desc = "Format current buffer with LSP" })

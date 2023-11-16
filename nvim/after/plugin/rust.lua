@@ -1,10 +1,10 @@
 local qwox_util = require("qwox.util")
 if not qwox_util.has_plugins("rust-tools") then return end
 
-require("qwox.colors").set_hl("RustToolsInlayHint", { fg = "#D3D3D3", bg = "#3A3A3A", italic = true })
+require("typed.colors").set_hl("RustToolsInlayHint", { fg = "#D3D3D3", bg = "#3A3A3A", italic = true })
 
 local qwox_lsp = require("qwox.lsp")
-local nmap = require("qwox.keymap").nmap
+local nmap = require("typed.keymap").nmap
 
 -- dap paths
 --[[

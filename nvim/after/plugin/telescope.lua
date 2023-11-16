@@ -10,8 +10,12 @@ local entry_display = require("telescope.pickers.entry_display")
 local finders = require("telescope.finders")
 local previewers = require("telescope.previewers")
 local themes = require("telescope.themes")
-
 local strings = require("plenary.strings")
+
+local autocmd = require("typed.autocmd")
+local create_command = require("typed.command")
+local nmap = require("typed.keymap").nmap
+local vmap = require("typed.keymap").vmap
 
 local small_dropdown = themes.get_dropdown {
     layout_config = { height = 0.8, width = 0.7 },
@@ -138,9 +142,6 @@ require("telescope").setup {
     },
 }
 
-local nmap = require("qwox.keymap").nmap
-local vmap = require("qwox.keymap").vmap
-
 nmap("<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
 --nmap("<C-p>", builtin.git_files)
 nmap("<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
@@ -167,8 +168,6 @@ nmap("<leader>fu", function() require("telescope").extensions.undo.undo() end, {
     desc = "[F]ind [T]reesitter items"
 })
 
-local autocmd = require("qwox.autocmd")
-
 autocmd("WinLeave", {
     callback = function()
         if qwox_util.is_filetype("TelescopePrompt") and vim.fn.mode() == "i" then
@@ -177,7 +176,6 @@ autocmd("WinLeave", {
     end,
 })
 
-local create_command = require("qwox.command")
 
 create_command({ "Hi", "Highlights" }, function(_)
     builtin.highlights()

@@ -1,6 +1,6 @@
 ---@diagnostic disable: undefined-global
 
-require("qwox.snip")
+require("typed.snip")
 
 return {
     s("printdbg", {

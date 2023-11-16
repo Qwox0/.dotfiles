@@ -60,7 +60,7 @@ function Colors.set_hl(name, color)
     Colors.hl_groups[name] = color
 end
 
----This removes any existing configurations of the highlight group `name`.
+---This updates any existing configurations of the highlight group `name`.
 ---If you want to replace any existing configuration, use `set_hl` instead.
 ---@see Color.set_hl
 ---
@@ -77,42 +77,6 @@ function Colors.update_hl(name, color)
     local old = Colors.get_hl(name)
     local new = vim.tbl_deep_extend("force", old, color)
     Colors.set_hl(name, new)
-end
-
----@type string|table
-Colors.scheme = "gruvbox"
-
----@param scheme string|table
-function Colors.set_scheme(scheme)
-    if type(scheme) == "string" then scheme = { name = scheme } end
-    if scheme.name == nil then return end
-
-    vim.cmd.colorscheme(scheme.name)
-    if type(scheme.setup) == "function" then scheme.setup() end
-
-    Colors.scheme = scheme
-
-    local hl = Colors.update_hl
-
-    -- type :highlight to show highlight groups
-    hl("Normal", { bg = "none" })
-    --hl("NormalFloat", { bg = "none" })
-
-    hl("SignColumn", { bg = "none", })
-
-    --[[
-    hl("ColorColumn", {
-        ctermbg = 0,
-        bg = "#fb4934",
-        --link = "GruvboxRedSign",
-    })
-    ]]
-
-    hl("CursorLineNR", { bg = "None" })
-
-    --hl("LineNr", { fg = "#5eacd3" })
-
-    --hl("netrwDir", { fg = "#5eacd3" })
 end
 
 return Colors

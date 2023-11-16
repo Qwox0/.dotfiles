@@ -1,5 +1,5 @@
-local autocmd = require("qwox.autocmd")
-local augroup = require("qwox.augroup")
+local autocmd = require("typed.autocmd")
+local augroup = require("typed.augroup")
 
 -- no relative line numbers in Insert mode
 autocmd("InsertEnter", { pattern = "*", command = ":set norelativenumber" })

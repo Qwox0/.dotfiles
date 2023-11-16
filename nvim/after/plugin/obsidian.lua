@@ -3,6 +3,9 @@
 local qwox_util = require("qwox.util")
 if not qwox_util.has_plugins("obsidian") then return end
 
+local autocmd = require("typed.autocmd")
+local nmap = require("typed.keymap").nmap
+
 local obsidian_dir = qwox_util.paths.home .. "/obsidian"
 obsidian_dir = vim.loop.fs_realpath(qwox_util.paths.home .. "/obsidian") or obsidian_dir
 
@@ -35,14 +38,12 @@ require("obsidian").setup {
     },
 }
 
-local autocmd = require("qwox.autocmd")
 
 -- line wrap in obsidian
 autocmd("BufEnter", { pattern = obsidian_dir .. "/*.md", command = ":set wrap" })
 autocmd("BufLeave", { pattern = obsidian_dir .. "/*.md", command = ":set nowrap" })
 
 
-local nmap = require("qwox.keymap").nmap
 
 nmap("<leader>ot", vim.cmd.ObsidianTemplate, { desc = "[O]bsidian [T]emplate" })
 nmap("<leader>on", function()

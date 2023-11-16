@@ -1,2 +1,2 @@
-local nmap = require("qwox.keymap").nmap
+local nmap = require("typed.keymap").nmap
 nmap("<leader>u", vim.cmd.UndotreeToggle)

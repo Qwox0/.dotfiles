@@ -1,7 +1,7 @@
 local f = io.popen("find " .. require("qwox.util").paths.nvim_config .. "/templates -mindepth 1")
 if f == nil then return end
 
-local autocmd = require("qwox.autocmd")
+local autocmd = require("typed.autocmd")
 
 ---@param path string
 for path in f:lines() do
