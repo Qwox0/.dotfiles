@@ -53,7 +53,7 @@ function LSP.custom_attach(client, bufnr)
         if desc then
             desc = "LSP: " .. desc
         end
-        require("qwox.keymap").map(mode, keys, func, { buffer = bufnr, desc = desc })
+        require("typed.keymap").map(mode, keys, func, { buffer = bufnr, desc = desc })
     end
 
     map("n", "<leader>jn", function() vim.lsp.buf.rename() end, "Re[n]ame")
