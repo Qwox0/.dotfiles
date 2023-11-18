@@ -120,7 +120,7 @@ end, { desc = "[S]urround selection" })
 
 -- if not qwox_util.has_plugins("vim-fugitive") then return end
 
-nmap("<leader>gg", vim.cmd.Git, { desc = "[G]it: open menu" })
+nmap("<leader>gg", vim.cmd.Git, { desc = "[G]it: open fugitive" })
 nmap("<leader>gs", require("telescope.builtin").git_status, { desc = "[G]it: [S]tatus" })
 nmap("<leader>gb", require("telescope.builtin").git_branches, { desc = "[G]it: [B]ranches" })
 nmap("<leader>gf", ":Git fetch<CR>", { desc = "[G]it: [F]etch" })
@@ -129,6 +129,9 @@ nmap("<leader>gu", ":Git push<CR>", { desc = "[G]it: Push [U]p" })
 nmap("<leader>gy", ":Git fetch<CR>:Git pull<CR>:Git push<CR>", {
     desc = "[G]it: s[Y]nc (fetch, pull, push)"
 })
+
+nmap("<leader>gh", ":diffget //2<CR>", {desc = "diffsplit [G]et left ([H])"})
+nmap("<leader>gl", ":diffget //3<CR>", {desc = "diffsplit [G]et right ([L])"})
 
 nmap("<leader>gaa", ":!git add -A<CR>", { desc = "[G]it: [A]dd [A]ll" })
 
