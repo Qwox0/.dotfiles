@@ -31,9 +31,9 @@ ruled.client.connect_signal("request::rules", function()
                 "Event Tester", -- xev.
             },
             role     = {
-                "AlarmWindow", -- Thunderbird's calendar.
+                "AlarmWindow",   -- Thunderbird's calendar.
                 "ConfigManager", -- Thunderbird's about:config.
-                "pop-up", -- e.g. Google Chrome's (detached) Developer Tools.
+                "pop-up",        -- e.g. Google Chrome's (detached) Developer Tools.
             }
         },
         properties = { floating = true }
@@ -47,10 +47,12 @@ ruled.client.connect_signal("request::rules", function()
     }
 
     -- Set Firefox to always map on the tag named "www" on screen 1.
+    --[[
     ruled.client.append_rule {
-        rule       = { class = "Firefox" },
+        rule       = { class = "firefox" },
         properties = { screen = 1, tag = "www" }
     }
+    ]]
 
     ruled.client.append_rule {
         rule_any = { class = { "thunderbird-default", "thunderbird" } },
@@ -65,6 +67,11 @@ ruled.client.connect_signal("request::rules", function()
     ruled.client.append_rule {
         rule       = { class = "Virt-manager", instance = "virt-manager" },
         properties = { screen = 1, tag = "VM" }
+    }
+
+    ruled.client.append_rule {
+        rule       = { class = "Gnome-control-center", instance = "gnome-control-center" },
+        properties = { screen = 1, tag = "www", minimized = true }
     }
 end)
 

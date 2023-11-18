@@ -21,51 +21,25 @@ local scripts = {
     --scripts_dir .. "/wallpaper.sh",
 }
 
--- rules[program name] = rule
+--- set rules in `rules.lua`
 local programs = {
-    thunderbird = {
-        rule_any = { class = { "thunderbird-default", "thunderbird" } },
-        properties = {
-            screen = screen[2],
-            tag = "Email",
-        }
-    },
-    discord = {
-        rule_any = { class = "discord" },
-        properties = {
-            screen = screen[2],
-            tag = "Dc",
-        },
-    },
+    "keepassxc",
+    "virt-manager",
+    "thunderbird",
+    "discord",
+    "gnome-control-center",
+    "firefox",
 }
 
 local run = function()
-    for program, rule in pairs(programs) do
-        --require("rules").append_rule(rule)
-        if type(rule) ~= "table" then
-            require("util").debug_msg("not table: " .. rule)
-        end
-        awful.spawn.once(program)
+    for _, program in ipairs(programs) do
+        awful.spawn.single_instance(program)
     end
 
     for _, script in pairs(scripts) do
         awful.spawn.with_shell(script)
     end
-
-    --awful.spawn.single_instance("thunderbird")
 end
-
-
---[[
-    { rule = { instance = "Navigator", class = "firefox" },
-        properties = { screen = 1, tag = "www" }
-    },
-    { rule = { instance = "virt-manager", class = "Virt-manager" },
-        properties = { screen = 1, tag = "VM"}
-
-    }
-
-]]
 
 return {
     run = run,
