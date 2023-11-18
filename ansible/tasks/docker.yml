@@ -1,0 +1,29 @@
+# vim: set filetype=yaml.ansible :/
+- name: "Docker: Adding Docker's official GPG key"
+  become: true
+  ansible.builtin.shell: "curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --yes --dearmor -o /etc/apt/keyrings/docker.gpg"
+
+- name: "Docker: Adding Docker apt repository"
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
+    state: "present"
+    filename: "docker"
+
+- name: "Docker: Installing Docker"
+  become: true
+  ansible.builtin.apt:
+    name: docker-ce
+
+- name: "Docker: Ensuring docker group exists"
+  become: true
+  ansible.builtin.group:
+    name: "docker"
+    state: "present"
+
+- name: "Docker: Adding user to docker group"
+  become: true
+  ansible.builtin.user:
+    name: "{{ user }}"
+    groups: "docker"
+    append: true

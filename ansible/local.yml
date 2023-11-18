@@ -137,6 +137,12 @@
         - tmux
         - nogui
 
+    - name: Docker
+      ansible.builtin.import_tasks: tasks/docker.yml
+      tags:
+        - docker
+        - nogui
+
     - name: AwesomeWM
       ansible.builtin.import_tasks: tasks/awesome.yml
       tags:
