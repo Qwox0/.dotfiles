@@ -24,7 +24,7 @@ let hasExecuted = false;
 function tmMain() {
     if (hasExecuted) return;
     hasExecuted = true;
-    console.log("executing Tampermonkey script...");
+    console.log(`executing Tampermonkey script "${GM_info.script.name}" ...`);
     try {
         main();
     } catch (e) {
