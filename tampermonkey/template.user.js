@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         template
 // @namespace    qwox
-// @version      0.1.1
+// @version      0.1.2
 // @description  description
 // @author       Qwox
 // @icon
@@ -16,7 +16,17 @@ function main() {
     alert("running");
 }
 
+let hasExecuted = false;
+
+function tmMain() {
+    if (hasExecuted) return;
+    hasExecuted = true;
+    console.log("executing Tampermonkey script...");
+    main();
+}
+
 (function() {
     'use strict';
-    window.addEventListener('DOMContentLoaded', main);
+    tmMain();
+    window.addEventListener('DOMContentLoaded', tmMain);
 })();
