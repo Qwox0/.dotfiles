@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         template
 // @namespace    qwox
-// @version      0.1.2
+// @version      0.1.3
 // @description  description
 // @author       Qwox
 // @icon
@@ -13,7 +13,7 @@
 // ==/UserScript==
 
 function main() {
-    alert("running");
+    throw new Error("not implemented");
 }
 
 let hasExecuted = false;
@@ -22,7 +22,13 @@ function tmMain() {
     if (hasExecuted) return;
     hasExecuted = true;
     console.log("executing Tampermonkey script...");
-    main();
+    try {
+        main();
+    } catch (e) {
+        const errMsg = `Error in Tampermonkey script "${GM_info.script.name}"`;
+        console.error(`${errMsg}:`, e);
+        window.alert(`${errMsg}. See console.`);
+    }
 }
 
 (function() {

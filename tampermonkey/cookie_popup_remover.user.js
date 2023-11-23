@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CookiePopupRemover
 // @namespace    qwox
-// @version      0.1
+// @version      0.2
 // @description  removes cookie popups
 // @author       Qwox
 // @icon
@@ -23,16 +23,16 @@ function getSite() {
 function main() {
     const site = getSite();
     console.log("site:", site);
-    if (!site) throw "Error with getSite!";
+    if (!site) throw new Error("Error with getSite!");
     const hostname = site.hostname;
 
     const elemGetter = PAGES[hostname];
     console.log("elemGetter:", elemGetter);
-    if (!elemGetter) throw `Please add a getter for "${hostname}"`;
+    if (!elemGetter) throw new Error(`Please add a getter for "${hostname}"`);
 
     const element = elemGetter();
     console.log("element:", element);
-    if (!element) throw `Cannot get element.`;
+    if (!element) throw new Error(`Cannot get element.`);
 
     element.style.display = "none";
 }
@@ -43,7 +43,13 @@ function tmMain() {
     if (hasExecuted) return;
     hasExecuted = true;
     console.log("executing Tampermonkey script...");
-    main();
+    try {
+        main();
+    } catch (e) {
+        const errMsg = `Error in Tampermonkey script "${GM_info.script.name}"`;
+        console.error(`${errMsg}:`, e);
+        window.alert(`${errMsg}. See console.`);
+    }
 }
 
 (function() {
