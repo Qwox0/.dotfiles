@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CookiePopupRemover
 // @namespace    qwox
-// @version      0.2
+// @version      0.2.1
 // @description  removes cookie popups
 // @author       Qwox
 // @icon

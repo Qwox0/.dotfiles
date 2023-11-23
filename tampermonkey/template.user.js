@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         template
 // @namespace    qwox
-// @version      0.1.3
+// @version      1.0
 // @description  description
 // @author       Qwox
 // @icon
