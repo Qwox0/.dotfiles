@@ -13,10 +13,10 @@
 // ==/UserScript==
 
 function main() {
-    const el = document.querySelector("div#movie_player>div.ytp-gradient-bottom");
-    if (!el) throw new Error("couldn't find gradient element");
-
-    el.style.display = "none";
+    const elements = document.querySelectorAll("div#container>div.html5-video-player>div.ytp-gradient-bottom");
+    for (const el of elements.values()) {
+        el.style.display = "none";
+    }
 }
 
 let hasExecuted = false;
