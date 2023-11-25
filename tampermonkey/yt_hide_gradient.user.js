@@ -12,12 +12,15 @@
 // @sandbox      JavaScript
 // ==/UserScript==
 
+const scriptName = GM_info.script.name;
+
 const MAX_ITERATIONS = 1000;
 const ITER_TIMEOUT = 30;
 
 /** @param {NodeListOf<Element>} elements */
 function hideElements(elements) {
     for (const el of elements.values()) {
+        console.log(`Tampermonkey script "${scriptName}": hide element`, el);
         el.style.display = "none";
     }
 }
@@ -39,12 +42,13 @@ function main() {
 
 (function() {
     'use strict';
-    console.log(`executing Tampermonkey script "${GM_info.script.name}" ...`);
+    console.log(`executing Tampermonkey script "${scriptName}" ...`);
     try {
         main();
     } catch (e) {
-        const errMsg = `Error in Tampermonkey script "${GM_info.script.name}"`;
+        const errMsg = `Error in Tampermonkey script "${scriptName}"`;
         console.error(`${errMsg}:`, e);
         window.alert(`${errMsg}. See console.`);
     }
+    console.log(`finished executing Tampermonkey script "${scriptName}"`);
 })();
