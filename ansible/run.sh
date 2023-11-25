@@ -25,13 +25,20 @@ while getopts "Kprsnu" OPTION; do
 done
 shift "$(($OPTIND -1))"
 
-# tag
+tags_str="$(ansible-playbook local.yml --list-tags 2>/dev/null | grep "TASK TAGS:" | sed "s/^\s*TASK TAGS: \[\(.*\)\]$/\1/")"
+IFS=', ' read -r -a tags <<< "$tags_str"
+
 tag="$1"
-if [ -z "$tag" ]; then
+
+IFS=$'\n'
+if [ -z "$(echo "${tags[*]}" | grep "^$tag$")" ]; then
     echo "please provide tag!"
-    ansible-playbook $local_yml --list-tags
+    echo "the following tags are available:"
+    printf '    * `%s`\n' "${tags[@]}"
+    echo -e "\nIf you want to run all tasks use \`ansible-playbook $local_yml\`"
     exit 2
 fi
+unset IFS
 
 if ! $ask_pw; then
     ansible-playbook $local_yml -t $tag
