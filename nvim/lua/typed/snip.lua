@@ -159,7 +159,9 @@
 ---@param opts SOpts?
 ---@return Snippet
 ---@diagnostic disable-next-line
-function s(context, nodes, opts) end
+function s(context, nodes, opts)
+    return require("luasnip").s(context, nodes, opts)
+end
 
 ---@class Node
 
@@ -194,8 +196,9 @@ function s(context, nodes, opts) end
 ---@param text string|string[]
 ---@param node_opts NodeOpts?
 ---@return Node
----@diagnostic disable-next-line
-function t(text, node_opts) end
+function t(text, node_opts)
+    return require("luasnip").t(text, node_opts)
+end
 
 ---Creates an InsertNode. These Nodes contain editable text and can be jumped to- and from (e.g.
 ---traditional placeholders and tabstops, like `$1` in textmate-snippets).
@@ -271,7 +274,9 @@ function t(text, node_opts) end
 ---@param node_opts NodeOpts? todo: more see |luasnip-choisenode|
 ---@return Node
 ---@diagnostic disable-next-line
-function i(jump_index, text, node_opts) end
+function i(jump_index, text, node_opts)
+    return require("luasnip").i(jump_index, text, node_opts)
+end
 
 ---Creates a FunctionNode.
 ---@param fn fun(argnode_text: string[][], parent, ...): string
@@ -279,7 +284,9 @@ function i(jump_index, text, node_opts) end
 ---@param node_opts NodeOpts?
 ---@return Node
 ---@diagnostic disable-next-line
-function f(fn, argnode_reference, node_opts) end
+function f(fn, argnode_reference, node_opts)
+    return require("luasnip").f(fn, argnode_reference, node_opts)
+end
 
 ---Creates a ChoiceNode.
 ---@param jump_index number, since choiceNodes can be jumped to, they need a jump-index (Info in |luasnip-basics-jump-index|).
@@ -287,7 +294,9 @@ function f(fn, argnode_reference, node_opts) end
 ---@param node_opts NodeOpts?
 ---@return Node
 ---@diagnostic disable-next-line
-function c(jump_index, choices, node_opts) end
+function c(jump_index, choices, node_opts)
+    return require("luasnip").c(jump_index, choices, node_opts)
+end
 
 ---Creates a SnippetNode.
 ---@param jump_index number, the usual |luasnip-jump-index|.
@@ -295,7 +304,9 @@ function c(jump_index, choices, node_opts) end
 ---@param node_opts NodeOpts? - `node_opts`: `table`: again, the keys common to all nodes (documented in |luasnip-node|) are supported, but also `callbacks`, `child_ext_opts` and `merge_child_ext_opts`, which are further explained in |luasnip-snippets|.
 ---@return Node
 ---@diagnostic disable-next-line
-function sn(jump_index, nodes, node_opts) end
+function sn(jump_index, nodes, node_opts)
+    return require("luasnip").sn(jump_index, nodes, node_opts)
+end
 
 ---Creates an IndentSnippetNode.
 ---@param jump_index number, the usual |luasnip-jump-index|.
@@ -304,7 +315,9 @@ function sn(jump_index, nodes, node_opts) end
 ---@param node_opts NodeOpts?
 ---@return Node
 ---@diagnostic disable-next-line
-function isn(jump_index, nodes, indentstring, node_opts) end
+function isn(jump_index, nodes, indentstring, node_opts)
+    return require("luasnip").isn(jump_index, nodes, indentstring, node_opts)
+end
 
 ---Creates a DynamicNode.
 ---comment
@@ -314,7 +327,9 @@ function isn(jump_index, nodes, indentstring, node_opts) end
 ---@param node_opts NodeOpts? In addition to the common |luasnip-node|-keys, there is, again, - `user_args`, which is described in |luasnip-functionnode|.
 ---@return Node
 ---@diagnostic disable-next-line
-function d(jump_index, fn, node_references, node_opts) end
+function d(jump_index, fn, node_references, node_opts)
+    return require("luasnip").d(jump_index, fn, node_references, node_opts)
+end
 
 ---Creates a RestoreNode.
 ---@param jump_index number when to jump to this node.
@@ -323,18 +338,24 @@ function d(jump_index, fn, node_references, node_opts) end
 ---@param node_opts NodeOpts?
 ---@return Node
 ---@diagnostic disable-next-line
-function r(jump_index, key, nodes, node_opts) end
+function r(jump_index, key, nodes, node_opts)
+    return require("luasnip").r(jump_index, key, nodes, node_opts)
+end
 
 ---Creates a MultiSnippet.
 ---@param context table<SContext[]>
 ---@param nodes Node[]|Node exactly like in |luasnip-snippets|.
 ---@param node_opts NodeOpts?
 ---@diagnostic disable-next-line
-function ms(context, nodes, node_opts) end
+function ms(context, nodes, node_opts)
+    return require("luasnip").ms(context, nodes, node_opts)
+end
 
 ---Creates a Lambda. A shortcut for `functionNode`s that only do very basic string manipulation.
 ---@param lambda any An object created by applying string-operations to `l._n`, objects representing the `n`th argnode. Example 1: `l._1:gsub("a", "e")` replaces all occurences of "a" in the text of the first argnode with "e". Example 2: `l._1 .. l._2` concatenates text of the first and second argnode. If an argnode contains multiple lines of text, they are concatenated with `"\n"` prior to any operation.
 ---@param argnode_reference NodeRef[]|NodeRef|nil
 ---@return Node
 ---@diagnostic disable-next-line
-function l(lambda, argnode_reference) end
+function l(lambda, argnode_reference)
+    return require("luasnip").l(lambda, argnode_reference)
+end
