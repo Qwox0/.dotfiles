@@ -39,9 +39,9 @@ nmap("<leader>x", "<cmd>!chmod +x %<CR>", { silent = true, desc = "make file e[x
 -- Substitute / Replace
 nmap("<leader>ra", function()
     local search = vim.fn.input("Find > ") --TODO: highlight searched text
-    vim.api.nvim_command("/" .. search)
+    vim.cmd("/" .. search)
     local replacement = vim.fn.input("Replace with > ")
-    vim.api.nvim_command(":%s/" .. search .. "/" .. replacement .. "/g")
+    vim.cmd(":%s/" .. search .. "/" .. replacement .. "/g")
 end, { desc = "[R]eplace [A]ll" })
 nmap("<leader>rw", [[:%s/<C-r><C-w>/<C-r><C-w>/gI<Left><Left><Left>]], {
     desc = "[R]eplace [W]ord"
@@ -50,7 +50,35 @@ vmap("<leader>r", [["ay<CR>:%s/<C-r>"/<C-r>"/gI<Left><Left><Left>]], {
     desc = "[R]eplace highlight"
 })
 
-nmap("<leader>rf", function()
+nmap("<leader>bn", function()
+    local file_dir = vim.fn.expand("%:p:h") .. "/"
+    ---@type string
+    local input = vim.fn.input {
+        prompt = "New file name > ",
+        default = file_dir,
+    }
+    if input == "" then return end
+    vim.cmd.e(input)
+end, { desc = "[B]uffer/file [N]ew" })
+
+nmap("<leader>bc", function()
+    local file_path = vim.fn.expand("%:p")
+    ---@type string
+    local input = vim.fn.input {
+        prompt = "File name > ",
+        default = file_path,
+    }
+    if input == "" then return end
+    vim.cmd("!cp '%:p' '" .. input .. "'")
+end, { desc = "[B]uffer/file [C]opy" })
+
+nmap("<leader>yp", function()
+    local file_path = vim.fn.expand("%:p")
+    print("Yanking current file path")
+    vim.cmd(":let @+ = '" .. file_path .. "'")
+end, { desc = "[Y]ank buffer/file [P]ath" })
+
+local function rename_buffer()
     local current_file_name = vim.api.nvim_buf_get_name(0)
     local new_file_name = vim.fn.input {
         prompt = current_file_name .. " | new name > ",
@@ -60,7 +88,10 @@ nmap("<leader>rf", function()
     vim.fn.rename(current_file_name, new_file_name)
     vim.api.nvim_buf_set_name(0, new_file_name)
     vim.fn.execute("edit")
-end, { desc = "[R]ename [F]ile" })
+end
+
+nmap("<leader>br", rename_buffer, { desc = "[B]uffer/file [R]ename" })
+nmap("<leader>rf", rename_buffer, { desc = "[R]ename [F]ile" })
 
 nmap("<leader>b", ":bprevious<CR>", { desc = "previous buffer ([B]ack)" })
 nmap("<leader>n", ":bnext<CR>", { desc = "[N]ext buffer" })
@@ -130,8 +161,8 @@ nmap("<leader>gy", ":Git fetch<CR>:Git pull<CR>:Git push<CR>", {
     desc = "[G]it: s[Y]nc (fetch, pull, push)"
 })
 
-nmap("<leader>gh", ":diffget //2<CR>", {desc = "diffsplit [G]et left ([H])"})
-nmap("<leader>gl", ":diffget //3<CR>", {desc = "diffsplit [G]et right ([L])"})
+nmap("<leader>gh", ":diffget //2<CR>", { desc = "diffsplit [G]et left ([H])" })
+nmap("<leader>gl", ":diffget //3<CR>", { desc = "diffsplit [G]et right ([L])" })
 
 nmap("<leader>gaa", ":!git add -A<CR>", { desc = "[G]it: [A]dd [A]ll" })
 
