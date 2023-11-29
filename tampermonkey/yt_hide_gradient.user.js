@@ -14,9 +14,6 @@
 
 const scriptName = GM_info.script.name;
 
-const ITERATIONS = 1000;
-const ITER_TIMEOUT = 50;
-
 function log(...data) {
     console.log(`Tampermonkey script "${scriptName}":`, ...data);
 }
@@ -26,21 +23,43 @@ function error(...data) {
     window.alert(`Error in Tampermonkey script "${scriptName}". See console.`);
 }
 
+/**
+ * @param {(stop: () => void) => void} run
+ * @param {() => void} after
+ * @param {number} [iterations=1000]
+ * @param {number} [timeout=50]
+ */
+function repeat(run, after, iterations = 1000, timeout = 50) {
+    const loop = setInterval(() => run(stop), timeout);
+    const loop_timeout = setTimeout(() => {
+        stop();
+        after();
+    }, iterations * timeout);
+    const stop = () => {
+        clearInterval(loop);
+        clearTimeout(loop_timeout);
+    }
+}
+
+/** @param {NodeListOf<Element>} elements */
+function hideElements(elements) {
+    elements.forEach(el => log("hide element", el));
+    repeat(
+        () => elements.forEach(el => el.style.display = "none"),
+        () => log("finished hideElements loop")
+    );
+}
+
 function main() {
-    let i = 0;
-    const loop = setInterval(() => {
-        if (++i > ITERATIONS) {
-            error("couldn't find video-player element.");
-            clearInterval(loop);
-            return;
-        }
-        const elements = document.querySelectorAll("div#container>div.html5-video-player>div.ytp-gradient-bottom");
-        if (elements.length === 0) return;
-        for (const el of elements.values()) {
-            log("hide element", el);
-            el.style.display = "none";
-        }
-    }, ITER_TIMEOUT);
+    repeat(
+        stop => {
+            const elements = document.querySelectorAll("div#container>div.html5-video-player>div.ytp-gradient-bottom");
+            if (elements.length === 0) return;
+            hideElements(elements);
+            stop();
+        },
+        () => error("couldn't find video-player element."),
+    );
 }
 
 (function() {
