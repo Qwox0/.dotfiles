@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         yt player hide gradient
 // @namespace    qwox
-// @version      0.2.4
+// @version      0.2.5
 // @description  hides annoying gradient shown on the bottom half of the youtube video player when the user agent is modified in a specific way.
 // @author       Qwox
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=youtube.com
@@ -14,41 +14,37 @@
 
 const scriptName = GM_info.script.name;
 
-const MAX_ITERATIONS = 1000;
-const ITER_TIMEOUT = 30;
+const ITERATIONS = 1000;
+const ITER_TIMEOUT = 50;
 
-/** @param {NodeListOf<Element>} elements */
-function hideElements(elements) {
-    for (const el of elements.values()) {
-        console.log(`Tampermonkey script "${scriptName}": hide element`, el);
-        el.style.display = "none";
-    }
+function log(...data) {
+    console.log(`Tampermonkey script "${scriptName}":`, ...data);
+}
+
+function error(...data) {
+    console.error(`Tampermonkey script "${scriptName}":`, ...data);
+    window.alert(`Error in Tampermonkey script "${scriptName}". See console.`);
 }
 
 function main() {
     let i = 0;
     const loop = setInterval(() => {
-        if (++i >= MAX_ITERATIONS) {
+        if (++i > ITERATIONS) {
+            error("couldn't find video-player element.");
             clearInterval(loop);
-            throw new Error(`couldn't find video-player element.`);
+            return;
         }
-
         const elements = document.querySelectorAll("div#container>div.html5-video-player>div.ytp-gradient-bottom");
         if (elements.length === 0) return;
-        hideElements(elements);
-        clearInterval(loop);
+        for (const el of elements.values()) {
+            log("hide element", el);
+            el.style.display = "none";
+        }
     }, ITER_TIMEOUT);
 }
 
 (function() {
     'use strict';
-    console.log(`executing Tampermonkey script "${scriptName}" ...`);
-    try {
-        main();
-    } catch (e) {
-        const errMsg = `Error in Tampermonkey script "${scriptName}"`;
-        console.error(`${errMsg}:`, e);
-        window.alert(`${errMsg}. See console.`);
-    }
-    console.log(`finished executing Tampermonkey script "${scriptName}"`);
+    log("executing ...");
+    main();
 })();
