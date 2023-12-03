@@ -143,6 +143,12 @@
         - docker
         - nogui
 
+    - name: KeePassXC
+      ansible.builtin.import_tasks: tasks/keepass.yml
+      tags:
+        - keepass
+        - gui
+
     - name: AwesomeWM
       ansible.builtin.import_tasks: tasks/awesome.yml
       tags:

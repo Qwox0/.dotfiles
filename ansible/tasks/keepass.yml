@@ -1,0 +1,60 @@
+# vim: set filetype=yaml.ansible :/
+- name: "KeePass: Installing KeePassXC build dependencies"
+  become: true
+  ansible.builtin.apt:
+    name:
+      - qtbase5-dev
+      - qtbase5-private-dev
+      - qttools5-dev
+      - qttools5-dev-tools
+      - libqt5svg5-dev
+      - libargon2-dev
+      - libminizip-dev
+      - libbotan-2-dev
+      - libqrencode-dev
+      - zlib1g-dev
+      - libreadline-dev
+      - libpcsclite-dev
+      - libusb-1.0-0-dev
+      - libxi-dev
+      - libxtst-dev
+      - libqt5x11extras5-dev
+
+- name: "KeePass: Cloning KeePassXC"
+  ansible.builtin.git:
+    repo: "https://github.com/keepassxreboot/keepassxc"
+    dest: "{{ bin }}/keepassxc_src"
+    version: "latest"
+    update: true
+    force: true
+  register: git_result
+
+- name: "KeePass: Building"
+  # when: git_result.changed
+  vars:
+    path: "{{ bin }}/keepassxc_src"
+  block:
+    - name: "KeePass: Removing old build directory"
+      ansible.builtin.file:
+        path: "{{ path }}/build"
+        state: "{{ item }}"
+      with_items:
+        - absent
+        - directory
+
+    - name: "KeePass: Building (cmake)"
+      ansible.builtin.command: "cmake -DWITH_XC_ALL=ON .."
+      args:
+        chdir: "{{ path }}/build"
+
+    - name: "KeePass: Building (make)"
+      ansible.builtin.command: "make"
+      args:
+        chdir: "{{ path }}/build"
+
+    - name: "KeePass: Link binary into PATH"
+      ansible.builtin.file:
+        dest: "{{ bin }}/keepassxc"
+        src: "{{ path }}/build/src/keepassxc"
+        state: link
+        force: true
