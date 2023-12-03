@@ -151,6 +151,9 @@ nmap("<leader>fo", builtin.oldfiles, { desc = "[F]ind recently [o]pened files" }
 nmap("<leader>fb", builtin.buffers, { desc = "[F]ind existing [b]uffers" })
 nmap("<leader>fd", builtin.diagnostics, { desc = "[F]ind [D]iagnostics" })
 nmap("<leader>fe", function() builtin.diagnostics { severity_limit = 1 } end, { desc = "[F]ind [E]rrors" })
+
+nmap("<leader>fr", builtin.resume, { desc = "[F]ind [R]esume" })
+
 nmap("<leader>fs", function() builtin.grep_string { search = vim.fn.input("Grep For > ") } end, {
     desc = "[F]ind [S]tring",
 })
