@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         template
 // @namespace    qwox
-// @version      1.0
+// @version      1.0.1
 // @description  description
 // @author       Qwox
 // @icon
@@ -12,27 +12,38 @@
 // @sandbox      JavaScript
 // ==/UserScript==
 
+const scriptName = GM_info.script.name;
+
+function log(...data) {
+    console.log(`Tampermonkey script "${scriptName}":`, ...data);
+}
+
+function error(...data) {
+    console.error(`Tampermonkey script "${scriptName}":`, ...data);
+    window.alert(`Error in Tampermonkey script "${scriptName}". See console.`);
+}
+
 function main() {
     throw new Error("not implemented");
 }
 
-let hasExecuted = false;
-
-function tmMain() {
-    if (hasExecuted) return;
-    hasExecuted = true;
-    console.log(`executing Tampermonkey script "${GM_info.script.name}" ...`);
-    try {
-        main();
-    } catch (e) {
-        const errMsg = `Error in Tampermonkey script "${GM_info.script.name}"`;
-        console.error(`${errMsg}:`, e);
-        window.alert(`${errMsg}. See console.`);
-    }
-}
-
 (function() {
     'use strict';
-    tmMain();
-    window.addEventListener('DOMContentLoaded', tmMain);
+    log("executing ...");
+
+    function _main() {
+        try {
+            main();
+        } catch (e) {
+            error(e);
+        } finally {
+            log("finished running main");
+        }
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", _main);
+    } else {
+        _main();
+    }
 })();

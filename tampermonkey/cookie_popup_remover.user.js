@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CookiePopupRemover
 // @namespace    qwox
-// @version      0.2.1
+// @version      0.2.2
 // @description  removes cookie popups
 // @author       Qwox
 // @icon
@@ -37,23 +37,23 @@ function main() {
     element.style.display = "none";
 }
 
-let hasExecuted = false;
-
-function tmMain() {
-    if (hasExecuted) return;
-    hasExecuted = true;
-    console.log(`executing Tampermonkey script "${GM_info.script.name}" ...`);
-    try {
-        main();
-    } catch (e) {
-        const errMsg = `Error in Tampermonkey script "${GM_info.script.name}"`;
-        console.error(`${errMsg}:`, e);
-        window.alert(`${errMsg}. See console.`);
-    }
-}
-
 (function() {
     'use strict';
-    tmMain();
-    window.addEventListener('DOMContentLoaded', tmMain);
+    log("executing ...");
+
+    function _main() {
+        try {
+            main();
+        } catch (e) {
+            error(e);
+        } finally {
+            log("finished running main");
+        }
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", _main);
+    } else {
+        _main();
+    }
 })();
