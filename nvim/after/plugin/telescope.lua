@@ -157,12 +157,24 @@ nmap("<leader>fr", builtin.resume, { desc = "[F]ind [R]esume" })
 nmap("<leader>fs", function() builtin.grep_string { search = vim.fn.input("Grep For > ") } end, {
     desc = "[F]ind [S]tring",
 })
-vmap("<leader>f", function() builtin.grep_string { search = qwox_util.get_visual_text() } end, {
+vmap("<leader>f", function() builtin.grep_string { search = qwox_util.get_selection_text() } end, {
     desc = "[F]ind Selection"
 })
 nmap("<leader>/", function() builtin.current_buffer_fuzzy_find(small_dropdown) end, {
     desc = "[/] Fuzzily search in current buffer",
 })
+vmap("<leader>/", function()
+    local selection = qwox_util.get_selection_text()
+    qwox_util.enter_normal_mode()
+    -- vim.cmd(":let @/ = '" .. selection .. "'")
+    --vim.fn.search(selection)
+    --vim.fn.feedkeys("/" .. selection)
+    vim.fn.feedkeys("/" .. selection)
+    --vim.fn.feedkeys("<CR>", "x")
+    -- builtin.current_buffer_fuzzy_find(vim.tbl_deep_extend("force", small_dropdown, {
+    --     default_text = selection,
+    -- }))
+end, { desc = "[/] Search for selected text in buffer", })
 nmap("<leader>ft", builtin.treesitter, { desc = "[F]ind [T]reesitter items" })
 
 nmap("<leader>fm", builtin.keymaps, { desc = "[F]ind [M]appings" })

@@ -120,7 +120,7 @@ vmap("<leader>s", function()
     local input = vim.fn.input("Surround selection with > ")
     if input == "" then return end
 
-    local start_row, start_col, end_row, end_col = qwox_util.get_visual_pos()
+    local start_row, start_col, end_row, end_col = qwox_util.get_selection_pos()
     start_col = start_col - 1
 
     if start_row == end_row then

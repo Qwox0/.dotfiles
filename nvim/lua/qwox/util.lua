@@ -152,8 +152,7 @@ end
 ---@return integer start_col 0-indexed
 ---@return integer end_row 1-indexed
 ---@return integer end_col 0-indexed
-function U.get_visual_pos()
-    -- todo: maybe use getpos("'<"), getpos("'>")
+function U.get_selection_pos()
     local row1, col1 = table.unpack(vim.fn.getpos('v'), 2, 3)
     local row2, col2 = table.unpack(vim.fn.getcurpos(), 2, 3)
     local start_row = math.min(row1, row2)
@@ -169,16 +168,17 @@ function U.get_visual_pos()
     return start_row, start_col, end_row, end_col
 end
 
-function U.get_visual_text()
-    local s_start = vim.fn.getpos("'<")
-    local s_end = vim.fn.getpos("'>")
-    local n_lines = math.abs(s_end[2] - s_start[2]) + 1
-    local lines = vim.api.nvim_buf_get_lines(0, s_start[2] - 1, s_end[2], false)
-    lines[1] = string.sub(lines[1], s_start[3], -1)
+---Get selected text in visual mode
+---start is inclusive, end is inclusive
+function U.get_selection_text()
+    local start_row, start_col, end_row, end_col = U.get_selection_pos()
+    local n_lines = math.abs(end_row - start_row) + 1
+    local lines = vim.api.nvim_buf_get_lines(0, start_row - 1, end_row, false)
+    lines[1] = string.sub(lines[1], start_col, -1)
     if n_lines == 1 then
-        lines[n_lines] = string.sub(lines[n_lines], 1, s_end[3] - s_start[3] + 1)
+        lines[n_lines] = string.sub(lines[n_lines], 1, end_col - start_col + 1)
     else
-        lines[n_lines] = string.sub(lines[n_lines], 1, s_end[3])
+        lines[n_lines] = string.sub(lines[n_lines], 1, end_col)
     end
     return table.concat(lines, '\n')
 end
