@@ -30,7 +30,7 @@
   register: git_result
 
 - name: "KeePass: Building"
-  # when: git_result.changed
+  when: git_result.changed
   vars:
     path: "{{ bin }}/keepassxc_src"
   block:
@@ -56,5 +56,12 @@
       ansible.builtin.file:
         dest: "{{ bin }}/keepassxc"
         src: "{{ path }}/build/src/keepassxc"
+        state: link
+        force: true
+
+    - name: "KeePass: Link keepassxc-proxy"
+      ansible.builtin.file:
+        dest: "{{ path }}/build/src/keepassxc-proxy"
+        src: "{{ path }}/build/src/proxy/keepassxc-proxy"
         state: link
         force: true
