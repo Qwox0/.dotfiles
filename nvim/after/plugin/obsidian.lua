@@ -25,9 +25,17 @@ require("obsidian").setup {
         --  * "notes_subdir" - put new notes in the default notes subdirectory.
         new_notes_location = "current_dir",
 
-        -- Whether to add the output of the node_id_func to new notes in autocompletion.
+        -- Control how wiki links are completed with these (mutually exclusive) options:
+        --
+        -- 1. Whether to add the note ID during completion.
         -- E.g. "[[Foo" completes to "[[foo|Foo]]" assuming "foo" is the ID of the note.
-        prepend_note_id = true
+        prepend_note_id = true,
+        -- 2. Whether to add the note path during completion.
+        -- E.g. "[[Foo" completes to "[[notes/foo|Foo]]" assuming "notes/foo.md" is the path of the note.
+        prepend_note_path = false,
+        -- 3. Whether to only use paths during completion.
+        -- E.g. "[[Foo" completes to "[[notes/foo]]" assuming "notes/foo.md" is the path of the note.
+        use_path_only = false,
     },
 
     templates = {
@@ -42,8 +50,6 @@ require("obsidian").setup {
 -- line wrap in obsidian
 autocmd("BufEnter", { pattern = obsidian_dir .. "/*.md", command = ":set wrap" })
 autocmd("BufLeave", { pattern = obsidian_dir .. "/*.md", command = ":set nowrap" })
-
-
 
 nmap("<leader>ot", vim.cmd.ObsidianTemplate, { desc = "[O]bsidian [T]emplate" })
 nmap("<leader>on", function()
@@ -99,6 +105,7 @@ local default = {
     mappings = {
         -- Overrides the 'gf' mapping to work on markdown/wiki links within your vault.
         ["gf"] = require("obsidian").util.gf_passthrough(),
+        ["gd"] = require("obsidian").util.gf_passthrough(),
     },
 
     -- Optional, customize how names/IDs for new notes are created.
