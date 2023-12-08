@@ -42,12 +42,19 @@ LSP.servers = {
     },
 }
 
+function LSP.format()
+    local ok = pcall(vim.fn.buf.format)
+    if not ok then
+        vim.fn.feedkeys("mzgg=G`z")
+    end
+end
+
+require("typed.keymap").map("n", "<leader>jf", LSP.format, { desc = "[F]ormat buffer" })
+
 function LSP.custom_attach(client, bufnr)
     -- Create a command `:Format` local to the LSP buffer
     local create_command = require("typed.command")
-    create_command("Format", function(_)
-        vim.lsp.buf.format()
-    end, { buffer = bufnr, desc = "Format current buffer with LSP" })
+    create_command("Format", LSP.format, { buffer = bufnr, desc = "Format current buffer with LSP" })
 
     local map = function(mode, keys, func, desc)
         if desc then
@@ -58,7 +65,6 @@ function LSP.custom_attach(client, bufnr)
 
     map("n", "<leader>jn", function() vim.lsp.buf.rename() end, "Re[n]ame")
     map("n", "<leader>ja", function() vim.lsp.buf.code_action() end, "Code [A]ction")
-    map("n", "<leader>jf", function() vim.lsp.buf.format() end, "[F]ormat buffer")
     map("n", "<leader>jd", function() vim.diagnostic.open_float() end, "Show [D]iagnostics")
 
     -- map("n", "gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
