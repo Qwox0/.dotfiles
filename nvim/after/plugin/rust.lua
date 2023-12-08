@@ -36,7 +36,7 @@ require("rust-tools").setup {
             nmap("<leader>rr", ":RustRunnables<CR>", { buffer = bufnr, desc = "[R]ust [R]unnables" })
             qwox_lsp.custom_attach(client, bufnr)
         end,
-        standalone = false, -- single file support
+        standalone = true, -- single file support
         settings = {
             ["rust-analyzer"] = {
                 cargo = {
