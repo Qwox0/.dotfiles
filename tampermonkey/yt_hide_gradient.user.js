@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         yt player hide gradient
 // @namespace    qwox
-// @version      0.2.9
+// @version      0.3.0
 // @description  hides annoying gradient shown on the bottom half of the youtube video player when the user agent is modified in a specific way.
 // @author       Qwox
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=youtube.com
@@ -23,47 +23,16 @@ function error(...data) {
     window.alert(`Error in Tampermonkey script "${scriptName}". See console.`);
 }
 
-/**
- * @param {(stop: () => void) => void} run
- * @param {() => void} after
- * @param {number} [iterations=1000]
- * @param {number} [timeout=50]
- */
-function repeat(run, after, iterations = 1000, timeout = 50) {
-    const loop = setInterval(() => run(stop), timeout);
-    const loop_timeout = setTimeout(() => {
-        stop();
-        after();
-    }, iterations * timeout);
-    const stop = () => {
-        clearInterval(loop);
-        clearTimeout(loop_timeout);
-    }
-}
-
-/** @param {NodeListOf<Element>} elements */
-function hideElements(elements) {
-    elements.forEach(el => log("hide element", el));
-    const hide = () => elements.forEach(el => el.style.display = "none");
-    hide();
-    repeat(
-        hide,
-        () => log("finished hideElements loop"),
-        10000,
-        100,
-    );
-}
+const TIMEOUT = 100;
 
 function main() {
-    repeat(
-        stop => {
-            const elements = document.querySelectorAll("div#container>div.html5-video-player>div.ytp-gradient-bottom");
-            if (elements.length === 0) return;
-            hideElements(elements);
-            stop();
-        },
-        () => error("couldn't find video-player element."),
-    );
+    const loop = setInterval(() => {
+        const element = document.querySelector("div#container>div.html5-video-player>div.ytp-gradient-bottom");
+        if (!element) return;
+        element.style.display = "none"
+    }, TIMEOUT);
+    window.yt_hide_gradient_loop = loop;
+    unsafeWindow.yt_hide_gradient_loop = loop;
 }
 
 (function() {
