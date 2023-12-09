@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CookiePopupRemover
 // @namespace    qwox
-// @version      0.2.2
+// @version      0.2.3
 // @description  removes cookie popups
 // @author       Qwox
 // @icon
@@ -11,6 +11,17 @@
 // @downloadURL  https://github.com/Qwox0/.dotfiles/raw/main/tampermonkey/cookie_popup_remover.user.js
 // @sandbox      JavaScript
 // ==/UserScript==
+
+const scriptName = GM_info.script.name;
+
+function log(...data) {
+    console.log(`Tampermonkey script "${scriptName}":`, ...data);
+}
+
+function error(...data) {
+    console.error(`Tampermonkey script "${scriptName}":`, ...data);
+    window.alert(`Error in Tampermonkey script "${scriptName}". See console.`);
+}
 
 const PAGES = {
     "askubuntu.com": () => document.querySelector("body > div.js-consent-banner"),
