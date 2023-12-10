@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         yt player hide gradient
 // @namespace    qwox
-// @version      0.3.1
+// @version      0.3.2
 // @description  hides annoying gradient shown on the bottom half of the youtube video player when the user agent is modified in a specific way.
 // @author       Qwox
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=youtube.com
@@ -14,7 +14,7 @@
 
 const STATE = window.STATE || {};
 window.STATE = STATE;
-if (unsafeWindow) unsafeWindow.STATE = STATE;
+if (typeof unsafeWindow !== "undefined") unsafeWindow.STATE = STATE;
 
 const scriptName = GM_info.script.name;
 
