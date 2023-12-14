@@ -1,0 +1,31 @@
+# vim: set filetype=yaml.ansible :/
+- name: "Zig: Installing Zig"
+  vars:
+    os: "linux"
+    arch: "x86_64"
+    id: "{{ arch }}-{{ os }}"
+    url: "https://ziglang.org/download/index.json"
+    download_url: "{{ (lookup('url', url, split_lines=False) | from_json).master[id].tarball }}"
+    archive_name: "{{ download_url | split('/') | last }}"
+    dir_name: "{{ archive_name | splitext | first | splitext | first }}"
+    is_newest_installed: "{{ installed.stat.exists }}"
+  block:
+    - name: "Zig: Check for newest Installation"
+      stat:
+        path: "{{ bin }}/{{ dir_name }}"
+      register: installed
+
+    - name: "Zig: Download and extract the archive {{ archive_name }}"
+      become: true
+      ansible.builtin.unarchive:
+        src: "{{ download_url }}"
+        dest: "{{ bin }}"
+        remote_src: true
+      when: not is_newest_installed
+
+    - name: "Zig: Link binary into PATH"
+      ansible.builtin.file:
+        dest: "{{ bin }}/zig"
+        src: "{{ bin }}/{{ dir_name }}/zig"
+        state: link
+        force: true

@@ -1,10 +1,29 @@
 # vim: set filetype=yaml.ansible :/
-- name: Set vars
-  set_fact:
-    prefix: "prefix"
-    text: "{{ prefix }} - text" # doesn't work
+- name: "Test"
+  vars:
+    os: "linux"
+    arch: "x86_64"
+    id: "{{ arch }}-{{ os }}"
+    url: "https://ziglang.org/download/index.json"
+    download_url: "{{ (lookup('url', url, split_lines=False) | from_json).master[id].tarball }}"
+    archive_name: "{{ download_url | split('/') | last }}"
+    dir_name: "{{ archive_name | splitext | first | splitext | first }}"
+    is_installed: "{{ installed.stat.exists }}"
+  block:
+    - name: "Url"
+      debug:
+        var: download_url
 
-- name: Debug
-  debug:
-    var:
-      - text
+    - name: "Dir"
+      debug:
+        var: dir_name
+
+    - name: "Check Dir"
+      stat:
+        path: "{{ bin }}/{{ dir_name }}"
+      register: installed
+
+    - name: "IsInstalled"
+      debug:
+        msg: "Install"
+      when: not is_installed

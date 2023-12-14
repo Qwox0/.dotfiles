@@ -86,6 +86,12 @@
         - name: Rust-lang
           ansible.builtin.import_tasks: tasks/rust.yml
 
+    - name: Zig
+      ansible.builtin.import_tasks: tasks/zig.yml
+      tags:
+        - zig
+        - nogui
+
     - name: Go
       ansible.builtin.import_tasks: tasks/go.yml
       tags:
