@@ -7,11 +7,8 @@
     archive_name: "{{ latest_version }}.{{ os }}-{{ arch }}.tar.gz"
     download_url: "https://go.dev/dl/{{ archive_name }}"
     current_version: "none"
+    latest_version: "{{ lookup('url', latest_version_url, split_lines=False) | split('\n') | first }}"
   block:
-    - name: "Go: Get latest version"
-      set_fact:
-        latest_version: "{{ (lookup('url', latest_version_url, split_lines=False) | split('\n'))[0] }}"
-
     - name: "Go: Try to get current go version installed"
       ansible.builtin.command: go version
       register: result

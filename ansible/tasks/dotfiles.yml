@@ -15,7 +15,7 @@
       vars:
         is_valid_line: "{{ (item | trim)[:1] != '#' }}"
         dest: "{{ item.split(';')[1] | trim | regex_replace('~', home) }}"
-        _src: "{{ dotfiles }}/{{ item.split(';')[0] | trim }}"
+        _src: "{{ dotfiles }}/{{ item.split(';') | first | trim }}"
         src: "{{ _src | realpath }}"
       ansible.builtin.shell: |
         [ -d {{ dest }} -a ! -L {{ dest }} ] && rm -r {{ dest }} && echo "changed";
@@ -33,7 +33,7 @@
       vars:
         is_valid_line: "{{ (item | trim)[:1] != '#' }}"
         dest: "{{ item.split(';')[1] | trim | regex_replace('~', home) }}"
-        _src: "{{ dotfiles }}/{{ item.split(';')[0] | trim }}"
+        _src: "{{ dotfiles }}/{{ item.split(';') | first | trim }}"
         src: "{{ _src | realpath }}"
       ansible.builtin.file:
         dest: "{{ dest }}"
