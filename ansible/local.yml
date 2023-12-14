@@ -18,8 +18,13 @@
     - name: Ansible
       ansible.builtin.import_tasks: tasks/ansible.yml
       tags:
-        - always
         - ansible
+        - nogui
+        - gui
+        - rust-tools
+        - rust
+        - terminal
+        - neovim
 
     - name: Core
       block:
