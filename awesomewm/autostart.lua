@@ -1,5 +1,5 @@
-local awful = require("core").awful
-local screen = require("core").screen
+-- local awful = require("core").awful
+local awful = require("awful")
 
 local home = require("vars").home
 
@@ -14,6 +14,8 @@ local scripts = {
     scripts_dir .. "/blueFilter.sh",
     "syncthing serve --no-browser --logfile=default",
 
+    "~/bin/moonlander/wally/wally",
+
     "compton",
     --"picom",
 
@@ -23,12 +25,12 @@ local scripts = {
 
 --- set rules in `rules.lua`
 local programs = {
-    "keepassxc",
-    "virt-manager",
+    "firefox",
     "thunderbird",
     "discord",
+    "keepassxc",
+    "virt-manager",
     "gnome-control-center",
-    "firefox",
 }
 
 local run = function()

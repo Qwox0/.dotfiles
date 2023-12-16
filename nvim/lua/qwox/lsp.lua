@@ -22,17 +22,16 @@ LSP.servers = {
         settings = {
             Lua = {
                 runtime = {
-                    version = "LuaJIT",                  -- Lua version (LuaJIT for Neovim)
-                    path = vim.split(package.path, ";"), -- Setup your lua path
+                    version = "LuaJIT",                                       -- Lua version (LuaJIT for Neovim)
+                    path = vim.split("?.lua;?/init.lua;" .. package.path, ";"), -- Setup your lua path
                 },
-                diagnostics = {
-                    globals = { "vim" }, -- recognize the `vim` global
-                },
+                diagnostics = {},
                 workspace = {
                     -- Make the server aware of Neovim runtime files
                     library = {
                         vim.fn.expand("$VIMRUNTIME/lua"),
                         vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
+                        vim.fn.expand("~/bin/awesome"),
                     },
                     checkThirdParty = false,
                 },

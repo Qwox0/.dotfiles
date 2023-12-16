@@ -1,3 +1,8 @@
+-- Rules to apply to new clients (through the "manage" signal).
+-- use `xprop` or `xpropclass`
+-- -- WM_CLASS = <Instance Name>, <class-rule>
+-- -- WM_NAME = <name-rule>
+
 local awful = require("core").awful
 local beautiful = require("core").beautiful
 local ruled = require("core").ruled
@@ -73,20 +78,15 @@ ruled.client.connect_signal("request::rules", function()
         rule       = { class = "Gnome-control-center", instance = "gnome-control-center" },
         properties = { screen = 1, tag = "www", minimized = true }
     }
+
+    ruled.client.append_rule {
+        rule       = { class = "Wally", instance = "wally" },
+        properties = { screen = 2, tag = "8" }
+    }
 end)
 
 
 
-
-
-
-
-
-
--- Rules to apply to new clients (through the "manage" signal).
--- use 'xprop'
--- -- WM_CLASS = <Instance Name>, <class-rule>
--- -- WM_NAME = <name-rule>
 --[[
 
 local set_default_rules = function()

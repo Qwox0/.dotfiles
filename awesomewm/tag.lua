@@ -1,5 +1,4 @@
-local awful = require("core").awful
-local tag = require("core").tag
+local awful = require("awful")
 
 local layout_list = require("vars").layout_list
 --awful.layout.layouts = layouts

@@ -1,9 +1,7 @@
-local awesome = require("core").awesome
-local awful = require("core").awful
-local beautiful = require("core").beautiful
-local client = require("core").client
-local gears = require("core").gears
-local wibox = require("core").wibox
+local awful = require("awful")
+local beautiful = require("beautiful")
+local gears = require("gears")
+local wibox = require("wibox")
 
 client.connect_signal("manage", function(c)
     -- Set the windows at the slave,
@@ -34,15 +32,15 @@ client.connect_signal("request::titlebars", function(c)
 
     awful.titlebar(c):setup {
         {
-          -- Left
+            -- Left
             awful.titlebar.widget.iconwidget(c),
             buttons = buttons,
             layout  = wibox.layout.fixed.horizontal
         },
         {
-              -- Middle
+            -- Middle
             {
-              -- Title
+                -- Title
                 align  = "center",
                 widget = awful.titlebar.widget.titlewidget(c)
             },
@@ -50,7 +48,7 @@ client.connect_signal("request::titlebars", function(c)
             layout  = wibox.layout.flex.horizontal
         },
         {
-          -- Right
+            -- Right
             awful.titlebar.widget.maximizedbutton(c),
             awful.titlebar.widget.stickybutton(c),
             awful.titlebar.widget.ontopbutton(c),
