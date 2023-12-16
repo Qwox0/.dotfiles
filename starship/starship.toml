@@ -101,6 +101,9 @@ style = "bold 202"
 [lua]
 symbol = " "
 
+[zig]
+symbol = " "
+
 [golang]
 symbol = " " # 󰟓 #
 
