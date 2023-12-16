@@ -38,7 +38,13 @@ function mycolors.set_scheme(scheme)
 
     --hl("netrwDir", { fg = "#5eacd3" })
 
+    -- Fix
     set_hl("CmpItemKindDefault", { fg = "Orange" })
+    link_hl("DiagnosticFloatingError", "DiagnosticError")
+    link_hl("DiagnosticFloatingWarn", "DiagnosticWarn")
+    link_hl("DiagnosticFloatingInfo", "DiagnosticInfo")
+    link_hl("DiagnosticFloatingHint", "DiagnosticHint")
+    link_hl("DiagnosticFloatingOk", "DiagnosticOk")
 end
 
 return mycolors
