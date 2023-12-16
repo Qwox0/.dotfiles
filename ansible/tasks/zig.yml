@@ -5,12 +5,15 @@
     arch: "x86_64"
     id: "{{ arch }}-{{ os }}"
     url: "https://ziglang.org/download/index.json"
-    download_url: "{{ (lookup('url', url, split_lines=False) | from_json).master[id].tarball }}"
+    json: "{{ lookup('url', url, split_lines=False) | from_json }}"
+    version: "{{ json | difference(['master']) | first }}" # zig version are already ordered
+    download_url: "{{ json[version][id].tarball }}"
     archive_name: "{{ download_url | split('/') | last }}"
     dir_name: "{{ archive_name | splitext | first | splitext | first }}"
-    is_newest_installed: "{{ installed.stat.exists }}"
+    installed: null
+    is_installed: "{{ installed.stat.exists }}"
   block:
-    - name: "Zig: Check for newest Installation"
+    - name: "Zig: Check for Installation"
       stat:
         path: "{{ bin }}/{{ dir_name }}"
       register: installed
@@ -21,7 +24,7 @@
         src: "{{ download_url }}"
         dest: "{{ bin }}"
         remote_src: true
-      when: not is_newest_installed
+      when: not is_installed
 
     - name: "Zig: Link binary into PATH"
       ansible.builtin.file:
