@@ -2,7 +2,7 @@ local Colors = {}
 
 Colors.hl_groups = {}
 
----@class Color
+---@class Color: vim.api.keyset.highlight
 ---@field fg? string color name or "#RRGGBB", see note.
 ---@field foreground? string Same as `fg`.
 ---@field bg? string color name or "#RRGGBB", see note.
@@ -30,16 +30,19 @@ Colors.hl_groups = {}
 ---@param name string Highlight group name
 ---@return Color
 function Colors.get_hl(name)
-    ---@type Color
-    local color = vim.api.nvim_get_hl(0, { name = name })
+    return vim.api.nvim_get_hl(0, { name = name })
+end
 
+---@param name string Highlight group name
+---@return Color
+function Colors.get_active_hl(name)
+    local color = Colors.get_hl(name)
     if color.link == nil then return color end
-
-    return Colors.get_hl(color.link)
+    return Colors.get_active_hl(color.link)
 end
 
 ---If link is `nil` this does nothing.
----If you want to remove the `name` group use `set_hl(name, nil)` instead.
+---If you want to remove the `name` group use `clear_hl(name)` instead.
 ---@see Color.sethl
 ---@param name string Highlight group name
 ---@param link? string target group name
@@ -48,16 +51,46 @@ function Colors.link_hl(name, link)
     Colors.set_hl(name, { link = link })
 end
 
+---@param name string Highlight group name
+function Colors.unlink_hl(name)
+    local color = Colors.get_hl(name)
+    color.link = nil
+    Colors.set_hl(name, color)
+end
+
+---@param name string Highlight group name
+---@param ordering "keep"|"force" whether to keep group data or replace (force) it with the linked data.
+function Colors.flatten_unlink_hl(name, ordering)
+    local function get_active(n)
+        local color = Colors.get_hl(n)
+        if color.link == nil then return color end
+        local linked = get_active(color.link)
+        color.link = nil
+        return vim.tbl_deep_extend(ordering, color, linked)
+    end
+    Colors.set_hl(name, get_active(name))
+end
+
 ---uses `vim.api.nvim_set_hl`. See |nvim_set_hl()|
 ---This removes any existing configurations of the highlight group `name`.
 ---If you want to update the existing configuration, use `update_hl` instead.
+---
+---If `color` contains `link`, nvim will ignore all other attributes (see `:h nvim_set_hl`).
+---To use the other attribute use `unlink_hl(name)`
+---
 ---@see Color.update_hl
+---@see vim.api.nvim_set_hl
 ---@param name string Highlight group name
 ---@param color Color
 function Colors.set_hl(name, color)
     -- 0: global space (for every window)
     vim.api.nvim_set_hl(0, name, color)
     Colors.hl_groups[name] = color
+end
+
+---@param name string Highlight group name
+function Colors.clear_hl(name)
+    Colors.set_hl(name, {})
 end
 
 ---This updates any existing configurations of the highlight group `name`.
@@ -69,14 +102,21 @@ end
 ---@param name string Highlight group name
 ---@param color Color
 function Colors.update_hl(name, color)
+    local old = Colors.get_hl(name)
+    Colors.set_hl(name, vim.tbl_deep_extend("keep", color, old))
+
+    --[[
     Colors.link_hl(name, color.link)
     color.link = nil
 
     if table.count(color) == 0 then return end
 
-    local old = Colors.get_hl(name)
+    local old = Colors.get_active_hl(name)
+    color.link = old.link
+    print(name, old.link)
     local new = vim.tbl_deep_extend("force", old, color)
     Colors.set_hl(name, new)
+]]
 end
 
 return Colors

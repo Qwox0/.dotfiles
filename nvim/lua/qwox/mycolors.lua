@@ -13,13 +13,16 @@ function mycolors.set_scheme(scheme)
 
     mycolors.scheme = scheme
 
-    local hl = require("typed.colors").update_hl
+    local update_hl = require("typed.colors").update_hl
+    local set_hl = require("typed.colors").set_hl
+    local link_hl = require("typed.colors").link_hl
 
     -- type :highlight to show highlight groups
-    hl("Normal", { bg = "none" })
-    --hl("NormalFloat", { bg = "none" })
+    update_hl("Normal", { bg = "none" })
 
-    hl("SignColumn", { bg = "none", })
+    link_hl("NormalFloat", "Pmenu")
+
+    update_hl("SignColumn", { bg = "none", })
 
     --[[
     hl("ColorColumn", {
@@ -29,11 +32,13 @@ function mycolors.set_scheme(scheme)
     })
     ]]
 
-    hl("CursorLineNR", { bg = "None" })
+    update_hl("CursorLineNR", { bg = "None" })
 
     --hl("LineNr", { fg = "#5eacd3" })
 
     --hl("netrwDir", { fg = "#5eacd3" })
+
+    set_hl("CmpItemKindDefault", { fg = "Orange" })
 end
 
 return mycolors

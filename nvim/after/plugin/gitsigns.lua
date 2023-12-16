@@ -42,13 +42,18 @@ require("gitsigns").setup {
 }
 
 local colors = require("typed.colors")
-colors.update_hl("GitSignsAdd", { link = "GruvboxGreenSign", fg = "#50fa7b" })
+
+colors.flatten_unlink_hl("GitSignsAdd", "keep")
+colors.update_hl("GitSignsAdd", { fg = "#50fa7b" })
 colors.update_hl("GitSignsChange", { link = "GruvboxYellowSign" })
---colors.update_hl("GitSignsDelete", { link = "GruvboxRedSign" }) -- fg = "#ff5555"
+colors.update_hl("GitSignsDelete", { link = "GruvboxRedSign" })
 colors.update_hl("GitSignsChangedelete", { link = "GruvboxOrangeSign" })
 colors.update_hl("GitSignsChangedeleteNr", { link = "GitSignsChangedelete" })
 
-local inline = { underdotted = true }
-colors.update_hl("GitSignsAddInline", inline)
-colors.update_hl("GitSignsChangeInline", inline)
-colors.update_hl("GitSignsDeleteInline", inline)
+local function get_inline(s)
+    return { underdotted = true, sp = colors.get_active_hl("GitSigns" .. s).fg }
+end
+colors.update_hl("GitSignsAddInline", get_inline("Add"))
+colors.update_hl("GitSignsChangeInline", get_inline("Change"))
+colors.update_hl("GitSignsChangedeleteInline", get_inline("Changedelete"))
+colors.update_hl("GitSignsDeleteInline", get_inline("Delete"))
