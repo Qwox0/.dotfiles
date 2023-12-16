@@ -22,10 +22,12 @@ LSP.servers = {
         settings = {
             Lua = {
                 runtime = {
-                    version = "LuaJIT",                                       -- Lua version (LuaJIT for Neovim)
+                    version = "LuaJIT",                                         -- Lua version (LuaJIT for Neovim)
                     path = vim.split("?.lua;?/init.lua;" .. package.path, ";"), -- Setup your lua path
                 },
-                diagnostics = {},
+                diagnostics = {
+                    globals = { "vim" }, -- recognize the `vim` global
+                },
                 workspace = {
                     -- Make the server aware of Neovim runtime files
                     library = {
