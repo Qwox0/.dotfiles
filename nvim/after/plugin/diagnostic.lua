@@ -36,4 +36,5 @@ vim.diagnostic.config {
         active = column_signs,
     },
     update_in_insert = true,
+    severity_sort = true,
 }
