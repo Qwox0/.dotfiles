@@ -44,8 +44,17 @@ LSP.servers = {
 }
 
 function LSP.format()
-    local ok = pcall(vim.fn.buf.format)
-    if not ok then
+    local can_format = false
+    for _, client in ipairs(vim.lsp.get_clients { bufnr = 0 }) do
+        if client.server_capabilities.documentFormattingProvider then
+            can_format = true
+            break
+        end
+    end
+    if can_format then
+        vim.lsp.buf.format()
+    else
+        print("Format Fallback")
         vim.fn.feedkeys("mzgg=G`z")
     end
 end
