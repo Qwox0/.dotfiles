@@ -63,10 +63,36 @@ actions.client.swap = {
             data = { description = "swap with " .. direction .. " client", group = "client" },
         }
     end,
+    ---@param direction "left"|"up"|"down"|"right"
     global_direction = function(direction)
         return {
             fn = function() awful.client.swap.global_bydirection(direction) end,
             data = { description = "swap with " .. direction .. " client across screens", group = "client" },
+        }
+    end,
+}
+actions.client.move_to_tag = {
+    absolute = function(idx)
+        return {
+            fn = function()
+                if client.focus then
+                    local tag = client.focus.screen.tags[idx]
+                    if tag then client.focus:move_to_tag(tag) end
+                end
+            end,
+            data = { description = "move focused client to tag", group = "tag" }
+        }
+    end,
+    relative = function(dx)
+        return {
+            fn = function()
+                if client.focus then
+                    local idx = awful.screen.focused().selected_tag.index + dx
+                    local tag = client.focus.screen.tags[idx]
+                    if tag then client.focus:move_to_tag(tag) end
+                end
+            end,
+            data = { description = "move focused client to " .. relative_to_word(dx) .. " tag", group = "tag" }
         }
     end,
 }

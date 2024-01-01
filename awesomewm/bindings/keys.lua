@@ -39,6 +39,8 @@ awful.keyboard.append_global_keybindings({
 awful.keyboard.append_global_keybindings({
     addkey({ mod }, "b", actions.tag.focus.relative(-1)),
     addkey({ mod }, "n", actions.tag.focus.relative(1)),
+    addkey({ mod, "Shift" }, "b", actions.client.move_to_tag.relative(-1)),
+    addkey({ mod, "Shift" }, "n", actions.client.move_to_tag.relative(1)),
     addkey({ mod }, "Left", actions.tag.focus.relative(-1)),
     addkey({ mod }, "Right", actions.tag.focus.relative(1)),
     -- awful.key({ modkey, }, "Escape", awful.tag.history.restore, { description = "go back", group = "tag" }),
