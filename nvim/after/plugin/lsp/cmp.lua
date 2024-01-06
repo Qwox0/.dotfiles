@@ -33,6 +33,53 @@ local mapping = cmp.mapping.preset.insert(cmdlinemap {
     --["<C-Space>"] = cmp.mapping.confirm(confirm_opt),
 })
 
+local my_kind_order = {
+    cmp.lsp.CompletionItemKind.Field,         -- (󰜢)
+    cmp.lsp.CompletionItemKind.Property,      -- (󰜢)
+    cmp.lsp.CompletionItemKind.EnumMember,    -- ()
+    cmp.lsp.CompletionItemKind.Variable,      -- (󰀫)
+
+    cmp.lsp.CompletionItemKind.Snippet,       -- ()
+    cmp.lsp.CompletionItemKind.Function,      -- (󰊕)
+
+    cmp.lsp.CompletionItemKind.Method,        -- (󰆧)
+    cmp.lsp.CompletionItemKind.Constructor,   -- ()
+
+    cmp.lsp.CompletionItemKind.Class,         -- (󰠱)
+    cmp.lsp.CompletionItemKind.Struct,        -- (󰙅)
+    cmp.lsp.CompletionItemKind.Enum,          -- ()
+    cmp.lsp.CompletionItemKind.Interface,     -- ()
+
+    cmp.lsp.CompletionItemKind.Module,        -- ()
+    cmp.lsp.CompletionItemKind.Constant,      -- (󰏿)
+    cmp.lsp.CompletionItemKind.TypeParameter, -- (T)
+
+    cmp.lsp.CompletionItemKind.Unit,          -- (󰑭)
+    cmp.lsp.CompletionItemKind.Value,         -- (󰎠)
+    cmp.lsp.CompletionItemKind.Keyword,       -- (󰌋)
+    cmp.lsp.CompletionItemKind.Color,         -- (󰏘)
+    cmp.lsp.CompletionItemKind.File,          -- (󰈙)
+    cmp.lsp.CompletionItemKind.Reference,     -- (󰈇)
+    cmp.lsp.CompletionItemKind.Folder,        -- (󰉋)
+    cmp.lsp.CompletionItemKind.Event,         -- ()
+    cmp.lsp.CompletionItemKind.Operator,      -- (󰆕)
+
+    cmp.lsp.CompletionItemKind.Text,          -- (󰉿)
+
+    idx_tbl = {},
+}
+
+for idx, kind in ipairs(my_kind_order) do
+    my_kind_order.idx_tbl[kind] = idx
+end
+
+---@return boolean
+local function has_imports(entry)
+    local item = entry:get_completion_item()
+    local imports = item and item.data and item.data.imports or {}
+    return vim.tbl_isempty(imports)
+end
+
 cmp.setup {
     enabled = function()
         return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
@@ -77,7 +124,25 @@ cmp.setup {
             cmp.config.compare.exact,
             -- cmp.config.compare.kind,
             cmp.config.compare.score,
-            cmp.config.compare.kind,
+            function(entry1, entry2) -- in scope first, imported last
+                local has_imports1 = has_imports(entry1)
+                local has_imports2 = has_imports(entry2)
+                if has_imports1 ~= has_imports2 then
+                    return has_imports1
+                end
+            end,
+            function(entry1, entry2)            -- custom kind
+                local kind1 = entry1:get_kind() --- @type number
+                local kind2 = entry2:get_kind() --- @type number
+                if kind1 ~= kind2 then
+                    local diff = my_kind_order.idx_tbl[kind1] - my_kind_order.idx_tbl[kind2]
+                    if diff < 0 then
+                        return true
+                    elseif diff > 0 then
+                        return false
+                    end
+                end
+            end,
 
             -- from lukas-reineke/cmp-under-comparator.
             function(entry1, entry2)
@@ -146,7 +211,10 @@ cmp.setup {
             },
             before = function(entry, vim_item)
                 return vim_item
-            end
+            end,
+            symbol_map = {
+                TypeParameter = "T",
+            },
         }),
     },
 
