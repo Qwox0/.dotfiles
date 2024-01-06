@@ -3,11 +3,12 @@
 local qwox_util = require("qwox.util")
 if not qwox_util.has_plugins("obsidian") then return end
 
+if not qwox_util.is_filetype("markdown") then return end
+
 local autocmd = require("typed.autocmd")
 local nmap = require("typed.keymap").nmap
 
 local obsidian_dir = qwox_util.paths.home .. "/obsidian"
-obsidian_dir = vim.loop.fs_realpath(qwox_util.paths.home .. "/obsidian") or obsidian_dir
 
 local templates_subdir = "templates"
 
@@ -15,11 +16,16 @@ local enabled = qwox_util.file.exists(obsidian_dir .. "/" .. templates_subdir)
 if not enabled then return end
 
 require("obsidian").setup {
-    dir = obsidian_dir,
+    workspaces = {
+        {
+            name = "vault",
+            path = obsidian_dir,
+        }
+    },
 
     completion = {
         nvim_cmp = true,
-        min_chars = 0,
+        min_chars = 1,
         -- Where to put new notes created from completion. Valid options are
         --  * "current_dir" - put new notes in same directory as the current buffer.
         --  * "notes_subdir" - put new notes in the default notes subdirectory.
