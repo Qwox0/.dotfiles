@@ -39,11 +39,11 @@ local my_kind_order = {
     cmp.lsp.CompletionItemKind.EnumMember,    -- ()
     cmp.lsp.CompletionItemKind.Variable,      -- (󰀫)
 
-    cmp.lsp.CompletionItemKind.Snippet,       -- ()
-    cmp.lsp.CompletionItemKind.Function,      -- (󰊕)
-
     cmp.lsp.CompletionItemKind.Method,        -- (󰆧)
     cmp.lsp.CompletionItemKind.Constructor,   -- ()
+
+    cmp.lsp.CompletionItemKind.Snippet,       -- ()
+    cmp.lsp.CompletionItemKind.Function,      -- (󰊕)
 
     cmp.lsp.CompletionItemKind.Class,         -- (󰠱)
     cmp.lsp.CompletionItemKind.Struct,        -- (󰙅)
