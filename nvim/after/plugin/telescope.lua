@@ -92,6 +92,7 @@ require("telescope").setup {
                 ["<ESC>"] = actions.close,
                 ["<C-j>"] = actions.move_selection_next,
                 ["<C-k>"] = actions.move_selection_previous,
+                ["<C-t>"] = actions.layout.cycle_layout_next,
                 ["<C-l>"] = actions.layout.cycle_layout_next,
                 ["<C-v>"] = false,
                 ["<C-s>"] = actions.file_vsplit, -- <C-v>
