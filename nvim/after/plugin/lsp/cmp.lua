@@ -6,22 +6,22 @@ vim.opt.completeopt = { "menu", "menuone", "preview" }
 local confirm_opt = {
     behavior = cmp.ConfirmBehavior.Insert,
     select = true
-} -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+}
 
 ---create mapping for insert and cmdline mode
-local function cmdlinemap(mappings)
+---@param mappings table<string, function>
+---@return table<string, { i: function, c: function, s: function }>
+local function allmodes(mappings)
+    local out = {}
     for k, map in pairs(mappings) do
         if type(map) == 'function' then
-            mappings[k] = {
-                i = map,
-                c = map,
-            }
+            out[k] = { i = map, c = map, s = map }
         end
     end
-    return mappings
+    return out
 end
 
-local mapping = cmp.mapping.preset.insert(cmdlinemap {
+local mapping = allmodes {
     ["<C-j>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
     ["<C-k>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
@@ -31,7 +31,7 @@ local mapping = cmp.mapping.preset.insert(cmdlinemap {
     ["<C-i>"] = cmp.mapping.confirm(confirm_opt),
     ["<C-Space>"] = cmp.mapping.complete(), -- What is the difference?
     --["<C-Space>"] = cmp.mapping.confirm(confirm_opt),
-})
+}
 
 local my_kind_order = {
     cmp.lsp.CompletionItemKind.Field,         -- (󰜢)
@@ -85,7 +85,7 @@ cmp.setup {
         return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
             or require("cmp_dap").is_dap_buffer()
     end,
-    mapping = mapping,
+    mapping = cmp.mapping.preset.insert(mapping),
 
     snippet = {
         expand = function(args)
@@ -244,14 +244,7 @@ cmp.setup.filetype("gitcommit", {
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline({ "/", "?" }, {
-    mapping = cmp.mapping.preset.cmdline({
-        ["<C-j>"] = {
-            c = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
-        },
-        ["<Tab>"] = {
-            c = cmp.mapping.confirm({ select = false }),
-        }
-    }),
+    mapping = cmp.mapping.preset.cmdline(mapping),
     sources = {
         { name = "buffer" },
     }
@@ -259,7 +252,6 @@ cmp.setup.cmdline({ "/", "?" }, {
 
 -- Use cmdline & path source for ":" (if you enabled `native_menu`, this won"t work anymore).
 cmp.setup.cmdline(":", {
-    -- mapping = mapping,
     mapping = cmp.mapping.preset.cmdline(mapping),
     sources = cmp.config.sources({
         { name = "path" },
