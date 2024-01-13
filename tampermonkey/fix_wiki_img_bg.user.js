@@ -14,7 +14,7 @@
 const scriptName = GM_info.script.name;
 
 const STATE = {
-    element: undefined
+    element: undefined,
 };
 window.STATE = { ...window.STATE, [scriptName]: STATE }; // for `@grant none`
 if (typeof unsafeWindow !== "undefined")
@@ -28,6 +28,7 @@ function main() {
         }
     `;
     document.head.appendChild(el);
+    STATE.element = el;
 }
 
 function log(...data) {

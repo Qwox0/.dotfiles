@@ -14,6 +14,40 @@
 
 const scriptName = GM_info.script.name;
 
+const PAGES = {
+    "askubuntu.com": () => document.querySelector("body > div.js-consent-banner"),
+}
+
+const STATE = {
+    PAGES: PAGES,
+    site: undefined,
+    element: undefined,
+};
+window.STATE = { ...window.STATE, [scriptName]: STATE }; // for `@grant none`
+if (typeof unsafeWindow !== "undefined")
+    unsafeWindow.STATE = { ...unsafeWindow.STATE, [scriptName]: STATE }; // for `@grant ...`
+
+function getSite() {
+    return new window.URL(window.location.href);
+}
+
+function main() {
+    STATE.site = getSite();
+    log("site:", STATE.site);
+    if (!STATE.site) throw new Error("Error with getSite!");
+    const hostname = STATE.site.hostname;
+
+    const elemGetter = PAGES[hostname];
+    log("elemGetter:", elemGetter);
+    if (!elemGetter) throw new Error(`Please add a getter for "${hostname}"`);
+
+    STATE.element = elemGetter();
+    log("element:", STATE.element);
+    if (!STATE.element) throw new Error(`Cannot get element.`);
+
+    STATE.element.style.display = "none";
+}
+
 function log(...data) {
     console.log(`Tampermonkey script "${scriptName}":`, ...data);
 }
@@ -21,31 +55,6 @@ function log(...data) {
 function error(...data) {
     console.error(`Tampermonkey script "${scriptName}":`, ...data);
     window.alert(`Error in Tampermonkey script "${scriptName}". See console.`);
-}
-
-const PAGES = {
-    "askubuntu.com": () => document.querySelector("body > div.js-consent-banner"),
-}
-
-function getSite() {
-    return new window.URL(window.location.href);
-}
-
-function main() {
-    const site = getSite();
-    console.log("site:", site);
-    if (!site) throw new Error("Error with getSite!");
-    const hostname = site.hostname;
-
-    const elemGetter = PAGES[hostname];
-    console.log("elemGetter:", elemGetter);
-    if (!elemGetter) throw new Error(`Please add a getter for "${hostname}"`);
-
-    const element = elemGetter();
-    console.log("element:", element);
-    if (!element) throw new Error(`Cannot get element.`);
-
-    element.style.display = "none";
 }
 
 (function() {

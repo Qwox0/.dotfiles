@@ -12,20 +12,12 @@
 // @sandbox      JavaScript
 // ==/UserScript==
 
-const STATE = window.STATE || {};
-window.STATE = STATE;
-if (typeof unsafeWindow !== "undefined") unsafeWindow.STATE = STATE;
-
 const scriptName = GM_info.script.name;
 
-function log(...data) {
-    console.log(`Tampermonkey script "${scriptName}":`, ...data);
-}
-
-function error(...data) {
-    console.error(`Tampermonkey script "${scriptName}":`, ...data);
-    window.alert(`Error in Tampermonkey script "${scriptName}". See console.`);
-}
+const STATE = {};
+window.STATE = { ...window.STATE, [scriptName]: STATE }; // for `@grant none`
+if (typeof unsafeWindow !== "undefined")
+    unsafeWindow.STATE = { ...unsafeWindow.STATE, [scriptName]: STATE }; // for `@grant ...`
 
 const TIMEOUT = 100;
 
@@ -36,6 +28,15 @@ function main() {
         element.style.display = "none"
     }, TIMEOUT);
     STATE.yt_hide_gradient_loop = loop;
+}
+
+function log(...data) {
+    console.log(`Tampermonkey script "${scriptName}":`, ...data);
+}
+
+function error(...data) {
+    console.error(`Tampermonkey script "${scriptName}":`, ...data);
+    window.alert(`Error in Tampermonkey script "${scriptName}". See console.`);
 }
 
 (function() {
