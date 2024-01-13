@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         template
 // @namespace    qwox
-// @version      1.0.2
+// @version      1.0.3
 // @description  description
 // @author       Qwox
 // @icon
@@ -9,14 +9,20 @@
 // @grant        none
 // @updateURL    https://github.com/Qwox0/.dotfiles/raw/main/tampermonkey/template.user.js
 // @downloadURL  https://github.com/Qwox0/.dotfiles/raw/main/tampermonkey/template.user.js
-// @sandbox      JavaScript
 // ==/UserScript==
 
-const STATE = {};
-window.STATE = STATE; // for `@grant none`
-if (typeof unsafeWindow !== "undefined") unsafeWindow.STATE = STATE; // for `@grant ...`
-
 const scriptName = GM_info.script.name;
+
+const STATE = {
+    element: undefined,
+};
+window.STATE = { ...window.STATE, [scriptName]: STATE }; // for `@grant none`
+if (typeof unsafeWindow !== "undefined")
+    unsafeWindow.STATE = { ...unsafeWindow.STATE, [scriptName]: STATE }; // for `@grant ...`
+
+function main() {
+    throw new Error("not implemented");
+}
 
 function log(...data) {
     console.log(`Tampermonkey script "${scriptName}":`, ...data);
@@ -25,10 +31,6 @@ function log(...data) {
 function error(...data) {
     console.error(`Tampermonkey script "${scriptName}":`, ...data);
     window.alert(`Error in Tampermonkey script "${scriptName}". See console.`);
-}
-
-function main() {
-    throw new Error("not implemented");
 }
 
 (function() {
