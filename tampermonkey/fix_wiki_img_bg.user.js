@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Wikipedia + Dark Reader: fix image background
 // @namespace    qwox
-// @version      1.0.0
+// @version      1.0.1
 // @description  description
 // @author       Qwox
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=wikipedia.org
