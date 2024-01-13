@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         template
 // @namespace    qwox
-// @version      1.0.1
+// @version      1.0.2
 // @description  description
 // @author       Qwox
 // @icon
@@ -11,6 +11,10 @@
 // @downloadURL  https://github.com/Qwox0/.dotfiles/raw/main/tampermonkey/template.user.js
 // @sandbox      JavaScript
 // ==/UserScript==
+
+const STATE = {};
+window.STATE = STATE; // for `@grant none`
+if (typeof unsafeWindow !== "undefined") unsafeWindow.STATE = STATE; // for `@grant ...`
 
 const scriptName = GM_info.script.name;
 
