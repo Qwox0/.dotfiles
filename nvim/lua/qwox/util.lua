@@ -81,9 +81,15 @@ function U.file.exists(path)
     return error == nil
 end
 
----@param filetype string
+---Checks if the current filetype matches one of the arguments.
+---@param ... string -
 ---@return boolean
-function U.is_filetype(filetype) return vim.bo.filetype == filetype end
+function U.is_filetype(...)
+    for _, filetype in ipairs { ... } do
+        if vim.bo.filetype == filetype then return true end
+    end
+    return false
+end
 
 ---@param o any
 ---@return string

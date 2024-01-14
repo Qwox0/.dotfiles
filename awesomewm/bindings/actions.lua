@@ -1,5 +1,6 @@
-local awful = require("core").awful
+local A = {}
 
+local awful = require("core").awful
 
 local relative_to_word = function(dx)
     if type(dx) ~= "number" then return "ERROR" end
@@ -14,29 +15,33 @@ local relative_to_word = function(dx)
     end
 end
 
-local addkey = function(mod, key, action)
+function A.addkey(mod, key, action)
     if type(action.fn) ~= "function" or type(action.data) ~= "table" then return end -- ERROR: wrong action param
     return awful.key(mod, key, action.fn, action.data)
 end
 
-local actions = {
+A.actions = {
     client = {},
     screen = {},
     tag = {},
 }
-actions.client.focus = {
+
+A.actions.client.focus = {
+    ---@param dx integer
     relative = function(dx)
         return {
             fn = function() awful.client.focus.byidx(dx) end,
             data = { description = "focus " .. relative_to_word(dx) .. " client", group = "client" },
         }
     end,
+    ---@param direction "up"|"down"|"left"|"right"
     direction = function(direction)
         return {
             fn = function() awful.client.focus.bydirection(direction) end,
             data = { description = "focus " .. tostring(direction) .. " client", group = "client" },
         }
     end,
+    ---@param direction "up"|"down"|"left"|"right"
     global_direction = function(direction)
         return {
             fn = function() awful.client.focus.global_bydirection(direction) end,
@@ -50,20 +55,22 @@ actions.client.focus = {
         }
     end
 }
-actions.client.swap = {
+A.actions.client.swap = {
+    ---@param dx integer
     relative = function(dx)
         return {
             fn = function() awful.client.swap.byidx(dx) end,
             data = { description = "swap with " .. relative_to_word(dx) .. " client", group = "client" },
         }
     end,
+    ---@param direction "up"|"down"|"left"|"right"
     direction = function(direction)
         return {
             fn = function() awful.client.swap.bydirection(direction) end,
             data = { description = "swap with " .. direction .. " client", group = "client" },
         }
     end,
-    ---@param direction "left"|"up"|"down"|"right"
+    ---@param direction "up"|"down"|"left"|"right"
     global_direction = function(direction)
         return {
             fn = function() awful.client.swap.global_bydirection(direction) end,
@@ -71,7 +78,8 @@ actions.client.swap = {
         }
     end,
 }
-actions.client.move_to_tag = {
+A.actions.client.move_to_tag = {
+    ---@param idx integer
     absolute = function(idx)
         return {
             fn = function()
@@ -83,6 +91,7 @@ actions.client.move_to_tag = {
             data = { description = "move focused client to tag", group = "tag" }
         }
     end,
+    ---@param dx integer
     relative = function(dx)
         return {
             fn = function()
@@ -98,19 +107,22 @@ actions.client.move_to_tag = {
 }
 --actions.client.cycle = awful.client.cycle
 
-actions.screen.focus = {
-    total = function(i)
+A.actions.screen.focus = {
+    ---@param idx integer
+    total = function(idx)
         return {
-            fn = function() awful.screen.focus(i) end,
-            data = { description = "focus screen " .. tostring(i), group = "screen" }
+            fn = function() awful.screen.focus(idx) end,
+            data = { description = "focus screen " .. tostring(idx), group = "screen" }
         }
     end,
+    ---@param dx integer
     relative = function(dx)
         return {
             fn = function() awful.screen.focus_relative(dx) end,
             data = { description = "focus " .. relative_to_word(dx) .. " screen", group = "screen" }
         }
     end,
+    ---@param direction "up"|"down"|"left"|"right"
     direction = function(direction)
         return {
             fn = function() awful.screen.focus_bydirection(direction) end,
@@ -119,7 +131,8 @@ actions.screen.focus = {
     end,
 }
 
-actions.tag.focus = {
+A.actions.tag.focus = {
+    ---@param dx integer
     relative = function(dx)
         return {
             fn = function() awful.tag.viewidx(dx) end,
@@ -128,7 +141,4 @@ actions.tag.focus = {
     end,
 }
 
-return {
-    actions = actions,
-    addkey = addkey,
-}
+return A

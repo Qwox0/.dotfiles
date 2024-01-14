@@ -83,6 +83,11 @@ ruled.client.connect_signal("request::rules", function()
         rule       = { class = "Wally", instance = "wally" },
         properties = { screen = 2, tag = "8" }
     }
+
+    ruled.client.append_rule {
+        rule       = { class = "KeePassXC", instance = "keepassxc" },
+        properties = { screen = 1, tag = "key" }
+    }
 end)
 
 

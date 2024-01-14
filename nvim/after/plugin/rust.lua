@@ -45,6 +45,9 @@ require("rust-tools").setup {
                 diagnostics = {
                     disabled = { "inactive-code" },
                 },
+                hover = {
+                    links = { enable = false }, -- don't write full links in docstring ("[`Ok`]" -> `Ok` (no link))
+                },
                 --[[
                 check = {
                     allTargets = false,
