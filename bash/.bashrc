@@ -266,5 +266,10 @@ fi
 
 
 if command -v starship > /dev/null; then
-    eval "$(starship init bash)"
+    # see <https://starship.rs/config/#command-duration>
+    source ~/.dotfiles/.bash-preexec.sh
+    preexec_functions=()
+    precmd_functions=()
+
+    eval "$(starship init $0)"
 fi
