@@ -107,7 +107,10 @@ cmp.setup {
         { name = "path" },
         { name = "luasnip" },
 
-        { name = "buffer" },
+        {
+            name = "buffer",
+            option = { keyword_pattern = [[\k\+]] },
+        },
     },
 
     matching = {
