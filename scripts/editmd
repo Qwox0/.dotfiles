@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+md_file="$1"
+subprocs=()
+
+exit_script() {
+    kill "${subprocs[@]}"
+    exit
+}
+
+trap "exit_script" INT
+
+if [ -z "$md_file" ]; then
+    echo "please provide a markdown file!" >&2
+    exit 1
+fi
+
+if [ "${md_file##*.}" != "md" ]; then
+    echo "please provide a file with the '.md' extension!" >&2
+    exit 1
+fi
+
+pdf_file="${md_file%.*}.pdf"
+
+touch "$md_file"
+
+watchexec -f "$md_file" "md_to_pdf $md_file > /dev/null 2>&1" &
+subprocs+=($!)
+
+evince "$pdf_file" &
+subprocs+=($!)
+
+echo "${subprocs[@]}"
+
+nvim "$md_file"
+
+exit_script
