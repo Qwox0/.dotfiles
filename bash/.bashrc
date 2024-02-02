@@ -271,5 +271,5 @@ if command -v starship > /dev/null; then
     preexec_functions=()
     precmd_functions=()
 
-    eval "$(starship init $0)"
+    eval "$(starship init ${0#-})"
 fi
