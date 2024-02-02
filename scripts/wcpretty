@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+arr=($(wc $@))
+
+echo "${arr[3]}:"
+echo "${arr[0]} lines"
+echo "${arr[1]} words"
+echo "${arr[2]} chars"
