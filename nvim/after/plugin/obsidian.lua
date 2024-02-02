@@ -8,7 +8,7 @@ if not qwox_util.is_filetype("markdown") then return end
 local autocmd = require("typed.autocmd")
 local nmap = require("typed.keymap").nmap
 
-local obsidian_dir = qwox_util.paths.home .. "/obsidian"
+local obsidian_dir = qwox_util.paths.obsidian
 
 local templates_subdir = "templates"
 

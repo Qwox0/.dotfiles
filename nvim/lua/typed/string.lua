@@ -101,3 +101,11 @@ function string.remove_end(str, pat)
     local new, end_ = str:multi_split(-pat:len())
     return end_ == pat and new or str
 end
+
+---Returns whether `str` starts with `pat`.
+---@param str string
+---@param pat string
+---@return boolean
+function string.starts_with(str, pat)
+    return str:find(pat, 1, true) == 1
+end

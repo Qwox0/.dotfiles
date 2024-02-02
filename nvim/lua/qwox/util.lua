@@ -19,6 +19,7 @@ U.paths = {
     packer = nvim_data .. "/site/pack/packer/start/packer.nvim",
     mason = mason,
     mason_packages = mason .. "/packages",
+    obsidian = vim.loop.fs_realpath(home .. "/obsidian"),
 }
 
 local sysname = vim.loop.os_uname().sysname -- "Linux", "Windows_NT"
@@ -79,6 +80,12 @@ U.file = {}
 function U.file.exists(path)
     local _, error = vim.loop.fs_stat(path)
     return error == nil
+end
+
+---returns the path of the current buffer.
+---@return string
+function U.get_buf_path()
+    return vim.api.nvim_buf_get_name(0)
 end
 
 ---Checks if the current filetype matches one of the arguments.
