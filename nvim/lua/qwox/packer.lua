@@ -83,6 +83,7 @@ return require("packer").startup(function(use)
     }
 
     use("theprimeagen/harpoon")
+    use("theprimeagen/git-worktree.nvim")
     use("tpope/vim-fugitive")          -- Git Ui
     use("lewis6991/gitsigns.nvim")     -- Git: show changes is signcolumn
     use("mbbill/undotree")
