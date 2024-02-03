@@ -3,8 +3,6 @@
 local qwox_util = require("qwox.util")
 if not qwox_util.has_plugins("obsidian") then return end
 
-if not qwox_util.is_filetype("markdown") then return end
-
 local autocmd = require("typed.autocmd")
 local nmap = require("typed.keymap").nmap
 
