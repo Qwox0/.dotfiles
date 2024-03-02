@@ -1,21 +1,16 @@
 local U = {}
 
----@param what string
----@return string|string[]
-local function stdpath(what)
-    return vim.fn.stdpath(what)
-end
-
-local home = os.getenv("HOME")
-local nvim_data = stdpath("data")
+local home = vim.fn.expand("~")
+local nvim_data = vim.fn.stdpath("data")
 local mason = nvim_data .. "/mason"
 
 U.paths = {
     home = home,
     dotfiles = home .. "/.dotfiles",
-    nvim_config = stdpath("config"),
+    nvim_config = vim.fn.stdpath("config"),
     nvim_data = nvim_data,
     src = home .. "/src",
+    lazy = nvim_data .. "/lazy/lazy.nvim",
     packer = nvim_data .. "/site/pack/packer/start/packer.nvim",
     mason = mason,
     mason_packages = mason .. "/packages",
@@ -66,7 +61,7 @@ function U.has_plugins(...)
     local has_all = true
     for _, plugin in ipairs { ... } do
         if not pcall(require, plugin) then
-            print("Warn: " .. plugin .. " is missing!")
+            vim.notify("WARN: " .. plugin .. " is missing!", "warn")
             has_all = false
         end
     end

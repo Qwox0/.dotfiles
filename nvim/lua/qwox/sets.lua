@@ -37,7 +37,7 @@ vim.opt.updatetime = 50                   --
 vim.opt.backup = false                    -- backup: no backup of edited file
 vim.opt.undofile = true                   -- backup: store undo buffer in file
 local home = require("qwox.util").paths.home
-vim.opt.undodir = home .. "/.vim/undodir" -- backup: store undofiles in '~/.vim/undodir'
+vim.opt.undodir = home .. "/.vim/undodir" -- backup: store undofiles in "~/.vim/undodir"
 
 vim.opt.clipboard = "unnamedplus"         -- clipboard: shared with OS (otherwise use '"*y' and '"*p')
 
@@ -52,7 +52,7 @@ vim.opt.cmdheight = 2                     -- messages: more space
 
 vim.opt.lazyredraw = true -- performance: dont redraw on macros etc.
 
-vim.opt.splitright = true -- split: to right (instead of left) on ':vsplit'
+vim.opt.splitright = true -- split: to right (instead of left) on `:vsplit`
 vim.opt.splitbelow = false
 
 --vim.opt.shortmess:append "c"      -- Don't show the dumb matching stuff.

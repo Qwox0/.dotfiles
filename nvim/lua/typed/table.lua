@@ -27,3 +27,24 @@ function table.filter(tbl, f)
     end
     return filtered
 end
+
+---@param ... any[]
+---@return any[]
+function table.arr_concat(...)
+    local out = {}
+    for _, arr in ipairs({ ... }) do
+        for _, elem in ipairs(arr) do
+            table.insert(out, elem)
+        end
+    end
+    return out
+end
+
+function table.find(tbl, predicate)
+    for k, v in pairs(tbl) do
+        if predicate(v) == true then
+            return v
+        end
+    end
+    return nil
+end

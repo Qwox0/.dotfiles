@@ -1,6 +1,4 @@
-if not require("qwox.util").has_plugins("treesitter-context") then return end
-
-function ContextSetup(show_all_context)
+local function config()
     require("treesitter-context").setup {
         enable = true,           -- Enable this plugin (Can be enabled/disabled later via commands)
         throttle = true,         -- Throttles plugin updates (may improve performance)
@@ -10,7 +8,7 @@ function ContextSetup(show_all_context)
         multiline_threshold = 5, -- Maximum number of lines to show for a single context
         trim_scope = "outer",    -- Which context lines to discard if `max_lines` is exceeded. Choices: "inner", "outer"
         mode = "cursor",         -- Line used to calculate context. Choices: "cursor", "topline"
-        show_all_context = show_all_context,
+        show_all_context = false,
         patterns = {
             -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
             -- For all filetypes
@@ -39,6 +37,7 @@ function ContextSetup(show_all_context)
     }
 end
 
---vim.keymap.set("n", "<leader>cf", function() ContextSetup(true) end)
---vim.keymap.set("n", "<leader>cp", function() ContextSetup(false) end)
-ContextSetup(false)
+return { -- show current context (function) at the top
+    "nvim-treesitter/nvim-treesitter-context",
+    config = config,
+}

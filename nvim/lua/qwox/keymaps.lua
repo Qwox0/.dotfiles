@@ -74,7 +74,7 @@ end, { desc = "[B]uffer/file [C]opy" })
 
 nmap("<leader>yp", function()
     local file_path = vim.fn.expand("%:p")
-    print("Yanking current file path")
+    vim.notify("Yanking current file path")
     vim.cmd(":let @+ = '" .. file_path .. "'")
 end, { desc = "[Y]ank buffer/file [P]ath" })
 
@@ -147,32 +147,3 @@ end, { desc = "[S]urround selection" })
 
 --#endregion surround
 
---#region Git keymaps
-
--- if not qwox_util.has_plugins("vim-fugitive") then return end
-
-nmap("<leader>gg", vim.cmd.Git, { desc = "[G]it: open fugitive" })
-nmap("<leader>gs", require("telescope.builtin").git_status, { desc = "[G]it: [S]tatus" })
-nmap("<leader>gb", require("telescope.builtin").git_branches, { desc = "[G]it: [B]ranches" })
-nmap("<leader>gf", ":Git fetch<CR>", { desc = "[G]it: [F]etch" })
-nmap("<leader>gd", ":Git pull<CR>", { desc = "[G]it: Pull [D]own" })
-nmap("<leader>gu", ":Git push<CR>", { desc = "[G]it: Push [U]p" })
-nmap("<leader>gy", ":Git fetch<CR>:Git pull<CR>:Git push<CR>", {
-    desc = "[G]it: s[Y]nc (fetch, pull, push)"
-})
-
-nmap("<leader>gh", ":diffget //2<CR>", { desc = "diffsplit [G]et left ([H])" })
-nmap("<leader>gl", ":diffget //3<CR>", { desc = "diffsplit [G]et right ([L])" })
-
-nmap("<leader>gaa", ":!git add -A<CR>", { desc = "[G]it: [A]dd [A]ll" })
-
--- for fugitive:
-nmap("gh", ":diffget //2<CR>", { desc = "fugitive split: [G]et left(2)" })
-nmap("gj", ":diffget //3<CR>", { desc = "fugitive split: [G]et down(3)" })
-nmap("gk", ":diffget //2<CR>", { desc = "fugitive split: [G]et up(2)" })
-nmap("gl", ":diffget //3<CR>", { desc = "fugitive split: [G]et right(3)" })
-
-
---nmap("<leader>ga", require("telescope.builtin").git_stash, { desc = "[G]it: [A]dd" })
-
---#endregion Git keymaps
