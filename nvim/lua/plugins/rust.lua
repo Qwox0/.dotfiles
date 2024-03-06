@@ -6,7 +6,7 @@ local function config()
     local nmap = require("typed.keymap").nmap
 
     -- dap paths
-        --[[
+    --[[
     local extension_path = vim.fn.stdpath("data") .. "/mason/packages/cpptools/extension"
     local debugger_path = extension_path .. "/debugAdapters/bin/OpenDebugAD7"
     ]]
@@ -75,5 +75,8 @@ end
 return {
     "simrat39/rust-tools.nvim",
     ft = "rust",
+    dependencies = {
+        "neovim/nvim-lspconfig",
+    },
     config = config,
 }

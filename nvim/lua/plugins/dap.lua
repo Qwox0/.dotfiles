@@ -27,8 +27,8 @@ local keys = {
         "<leader>dc",
         function()
             local dap = require("dap")
-            local function is_active() return dap.session() ~= nil end
-            if is_active() or not qwox_util.is_filetype("rust") then
+            local is_active = dap.session() ~= nil
+            if is_active or not qwox_util.is_filetype("rust") then
                 dap.continue()
             else
                 vim.api.nvim_command("RustDebuggables")
@@ -39,8 +39,8 @@ local keys = {
     { "<leader>dr", function() require("dap").restart() end,           desc = "[D]ap [R]estart" },
     { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "[D]ap [B]reakpoint" },
     { "<leader>dj", function() require("dap").step_over() end,         desc = "[D]ap step over" },
-    { "<leader>di", function() require("dap").step_into() end,         desc = "[D]ap step [I]nto" },
-    { "<leader>do", function() require("dap").step_out() end,          desc = "[D]ap step [O]ut" },
+    { "<leader>dh", function() require("dap").step_into() end,         desc = "[D]ap step [I]nto" },
+    { "<leader>dl", function() require("dap").step_out() end,          desc = "[D]ap step [O]ut" },
     { "<leader>dq", function() require("dap").terminate() end,         desc = "[D]ap [Q]uit" },
     --nmap("<leader>dqd", dap.disconnect, { desc = "" })
 
@@ -135,7 +135,6 @@ dap.configurations.rust = { {
         }
     }
 
-
     dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
     dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
     dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
@@ -180,6 +179,8 @@ return {
 
         "nvim-telescope/telescope.nvim",
         "nvim-telescope/telescope-dap.nvim",
+
+        "hrsh7th/nvim-cmp",
         "rcarriga/cmp-dap",
     },
     keys = keys,

@@ -43,7 +43,14 @@ LSP.servers = {
     },
 }
 
-function LSP.format()
+---filetype -> format command
+---@type table<string, function>
+local format_alternatives = {
+
+}
+
+---@return boolean can_format
+local function can_format_buf()
     local can_format = false
     for _, client in ipairs(vim.lsp.get_clients { bufnr = 0 }) do
         if client.server_capabilities.documentFormattingProvider then
@@ -51,7 +58,14 @@ function LSP.format()
             break
         end
     end
-    if can_format then
+    return can_format
+end
+
+function LSP.format()
+    local alternative = format_alternatives[vim.bo.filetype]
+    if alternative ~= nil then
+        alternative()
+    elseif can_format_buf() then
         vim.lsp.buf.format()
     else
         vim.notify("Format Fallback", "info")

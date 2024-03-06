@@ -32,6 +32,8 @@ return {
 
         "nvim-telescope/telescope.nvim",
         "hrsh7th/cmp-nvim-lsp",
+
+        { "folke/neodev.nvim", opts = {} }, -- setup lua_ls for nvim
     },
     config = config,
 }

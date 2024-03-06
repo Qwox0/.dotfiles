@@ -1,7 +1,5 @@
 -- <https://github.com/ThePrimeagen/git-worktree.nvim>
 
-
-
 local keys = {
     {
         "<leader>gc",
@@ -48,9 +46,6 @@ local function config()
 
     require("telescope").load_extension("git_worktree")
 end
-
-
-
 
 return {
     "theprimeagen/git-worktree.nvim",
