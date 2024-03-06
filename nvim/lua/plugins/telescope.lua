@@ -1,6 +1,5 @@
 local function config()
     local qwox_util = require("qwox.util")
-    if not qwox_util.has_plugins("telescope") then return end
 
     local actions = require("telescope.actions")
     actions.layout = require("telescope.actions.layout")
@@ -139,7 +138,6 @@ local function config()
                 },
             },
             undo = {
-                -- telescope-undo.nvim config, see below
             },
         },
     }
@@ -181,10 +179,6 @@ local function config()
 
     nmap("<leader>fm", builtin.keymaps, { desc = "[F]ind [M]appings" })
 
-    nmap("<leader>fu", function() require("telescope").extensions.undo.undo() end, {
-        desc = "[F]ind [T]reesitter items"
-    })
-
     autocmd("WinLeave", {
         callback = function()
             if qwox_util.is_filetype("TelescopePrompt") and vim.fn.mode() == "i" then
@@ -199,7 +193,7 @@ local function config()
     end, { desc = "Lists all available highlights" })
 
     ---@diagnostic disable-next-line: different-requires
-    require("qwox.telescope").load_extension({ "ui-select", "undo" })
+    require("qwox.telescope").load_extension("ui-select")
 end
 
 return {
@@ -209,7 +203,6 @@ return {
     dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-telescope/telescope-ui-select.nvim",
-        "debugloop/telescope-undo.nvim",
         "nvim-tree/nvim-web-devicons",
     },
     config = config,
