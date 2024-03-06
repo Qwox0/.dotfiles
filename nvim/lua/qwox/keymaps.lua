@@ -74,7 +74,7 @@ end, { desc = "[B]uffer/file [C]opy" })
 
 nmap("<leader>yp", function()
     local file_path = vim.fn.expand("%:p")
-    vim.notify("Yanking current file path")
+    vim.notify("Yanking current file path", "info")
     vim.cmd(":let @+ = '" .. file_path .. "'")
 end, { desc = "[Y]ank buffer/file [P]ath" })
 

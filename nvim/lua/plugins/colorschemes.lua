@@ -6,7 +6,7 @@ local function colorscheme_config(config)
     return function(lazy_plugin)
         local status_ok, _ = pcall(vim.cmd.colorscheme, lazy_plugin.name)
         if not status_ok then
-            vim.notify("colorscheme " .. lazy_plugin.name .. " not found!")
+            vim.notify("colorscheme " .. lazy_plugin.name .. " not found!", "error")
             return
         end
 

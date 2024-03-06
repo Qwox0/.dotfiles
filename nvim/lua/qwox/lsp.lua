@@ -54,7 +54,7 @@ function LSP.format()
     if can_format then
         vim.lsp.buf.format()
     else
-        vim.notify("Format Fallback")
+        vim.notify("Format Fallback", "info")
         vim.fn.feedkeys("mzgg=G`z")
     end
 end

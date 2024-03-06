@@ -10,7 +10,7 @@ function O.load_extension(...)
         if pcall(require, "telescope._extensions." .. ext) then
             require("telescope").load_extension(ext)
         else
-            vim.notify("Warn: telescope extension \"" .. ext .. "\" is missing!")
+            vim.notify("Warn: telescope extension \"" .. ext .. "\" is missing!", "warn")
         end
     end
 end

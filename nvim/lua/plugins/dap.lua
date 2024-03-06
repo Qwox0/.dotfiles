@@ -140,12 +140,7 @@ dap.configurations.rust = { {
     dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
     dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
 
-    --[[
-    require("nvim-dap-virtual-text").setup {
-        --virt_text_pos = vim.fn.has "nvim-0.10" == 1 and "inline" or "eol",
-        virt_text_pos = "eol",
-    }
-    ]]
+    require("qwox.notify").configure_dap_status_update()
 
     require("nvim-dap-virtual-text").setup {
         enabled = true,
