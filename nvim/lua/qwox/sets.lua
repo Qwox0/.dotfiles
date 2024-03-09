@@ -30,7 +30,7 @@ vim.opt.listchars:append("leadmultispace:⋅⋅⋅│")
 vim.opt.listchars:append("trail:⋅")
 vim.opt.listchars:append("extends:…")
 vim.opt.listchars:append("precedes:…")
-vim.opt.listchars:append("nbsp:+")        --Character to show for a non-breakable space character (0xA0 (160 decimal) and U+202F).
+vim.opt.listchars:append("nbsp:+")        -- Character to show for a non-breakable space character (0xA0 (160 decimal) and U+202F).
 
 vim.opt.swapfile = false                  -- swap: buffer in memory not swap
 vim.opt.updatetime = 50                   --
@@ -41,8 +41,10 @@ vim.opt.undodir = home .. "/.vim/undodir" -- backup: store undofiles in "~/.vim/
 
 vim.opt.clipboard = "unnamedplus"         -- clipboard: shared with OS (otherwise use '"*y' and '"*p')
 
-vim.opt.hlsearch = false                  -- search: doesn't stay highlighted
-vim.opt.incsearch = true                  -- search:
+vim.opt.incsearch = true                  -- search: highlight next match while typing
+vim.opt.hlsearch = true                   -- search: update search count (hl groups changed in `auto.lua`)
+
+vim.opt.shortmess:append("S")             -- disable normal search count
 
 vim.opt.ignorecase = true                 -- search/cmds: ignore case
 vim.opt.smartcase = true                  -- search/cmds: uppercase -> ignorecase: OFF
@@ -55,4 +57,5 @@ vim.opt.lazyredraw = true -- performance: dont redraw on macros etc.
 vim.opt.splitright = true -- split: to right (instead of left) on `:vsplit`
 vim.opt.splitbelow = false
 
---vim.opt.shortmess:append "c"      -- Don't show the dumb matching stuff.
+-- vim.opt.shortmess:append("s") -- Disable search wrap messages
+-- vim.opt.shortmess:append "c"  -- Don't show the dumb matching stuff.

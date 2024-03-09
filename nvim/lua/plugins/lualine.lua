@@ -43,8 +43,8 @@ local function config()
             lualine_a = { "mode" },
             lualine_b = { "branch", "diff", diagnostics },
             lualine_c = { filepath },
-            lualine_x = { "encoding", "fileformat" },
-            lualine_y = { "filetype" },
+            lualine_x = { "searchcount", "encoding" },
+            lualine_y = { "fileformat", "filetype" },
             lualine_z = { "location" }
         },
         inactive_sections = {

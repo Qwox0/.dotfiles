@@ -98,6 +98,12 @@ end
 ---@param o any
 ---@return string
 function U.dump(o)
+    return vim.inspect(o)
+end
+
+---@param o any
+---@return string
+function U.dump_old(o)
     if type(o) ~= "table" then return tostring(o) end
     local s = "{ "
     for k, v in pairs(o) do
@@ -192,8 +198,6 @@ function U.get_selection_text()
     end
     return table.concat(lines, '\n')
 end
-
---#endregion edit text
 
 ---@return boolean
 function U.is_visual_mode() return vim.fn.mode() == "v" end
