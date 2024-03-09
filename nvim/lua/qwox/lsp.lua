@@ -49,16 +49,14 @@ local format_alternatives = {
 
 }
 
----@return boolean can_format
+---@return boolean
 local function can_format_buf()
-    local can_format = false
     for _, client in ipairs(vim.lsp.get_clients { bufnr = 0 }) do
         if client.server_capabilities.documentFormattingProvider then
-            can_format = true
-            break
+            return true
         end
     end
-    return can_format
+    return false
 end
 
 function LSP.format()

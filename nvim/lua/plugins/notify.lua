@@ -5,8 +5,8 @@ local function config()
 
     -- see <https://github.com/rcarriga/nvim-notify/wiki/Usage-Recipes>
     vim.notify = require("notify")
-    vim.lsp.handlers["$/progress"] = require("qwox.notify").lsp_status_update
-    vim.lsp.handlers["window/showMessage"] = require("qwox.notify").lsp_messages
+    -- vim.lsp.handlers["$/progress"] = require("qwox.notify").lsp_status_update
+    -- vim.lsp.handlers["window/showMessage"] = require("qwox.notify").lsp_messages
 end
 
 return {
