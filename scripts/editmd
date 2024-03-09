@@ -24,7 +24,7 @@ pdf_file="${md_file%.*}.pdf"
 
 touch "$md_file"
 
-watchexec -f "$md_file" "md_to_pdf $md_file > /dev/null 2>&1" &
+watchexec -f "$md_file" "md_to_pdf \"$md_file\" > /dev/null 2>&1" &
 subprocs+=($!)
 
 evince "$pdf_file" &

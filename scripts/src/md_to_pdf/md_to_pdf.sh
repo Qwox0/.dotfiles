@@ -15,7 +15,7 @@ fi
 
 in_file="$1"
 
-if [ -z $in_file ]; then
+if [ -z "$in_file" ]; then
     echo "please provide a markdown file" >&2
     exit 2
 fi
@@ -37,6 +37,6 @@ for ext in "html" "pdf"; do
         --metadata pagetitle="${in_file##*/}" \
         --mathml \
         --pdf-engine-opt=--enable-local-file-access \
-        $in_file \
+        "$in_file" \
         -o "$name.$ext"
 done

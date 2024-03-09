@@ -14,8 +14,6 @@ local scripts = {
     scripts_dir .. "/blueFilter.sh",
     "syncthing serve --no-browser --logfile=default",
 
-    "~/bin/moonlander/wally/wally",
-
     "compton",
     --"picom",
 

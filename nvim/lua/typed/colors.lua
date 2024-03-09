@@ -2,13 +2,15 @@ local Colors = {}
 
 Colors.hl_groups = {}
 
+---@alias ColorValue string|integer color name or "#RRGGBB" or number value
+
 ---@class Color: vim.api.keyset.highlight
----@field fg? string color name or "#RRGGBB", see note.
----@field foreground? string Same as `fg`.
----@field bg? string color name or "#RRGGBB", see note.
----@field background? string Same as `bg`.
----@field sp? string color name or "#RRGGBB"
----@field special? string Same as `sp`.
+---@field fg? ColorValue
+---@field foreground? ColorValue Alias for `fg`.
+---@field bg? ColorValue
+---@field background? ColorValue Alias for `bg`.
+---@field sp? ColorValue
+---@field special? ColorValue Alias for `sp`.
 ---@field blend? integer between 0 and 100
 ---@field bold? boolean
 ---@field standout? boolean
@@ -27,10 +29,14 @@ Colors.hl_groups = {}
 ---@field ctermbg? unknown Sets background of cterm color |ctermbg|
 ---@field cterm? unknown cterm attribute map, like |highlight-args|. If not set, cterm attributes will match those from the attribute map documented above.
 
----@param name string Highlight group name
----@return Color
-function Colors.get_hl(name)
-    return vim.api.nvim_get_hl(0, { name = name })
+---@param ... string Highlight group name
+---@return Color ...
+function Colors.get_hl(...)
+    local colors = {}
+    for _, name in ipairs({...}) do
+        table.insert(colors, vim.api.nvim_get_hl(0, { name = name }))
+    end
+    return table.unpack(colors)
 end
 
 ---@param name string Highlight group name
@@ -88,9 +94,11 @@ function Colors.set_hl(name, color)
     Colors.hl_groups[name] = color
 end
 
----@param name string Highlight group name
-function Colors.clear_hl(name)
-    Colors.set_hl(name, {})
+---@param ... string Highlight group names
+function Colors.clear_hl(...)
+    for _, name in ipairs({ ... }) do
+        Colors.set_hl(name, {})
+    end
 end
 
 ---This updates any existing configurations of the highlight group `name`.

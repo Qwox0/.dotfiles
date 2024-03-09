@@ -1,25 +1,22 @@
 local U = {}
 
----@param what string
----@return string|string[]
-local function stdpath(what)
-    return vim.fn.stdpath(what)
-end
-
-local home = os.getenv("HOME")
-local nvim_data = stdpath("data")
+local home = vim.fn.expand("~")
+local nvim_data = vim.fn.stdpath("data")
 local mason = nvim_data .. "/mason"
+local obsidian = home .. "/obsidian"
+obsidian = vim.loop.fs_realpath(obsidian) or obsidian
 
 U.paths = {
     home = home,
     dotfiles = home .. "/.dotfiles",
-    nvim_config = stdpath("config"),
+    nvim_config = vim.fn.stdpath("config"),
     nvim_data = nvim_data,
     src = home .. "/src",
+    lazy = nvim_data .. "/lazy/lazy.nvim",
     packer = nvim_data .. "/site/pack/packer/start/packer.nvim",
     mason = mason,
     mason_packages = mason .. "/packages",
-    obsidian = vim.loop.fs_realpath(home .. "/obsidian"),
+    obsidian = obsidian,
 }
 
 local sysname = vim.loop.os_uname().sysname -- "Linux", "Windows_NT"
@@ -66,7 +63,7 @@ function U.has_plugins(...)
     local has_all = true
     for _, plugin in ipairs { ... } do
         if not pcall(require, plugin) then
-            print("Warn: " .. plugin .. " is missing!")
+            vim.notify("WARN: " .. plugin .. " is missing!", "warn")
             has_all = false
         end
     end
@@ -101,6 +98,12 @@ end
 ---@param o any
 ---@return string
 function U.dump(o)
+    return vim.inspect(o)
+end
+
+---@param o any
+---@return string
+function U.dump_old(o)
     if type(o) ~= "table" then return tostring(o) end
     local s = "{ "
     for k, v in pairs(o) do
@@ -195,8 +198,6 @@ function U.get_selection_text()
     end
     return table.concat(lines, '\n')
 end
-
---#endregion edit text
 
 ---@return boolean
 function U.is_visual_mode() return vim.fn.mode() == "v" end
