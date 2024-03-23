@@ -70,6 +70,19 @@
             - nogui
             - openssl
 
+    ###########
+    # Configs #
+    - name: Dotfiles
+      ansible.builtin.import_tasks: tasks/dotfiles.yml
+      tags:
+        - dotfiles
+        - nogui
+        - gui
+        - neovim
+        - terminal
+        - tmux
+        - awesome
+
     #############
     # Languages #
     - name: Rust
@@ -105,19 +118,6 @@
         - node
         - nogui
         - neovim
-
-    ###########
-    # Configs #
-    - name: Dotfiles
-      ansible.builtin.import_tasks: tasks/dotfiles.yml
-      tags:
-        - dotfiles
-        - nogui
-        - gui
-        - neovim
-        - terminal
-        - tmux
-        - awesome
 
     ################
     # Applications #

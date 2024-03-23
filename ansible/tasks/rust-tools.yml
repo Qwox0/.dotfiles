@@ -1,4 +1,12 @@
 # vim: set filetype=yaml.ansible :/
+- name: "Rust: Bash rustup completions"
+  ansible.builtin.shell:
+    cmd: "rustup completions bash       > ~/.local/share/bash-completion/completions/rustup"
+
+- name: "Rust: Bash cargo completions"
+  ansible.builtin.shell:
+    cmd: "rustup completions bash cargo > ~/.local/share/bash-completion/completions/cargo"
+
 - name: "Install cargo-binstall"
   block:
     - name: "Try to get current cargo-binstall version installed"
