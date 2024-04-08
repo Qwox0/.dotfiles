@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-export RUSTC_WRAPPER="$HOME/.cargo/bin/sccache"
+
+#export RUSTC_WRAPPER="$HOME/.cargo/bin/sccache"
