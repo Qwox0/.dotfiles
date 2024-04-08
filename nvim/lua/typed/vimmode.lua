@@ -168,18 +168,18 @@ end
 ---Returns whether `self` is any visual mode.
 ---@return boolean
 function mode.is_any_vis(self)
-    return table.contains(mode_type.vis_modes, self.type)
+    return table.arr_contains(mode_type.vis_modes, self.type)
 end
 
 ---Returns whether `self` is any command mode (including search, ...).
 ---@return boolean
 function mode.is_any_cmd(self)
-    return table.contains(mode_type.cmd_modes, self.type)
+    return table.arr_contains(mode_type.cmd_modes, self.type)
 end
 
 ---@return boolean
 function mode.is_search(self)
-    return table.contains(mode_type.search_modes, self.type)
+    return table.arr_contains(mode_type.search_modes, self.type)
 end
 
 return mode_type

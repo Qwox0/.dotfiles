@@ -3,11 +3,21 @@ table.unpack = unpack
 table.count = vim.tbl_count
 
 ---@generic T
----@param tbl `T`[]
+---@param tbl T[]
 ---@param x T
 ---@return boolean
-function table.contains(tbl, x)
+function table.arr_contains(tbl, x)
     for _, element in ipairs(tbl) do
+        if (element == x) then return true end
+    end
+    return false
+end
+
+---@param tbl table
+---@param x any
+---@return boolean
+function table.contains(tbl, x)
+    for _, element in pairs(tbl) do
         if (element == x) then return true end
     end
     return false
@@ -47,4 +57,27 @@ function table.find(tbl, predicate)
         end
     end
     return nil
+end
+
+---@generic T, U
+---@param tbl T[]
+---@param predicate fun(t: T): U
+---@return U[]
+function table.arr_map(tbl, predicate)
+    local out = {}
+    for _, v in ipairs(tbl) do
+        table.insert(out, predicate(v))
+    end
+    return out
+end
+
+---@param tbl table
+---@param predicate fun(t: any): any
+---@return table
+function table.map(tbl, predicate)
+    local out = {}
+    for k, v in pairs(tbl) do
+        table.insert(out, k, predicate(v))
+    end
+    return out
 end

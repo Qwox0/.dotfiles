@@ -32,6 +32,11 @@ local function config()
                 action = require("obsidian").util.gf_passthrough,
                 opts = { noremap = false, expr = true, buffer = true },
             },
+            -- Toggle check-boxes.
+            ["<leader>ch"] = {
+                action = require("obsidian").util.toggle_checkbox,
+                opts = { buffer = true },
+            },
         },
 
         --- Where to put new notes created from completion. Valid options are

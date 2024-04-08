@@ -47,11 +47,9 @@ local function config()
                     hover = {
                         links = { enable = false }, -- don't write full links in docstring ("[`Ok`]" -> `Ok` (no link))
                     },
-                    --[[
-                check = {
-                    allTargets = false,
-                },
-                --]]
+                    check = {
+                        allTargets = true,
+                    },
                 }
             },
         },

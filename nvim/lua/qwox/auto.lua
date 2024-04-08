@@ -1,3 +1,5 @@
+local AUTO = {}
+
 local autocmd = require("typed.autocmd")
 local augroup = require("typed.augroup")
 
@@ -37,3 +39,23 @@ autocmd("CmdlineLeave", {
         require("typed.colors").clear_hl("Search")
     end,
 })
+
+local vimmode = require("typed.vimmode")
+---@type table<number, 0|1|2|3>
+AUTO.buf_conceallevels = {}
+autocmd("ModeChanged", {
+    pattern = table.arr_map(vimmode.vis_modes, function(vis) return "n:" .. vis end),
+    callback = function(opts)
+        ---@diagnostic disable-next-line: undefined-field
+        AUTO.buf_conceallevels[opts.buf] = vim.opt_local.conceallevel._value or 0
+        vim.opt_local.conceallevel = 0
+    end,
+})
+autocmd("ModeChanged", {
+    pattern = table.arr_map(vimmode.vis_modes, function(vis) return vis .. ":n" end),
+    callback = function(opts)
+        vim.opt_local.conceallevel = AUTO.buf_conceallevels[opts.buf] or 0
+    end,
+})
+
+return AUTO

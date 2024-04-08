@@ -4,7 +4,6 @@ local home = vim.fn.expand("~")
 local nvim_data = vim.fn.stdpath("data")
 local mason = nvim_data .. "/mason"
 local obsidian = home .. "/obsidian"
-obsidian = vim.loop.fs_realpath(obsidian) or obsidian
 
 U.paths = {
     home = home,
@@ -16,7 +15,7 @@ U.paths = {
     packer = nvim_data .. "/site/pack/packer/start/packer.nvim",
     mason = mason,
     mason_packages = mason .. "/packages",
-    obsidian = obsidian,
+    obsidian = vim.loop.fs_realpath(obsidian) or obsidian,
 }
 
 local sysname = vim.loop.os_uname().sysname -- "Linux", "Windows_NT"
