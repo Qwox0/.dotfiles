@@ -34,7 +34,7 @@ imap("<C-c>", "<Esc>", { desc = "Ctrl+C = Esc" })
 imap("<C-v>", "<C-r>\"", { desc = "Ctrl+V = Paste" })
 
 xmap("<leader>p", "\"_dP", { desc = "paste but keep copy buffer" })
-nmap("<leader>x", "<cmd>!chmod +x %<CR>", { silent = true, desc = "make file e[x]ecutable" })
+nmap("<leader>x", "<cmd>!chmod +x \"%\"<CR>", { silent = true, desc = "make file e[x]ecutable" })
 
 -- Substitute / Replace
 nmap("<leader>ra", function()
