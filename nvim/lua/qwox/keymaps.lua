@@ -33,6 +33,10 @@ nmap("<leader>e", vim.cmd.Ex, { desc = "explore with vim file manager" })
 imap("<C-c>", "<Esc>", { desc = "Ctrl+C = Esc" })
 imap("<C-v>", "<C-r>\"", { desc = "Ctrl+V = Paste" })
 
+imap("<C-H>", "<C-w>", { desc = "Ctrl+Backspace = Delete start of word" })  -- tmux: <C-BS> = <C-H>
+imap("<C-BS>", "<C-w>", { desc = "Ctrl+Backspace = Delete start of word" }) -- kitty
+imap("<C-Del>", "<cmd>norm! de<CR>", { desc = "Ctrl+Delete = Delete ent of word" })
+
 xmap("<leader>p", "\"_dP", { desc = "paste but keep copy buffer" })
 nmap("<leader>x", "<cmd>!chmod +x \"%\"<CR>", { silent = true, desc = "make file e[x]ecutable" })
 
@@ -146,4 +150,3 @@ vmap("<leader>s", function()
 end, { desc = "[S]urround selection" })
 
 --#endregion surround
-

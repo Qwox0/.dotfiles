@@ -97,8 +97,8 @@ function LSP.custom_attach(client, bufnr)
     map("n", "gD", function() vim.lsp.buf.declaration() end, "[G]oto [D]eclaration")
     map("n", "gr", function() telescope.lsp_references() end, "[G]oto [R]eferences")
 
-    map({ "n", "i", "v" }, "<C-h>", function() vim.lsp.buf.hover() end, "[H]over Documentation")
-    map({ "n", "i", "v" }, "<C-S-h>", function() vim.lsp.buf.signature_help() end, "Signature Documentation")
+    map("n", "<C-h>", function() vim.lsp.buf.hover() end, "[H]over Documentation")
+    map("n", "<C-S-h>", function() vim.lsp.buf.signature_help() end, "Signature Documentation")
 
     map("n", "<leader>nd", function() vim.diagnostic.goto_next() end, "[N]ext [D]iagnostic")
     map("n", "<leader>bd", function() vim.diagnostic.goto_prev() end, "previous [D]iagnostic")
