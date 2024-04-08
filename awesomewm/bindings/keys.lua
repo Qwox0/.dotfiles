@@ -33,7 +33,7 @@ awful.keyboard.append_global_keybindings({
     end, { description = "lua execute prompt", group = "awesome" }),
 
     awful.key({ mod, "Shift" }, "s", function() awful.spawn("gnome-screenshot -i") end,
-        { description = "open a terminal", group = "launcher" }),
+        { description = "take a screenshot", group = "awesome" }),
 
     -- awful.key({ modkey, }, "w", function() main_menu:show() end, { description = "show main menu", group = "awesome" }),
 })
