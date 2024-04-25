@@ -1,45 +1,6 @@
 # vim: set filetype=yaml.ansible :/
 - name: "Test"
-  vars:
-    os: "linux"
-    arch: "x86_64"
-    id: "{{ arch }}-{{ os }}"
-    url: "https://ziglang.org/download/index.json"
-    json: "{{ lookup('url', url, split_lines=False) | from_json }}"
-    version: "{{ json | difference(['master']) | first }}" # zig version are already ordered
-    download_url: "{{ json[version][id].tarball }}"
-    archive_name: "{{ download_url | split('/') | last }}"
-    dir_name: "{{ archive_name | splitext | first | splitext | first }}"
-    installed: null
-    is_installed: "{{ installed.stat.exists }}"
   block:
-    - name: "Json Keys"
-      debug:
-        var: json_keys
-
-    - name: "Version"
-      debug:
-        var: version
-
-    - name: "Download url"
-      debug:
-        var: download_url
-
-    - name: "Dir"
-      debug:
-        var: dir_name
-
-    - name: "Check Dir"
-      stat:
-        path: "{{ bin }}/{{ dir_name }}"
-      register: installed
-
-    - name: "Is not Installed"
-      debug:
-        msg: "It is not installed"
-      when: not is_installed
-
-    - name: "Is Installed"
-      debug:
-        msg: "It is installed"
-      when: is_installed
+    - name: "Test Copy"
+      ansible.builtin.copy:
+        src: "."

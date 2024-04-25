@@ -25,7 +25,7 @@ while getopts "Kprsnu" OPTION; do
 done
 shift "$(($OPTIND -1))"
 
-tags_str="$(ansible-playbook local.yml --list-tags 2>/dev/null | grep "TASK TAGS:" | sed "s/^\s*TASK TAGS: \[\(.*\)\]$/\1/")"
+tags_str="$(ansible-playbook local.yml --list-tags | grep "TASK TAGS:" | sed "s/^\s*TASK TAGS: \[\(.*\)\]$/\1/")"
 IFS=', ' read -r -a tags <<< "$tags_str"
 
 tag="$1"

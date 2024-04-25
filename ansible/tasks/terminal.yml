@@ -31,6 +31,15 @@
     - "kitty"
     - "kitten"
 
+# sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator `which kitty` 50
+- name: "Kitty: Setting Kitty as default terminal"
+  become: true
+  community.general.alternatives:
+    link: "/usr/bin/x-terminal-emulator"
+    name: "x-terminal-emulator"
+    path: "{{ home }}/.local/bin/kitty"
+    priority: 50
+
 # - name: "Installing kitty build dependencies"
 #   become: true
 #   ansible.builtin.apt:
