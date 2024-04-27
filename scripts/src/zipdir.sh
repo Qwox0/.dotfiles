@@ -14,8 +14,6 @@ error() {
 dir_path="$1"
 zip_path="$(basename "$dir_path").zip"
 
-info "$dir_path"
-
 if [[ ! -d "$dir_path" ]]; then
     error "Please provide the path to a valid directory"
 fi
