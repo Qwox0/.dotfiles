@@ -13,7 +13,7 @@ print_usage() {
     echo "  --style=pandoc              Use Default Pandoc Styling"
 }
 
-github_style="--standalone --css $script_dir/github_no_body_class.css"
+github_style="--standalone --css $script_dir/github.css"
 pandoc_style=""
 style="$github_style"
 
