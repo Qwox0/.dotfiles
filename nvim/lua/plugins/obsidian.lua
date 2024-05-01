@@ -61,6 +61,12 @@ local function config()
             time_format = "%H:%M",
             substitutions = {}
         },
+
+        daily_notes = {
+            folder = "",
+            alias_format = "",
+            template = "templates/daily.md"
+        }
     }
 
     -- line wrap in obsidian
@@ -69,7 +75,7 @@ local function config()
 end
 
 local keys = {
-    { "<leader>ot", vim.cmd.ObsidianTemplate, ft = "markdown", desc = "[O]bsidian [T]emplate", },
+    { "<leader>ot", vim.cmd.ObsidianTemplate, desc = "[O]bsidian [T]emplate" },
     {
         "<leader>on",
         function()
@@ -85,8 +91,16 @@ local keys = {
         ft = "markdown",
         desc = "[O]bsidian [N]ew",
     },
-    { "<leader>of", vim.cmd.ObsidianSearch,   ft = "markdown", desc = "[O]bsidian [F]ind", },
+    { "<leader>of", vim.cmd.ObsidianSearch,   desc = "[O]bsidian [F]ind" },
+    { "<leader>od", vim.cmd.ObsidianToday,    desc = "[O]bsidian open [D]aily" }
 }
+
+vim.api.nvim_create_autocmd({ "VimEnter", "DirChanged" }, {
+    callback = function()
+        if not vim.fn.getcwd():starts_with(obsidian_dir) then return end
+        vim.cmd.doautocmd("User LoadObsidian")
+    end
+})
 
 return {
     "epwalsh/obsidian.nvim",
@@ -94,6 +108,7 @@ return {
     event = {
         "BufReadPre " .. obsidian_dir .. "/**.md",
         "BufNewFile " .. obsidian_dir .. "/**.md",
+        "User LoadObsidian",
     },
     dependencies = {
         "nvim-lua/plenary.nvim",
