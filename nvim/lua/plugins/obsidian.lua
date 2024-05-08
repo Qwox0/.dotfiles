@@ -88,7 +88,6 @@ local keys = {
             vim.cmd.edit(file)
             vim.cmd.ObsidianTemplate()
         end,
-        ft = "markdown",
         desc = "[O]bsidian [N]ew",
     },
     { "<leader>of", vim.cmd.ObsidianSearch,   desc = "[O]bsidian [F]ind" },
