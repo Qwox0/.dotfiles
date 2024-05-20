@@ -102,7 +102,7 @@ local function config()
 
         performance = nil,
 
-        preselect = "item",
+        preselect = cmp.PreselectMode.None,
 
         completion = {
             autocomplete = {
