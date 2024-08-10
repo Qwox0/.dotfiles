@@ -2,7 +2,7 @@ return { -- highlight color codes
     "norcalli/nvim-colorizer.lua",
     event = "BufEnter",
     config = function()
-        require("colorizer").setup({ "*" }, {
+        require("colorizer").setup({ "*", "!TelescopePrompt", "!TelescopeResults" }, {
             RGB      = true,         -- #RGB hex codes
             RRGGBB   = true,         -- #RRGGBB hex codes
             names    = true,         -- "Name" codes like Blue
