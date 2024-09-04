@@ -14,10 +14,11 @@ return { -- show git changes is signcolumn
             signcolumn                   = true, -- Toggle with `:Gitsigns toggle_signs`
             numhl                        = true, -- Toggle with `:Gitsigns toggle_numhl`
             linehl                       = false, -- Toggle with `:Gitsigns toggle_linehl`
-            word_diff                    = true, -- Toggle with `:Gitsigns toggle_word_diff`
+            word_diff                    = false, -- Toggle with `:Gitsigns toggle_word_diff`
             watch_gitdir                 = {
                 follow_files = true,
             },
+            auto_attach                  = true,
             attach_to_untracked          = true,
             current_line_blame           = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
             current_line_blame_opts      = {
@@ -39,9 +40,6 @@ return { -- show git changes is signcolumn
                 row = 0,
                 col = 1
             },
-            yadm                         = {
-                enable = false
-            },
         }
 
         local colors = require("typed.colors")
@@ -54,7 +52,7 @@ return { -- show git changes is signcolumn
         colors.update_hl("GitSignsChangedeleteNr", { link = "GitSignsChangedelete" })
 
         local function get_inline(s)
-            return { underdotted = true, sp = colors.get_active_hl("GitSigns" .. s).fg }
+            return { underdotted = true, sp = colors.get_active_hl("GitSigns" .. s).fg, reverse = false }
         end
         colors.update_hl("GitSignsAddInline", get_inline("Add"))
         colors.update_hl("GitSignsChangeInline", get_inline("Change"))
