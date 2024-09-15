@@ -1,15 +1,8 @@
 local AUTO = {}
 
-local autocmd = require("typed.autocmd")
-local augroup = require("typed.augroup")
-
--- no relative line numbers in Insert mode
-autocmd("InsertEnter", { command = ":set norelativenumber" })
-autocmd("InsertLeave", { command = ":set relativenumber" })
-
 -- Highlight on yank
-augroup("YankHighlight", { clear = true })
-autocmd("TextYankPost", {
+vim.augroup.set("YankHighlight", { clear = true })
+vim.autocmd.set("TextYankPost", {
     group = "YankHighlight",
     callback = function()
         vim.highlight.on_yank { higroup = "IncSearch", timeout = "100" }
@@ -17,14 +10,14 @@ autocmd("TextYankPost", {
 })
 
 -- Remove whitespace on save
-autocmd("BufWritePre", { pattern = "*", command = ":%s/\\s\\+$//e" })
+vim.autocmd.set("BufWritePre", { pattern = "*", command = ":%s/\\s\\+$//e" })
 
 -- only highlight search results while in cmd
 -- TODO: only highlight when in search mode ("/", "?") or don't highlight -> must work with `:s/` and searchcount!
-require("typed.colors").link_hl("CurSearch", "Search")
-autocmd("CmdlineEnter", {
+vim.colors.link("CurSearch", "Search")
+vim.autocmd.set("CmdlineEnter", {
     callback = function()
-        require("typed.colors").set_hl("Search", {
+        vim.colors.set("Search", {
             reverse = true,
             bg = 2631720,  -- #282828
             fg = 16432431, -- #fabd2f
@@ -34,16 +27,16 @@ autocmd("CmdlineEnter", {
         })
     end
 })
-autocmd("CmdlineLeave", {
+vim.autocmd.set("CmdlineLeave", {
     callback = function()
-        require("typed.colors").clear_hl("Search")
+        vim.colors.del("Search")
     end,
 })
 
-local vimmode = require("typed.vimmode")
+local vimmode = vim.mode
 ---@type table<number, 0|1|2|3>
 AUTO.buf_conceallevels = {}
-autocmd("ModeChanged", {
+vim.autocmd.set("ModeChanged", {
     pattern = table.arr_map(vimmode.vis_modes, function(vis) return "n:" .. vis end),
     callback = function(opts)
         ---@diagnostic disable-next-line: undefined-field
@@ -51,7 +44,7 @@ autocmd("ModeChanged", {
         vim.opt_local.conceallevel = 0
     end,
 })
-autocmd("ModeChanged", {
+vim.autocmd.set("ModeChanged", {
     pattern = table.arr_map(vimmode.vis_modes, function(vis) return vis .. ":n" end),
     callback = function(opts)
         vim.opt_local.conceallevel = AUTO.buf_conceallevels[opts.buf] or 0

@@ -1,9 +1,6 @@
 local function config()
     local qwox_util = require("qwox.util")
-    require("typed.colors").set_hl("RustToolsInlayHint", { fg = "#D3D3D3", bg = "#3A3A3A", italic = true })
-
     local qwox_lsp = require("qwox.lsp")
-    local nmap = require("typed.keymap").nmap
 
     -- dap paths
     --[[

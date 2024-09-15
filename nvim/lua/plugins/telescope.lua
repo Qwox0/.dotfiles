@@ -12,10 +12,9 @@ local function config()
     local themes = require("telescope.themes")
     local strings = require("plenary.strings")
 
-    local autocmd = require("typed.autocmd")
-    local create_command = require("typed.command")
-    local nmap = require("typed.keymap").nmap
-    local vmap = require("typed.keymap").vmap
+    local create_command = vim.command.set
+    local nmap = vim.keymap.nmap
+    local vmap = vim.keymap.vmap
 
     local small_dropdown = themes.get_dropdown {
         layout_config = { height = 0.8, width = 0.7 },
@@ -179,7 +178,7 @@ local function config()
 
     nmap("<leader>fm", builtin.keymaps, { desc = "[F]ind [M]appings" })
 
-    autocmd("WinLeave", {
+    vim.autocmd.set("WinLeave", {
         callback = function()
             if qwox_util.is_filetype("TelescopePrompt") and vim.fn.mode() == "i" then
                 qwox_util.enter_normal_mode()
@@ -187,8 +186,7 @@ local function config()
         end,
     })
 
-
-    create_command({ "Hi", "Highlights" }, function(_)
+    vim.command.set({ "Hi", "Highlights" }, function(_)
         builtin.highlights()
     end, { desc = "Lists all available highlights" })
 

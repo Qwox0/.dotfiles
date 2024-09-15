@@ -1,12 +1,20 @@
 local qwox_util = require("qwox.util")
-local map = require("typed.keymap").map
-local nmap = require("typed.keymap").nmap
-local imap = require("typed.keymap").imap
-local vmap = require("typed.keymap").vmap
-local xmap = require("typed.keymap").xmap
+local map = vim.keymap.set
+local nmap = vim.keymap.nmap
+local imap = vim.keymap.imap
+local vmap = vim.keymap.vmap
+local xmap = vim.keymap.xmap
+local smap = vim.keymap.smap
+local cmap = vim.keymap.cmap
 
 vim.g.mapleader = " "   -- keymapping: define <leader> for mappings
 vim.opt.timeout = false -- keymapping: command timeout
+
+-- remove default lsp keymaps:
+vim.keymap.del("n", "grn")
+vim.keymap.del("n", "gra")
+vim.keymap.del("n", "grr")
+vim.keymap.del("i", "<C-S>")
 
 map({ "n", "v" }, "<leader>", "<Nop>", { desc = "Remove default behavior of the leader key" })
 nmap("q:", "<Nop>", { desc = "Disable command history" })
@@ -18,8 +26,8 @@ nmap("j", "v:count == 0 ? \"gj\" : \"j\"", { expr = true, desc = "jump down in w
 --imap("<C-i>", "<Esc>I", { desc = "jump to line end" })
 --imap("<C-a>", "<Esc>A", { desc = "jump to line start" })
 
-vmap("J", ":m '>+1<CR>gv=gv", { desc = "move entire line down" })
-vmap("K", ":m '<-2<CR>gv=gv", { desc = "move entire line up" })
+xmap("J", ":m '>+1<CR>gv=gv", { desc = "move entire line down" })
+xmap("K", ":m '<-2<CR>gv=gv", { desc = "move entire line up" })
 
 nmap("J", "mzJ`z", { desc = "don't move cursor on J" })
 
@@ -36,9 +44,13 @@ nmap("<leader>e", vim.cmd.Ex, { desc = "explore with vim file manager" })
 imap("<C-c>", "<Esc>", { desc = "Ctrl+C = Esc" })
 imap("<C-v>", "<C-r>\"", { desc = "Ctrl+V = Paste" })
 
-imap("<C-H>", "<C-w>", { desc = "Ctrl+Backspace = Delete start of word" })  -- tmux: <C-BS> = <C-H>
+imap("<C-h>", "<C-w>", { desc = "Ctrl+Backspace = Delete start of word" })  -- tmux: <C-BS> = <C-h>
 imap("<C-BS>", "<C-w>", { desc = "Ctrl+Backspace = Delete start of word" }) -- kitty
 imap("<C-Del>", "<cmd>norm! de<CR>", { desc = "Ctrl+Delete = Delete end of word" })
+
+imap("<C-a>", "<C-o>^", { desc = "Move to the start of the line" })
+cmap("<C-a>", "<Home>", { desc = "Move to the start of the command line" })
+imap("<C-e>", "<C-o>A", { desc = "Move to the end of the line" })
 
 xmap("<leader>p", "\"_dP", { desc = "paste but keep copy buffer" })
 nmap("<leader>x", "<cmd>!chmod +x \"%\"<CR>", { silent = true, desc = "make file e[x]ecutable" })
@@ -53,7 +65,7 @@ end, { desc = "[R]eplace [A]ll" })
 nmap("<leader>rw", [[:%s/<C-r><C-w>/<C-r><C-w>/gI<Left><Left><Left>]], {
     desc = "[R]eplace [W]ord"
 })
-vmap("<leader>r", [["ay<CR>:%s/<C-r>"/<C-r>"/gI<Left><Left><Left>]], {
+vmap("<leader>r", [["ay:%s/<C-r>"/<C-r>"/gI<Left><Left><Left>]], {
     desc = "[R]eplace highlight"
 })
 

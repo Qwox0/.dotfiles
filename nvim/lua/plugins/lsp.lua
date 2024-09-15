@@ -17,6 +17,15 @@ local function config()
         end,
     }
 
+    qwox_lsp.keymap()
+
+    --vim.colors.set("LspInlayHint", { fg = "#D3D3D3", bg = "#3A3A3A", italic = true })
+    --vim.colors.set("LspInlayHint", { link = "GruvboxGray", italic = true })
+    vim.colors.set("LspInlayHint", { link = "GruvboxBg3", italic = true })
+    vim.colors.flatten_unlink("LspInlayHint", "keep")
+    vim.lsp.inlay_hint.enable(true)
+
+
     require("fidget").setup()
 end
 

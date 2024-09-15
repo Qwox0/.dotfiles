@@ -14,16 +14,12 @@ local function colorscheme_config(config)
 
         config(lazy_plugin)
 
-        local update_hl = require("typed.colors").update_hl
-        local set_hl = require("typed.colors").set_hl
-        local link_hl = require("typed.colors").link_hl
-
         -- type :highlight to show highlight groups
-        update_hl("Normal", { bg = "none" })
+        vim.colors.update("Normal", { bg = "none" })
 
-        link_hl("NormalFloat", "Pmenu")
+        vim.colors.link("NormalFloat", "Pmenu")
 
-        update_hl("SignColumn", { bg = "none", })
+        vim.colors.update("SignColumn", { bg = "none", })
 
         --[[
         hl("ColorColumn", {
@@ -33,19 +29,19 @@ local function colorscheme_config(config)
         })
         ]]
 
-        update_hl("CursorLineNR", { bg = "None" })
+        vim.colors.update("CursorLineNR", { bg = "None" })
 
         --hl("LineNr", { fg = "#5eacd3" })
 
         --hl("netrwDir", { fg = "#5eacd3" })
 
         -- Fix
-        set_hl("CmpItemKindDefault", { fg = "Orange" })
-        link_hl("DiagnosticFloatingError", "DiagnosticError")
-        link_hl("DiagnosticFloatingWarn", "DiagnosticWarn")
-        link_hl("DiagnosticFloatingInfo", "DiagnosticInfo")
-        link_hl("DiagnosticFloatingHint", "DiagnosticHint")
-        link_hl("DiagnosticFloatingOk", "DiagnosticOk")
+        vim.colors.set("CmpItemKindDefault", { fg = "Orange" })
+        vim.colors.link("DiagnosticFloatingError", "DiagnosticError")
+        vim.colors.link("DiagnosticFloatingWarn", "DiagnosticWarn")
+        vim.colors.link("DiagnosticFloatingInfo", "DiagnosticInfo")
+        vim.colors.link("DiagnosticFloatingHint", "DiagnosticHint")
+        vim.colors.link("DiagnosticFloatingOk", "DiagnosticOk")
     end
 end
 
@@ -65,7 +61,7 @@ local colorschemes = {
             vim.g.gruvbox_contrast_dark = "hard"
 
             for _, color in ipairs({ "Red", "Yellow", "Green", "Orange", "Blue", "Aqua" }) do
-                require("typed.colors").update_hl("Gruvbox" .. color .. "Sign", { bg = "none" })
+                vim.colors.update("Gruvbox" .. color .. "Sign", { bg = "none" })
             end
         end),
     },
@@ -93,7 +89,7 @@ for _, scheme in ipairs(colorschemes) do
     end
 end
 
-require("typed.command")("FixColorscheme", function()
+vim.command.set("FixColorscheme", function()
     local scheme = table.find(colorschemes, function(x) return x.name == active_colorscheme end)
     if scheme then scheme.config(scheme) end
 end)

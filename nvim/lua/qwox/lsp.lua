@@ -71,18 +71,17 @@ function LSP.format()
     end
 end
 
-require("typed.keymap").map("n", "<leader>jf", LSP.format, { desc = "[F]ormat buffer" })
+vim.keymap.set("n", "<leader>jf", LSP.format, { desc = "[F]ormat buffer" })
 
 function LSP.custom_attach(client, bufnr)
     -- Create a command `:Format` local to the LSP buffer
-    local create_command = require("typed.command")
-    create_command("Format", LSP.format, { buffer = bufnr, desc = "Format current buffer with LSP" })
+    vim.command.set("Format", LSP.format, { buffer = bufnr, desc = "Format current buffer with LSP" })
+end
 
+function LSP.keymap()
     local map = function(mode, keys, func, desc)
-        if desc then
-            desc = "LSP: " .. desc
-        end
-        require("typed.keymap").map(mode, keys, func, { buffer = bufnr, desc = desc })
+        if desc then desc = "LSP: " .. desc end
+        vim.keymap.set(mode, keys, func, { desc = desc })
     end
 
     map("n", "<leader>jn", function() vim.lsp.buf.rename() end, "Re[n]ame")
@@ -98,7 +97,7 @@ function LSP.custom_attach(client, bufnr)
     map("n", "gr", function() telescope.lsp_references() end, "[G]oto [R]eferences")
 
     map("n", "<C-h>", function() vim.lsp.buf.hover() end, "[H]over Documentation")
-    map("n", "<C-S-h>", function() vim.lsp.buf.signature_help() end, "Signature Documentation")
+    map({ "n", "i" }, "<C-S-h>", function() vim.lsp.buf.signature_help() end, "Signature Documentation")
 
     map("n", "<leader>nd", function() vim.diagnostic.goto_next() end, "[N]ext [D]iagnostic")
     map("n", "<leader>bd", function() vim.diagnostic.goto_prev() end, "previous [D]iagnostic")

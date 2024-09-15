@@ -304,7 +304,7 @@ local function config()
     local bg4      = "#7c6f64"
 
     -- colors
-    for name, opts in pairs {
+    vim.colors.set_many {
         --PmenuSel = { fg = "NONE",bg = "#282C34" },
         PmenuSel              = { fg = "NONE", bg = "#000000" }, -- not working
         --PmenuSel              = { fg = "#C5CDD9", bg = bg2 },
@@ -344,10 +344,7 @@ local function config()
         --CmpItemKindInterface     = { fg = "#22252A", bg = "#58B5A8" },
         --CmpItemKindColor         = { fg = "#22252A", bg = "#58B5A8" },
         --CmpItemKindTypeParameter = { fg = "#22252A", bg = "#58B5A8" },
-
-    } do
-        require("typed.colors").set_hl(name, opts)
-    end
+    }
 
     cmp.event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done())
 end

@@ -1,9 +1,11 @@
 -- type hints
+require("better_vim_api")
 require("typed.table")
 require("typed.string")
 
 -- basics
 require("qwox.sets")
+require("qwox").numbers.default()
 require("qwox.keymaps")
 require("qwox.auto")
 require("qwox.commands")
@@ -31,4 +33,4 @@ require("lazy").setup({
     }
 })
 
-require("typed.keymap").nmap("<leader>ps", function() require("lazy").sync() end, { desc = "[P]ackages [S]ync" })
+vim.keymap.nmap("<leader>ps", function() require("lazy").sync() end, { desc = "[P]ackages [S]ync" })

@@ -42,21 +42,19 @@ return { -- show git changes is signcolumn
             },
         }
 
-        local colors = require("typed.colors")
-
-        colors.flatten_unlink_hl("GitSignsAdd", "keep")
-        colors.update_hl("GitSignsAdd", { fg = "#50fa7b" })
-        colors.update_hl("GitSignsChange", { link = "GruvboxYellowSign" })
-        colors.update_hl("GitSignsDelete", { link = "GruvboxRedSign" })
-        colors.update_hl("GitSignsChangedelete", { link = "GruvboxOrangeSign" })
-        colors.update_hl("GitSignsChangedeleteNr", { link = "GitSignsChangedelete" })
+        vim.colors.flatten_unlink("GitSignsAdd", "keep")
+        vim.colors.update("GitSignsAdd", { fg = "#50fa7b" })
+        vim.colors.update("GitSignsChange", { link = "GruvboxYellowSign" })
+        vim.colors.update("GitSignsDelete", { link = "GruvboxRedSign" })
+        vim.colors.update("GitSignsChangedelete", { link = "GruvboxOrangeSign" })
+        vim.colors.update("GitSignsChangedeleteNr", { link = "GitSignsChangedelete" })
 
         local function get_inline(s)
-            return { underdotted = true, sp = colors.get_active_hl("GitSigns" .. s).fg, reverse = false }
+            return { underdotted = true, sp = vim.colors.get_active("GitSigns" .. s).fg, reverse = false }
         end
-        colors.update_hl("GitSignsAddInline", get_inline("Add"))
-        colors.update_hl("GitSignsChangeInline", get_inline("Change"))
-        colors.update_hl("GitSignsChangedeleteInline", get_inline("Changedelete"))
-        colors.update_hl("GitSignsDeleteInline", get_inline("Delete"))
+        vim.colors.update("GitSignsAddInline", get_inline("Add"))
+        vim.colors.update("GitSignsChangeInline", get_inline("Change"))
+        vim.colors.update("GitSignsChangedeleteInline", get_inline("Changedelete"))
+        vim.colors.update("GitSignsDeleteInline", get_inline("Delete"))
     end,
 }
