@@ -3,47 +3,55 @@ function completeopt:as_str()
     return table.concat(self, ",")
 end
 
+---@return table<cmp.lsp.CompletionItemKind, integer> lower rank (integer) -> higher priority
 local function get_my_kind_priorities()
     local cmp = require("cmp")
 
     local my_kind_order = {
-        cmp.lsp.CompletionItemKind.Field,         -- (󰜢)
-        cmp.lsp.CompletionItemKind.Property,      -- (󰜢)
-        cmp.lsp.CompletionItemKind.EnumMember,    -- ()
-        cmp.lsp.CompletionItemKind.Variable,      -- (󰀫)
+        {
+            cmp.lsp.CompletionItemKind.Field,      -- (󰜢)
+            cmp.lsp.CompletionItemKind.Property,   -- (󰜢)
+            cmp.lsp.CompletionItemKind.EnumMember, -- ()
+            cmp.lsp.CompletionItemKind.Variable,   -- (󰀫)
+        },
+        {
+            cmp.lsp.CompletionItemKind.Method,      -- (󰆧)
+            cmp.lsp.CompletionItemKind.Constructor, -- ()
 
-        cmp.lsp.CompletionItemKind.Method,        -- (󰆧)
-        cmp.lsp.CompletionItemKind.Constructor,   -- ()
+            cmp.lsp.CompletionItemKind.Snippet,     -- ()
+            cmp.lsp.CompletionItemKind.Function,    -- (󰊕)
+            cmp.lsp.CompletionItemKind.Keyword,     -- (󰌋)
+        },
+        {
+            cmp.lsp.CompletionItemKind.Class,         -- (󰠱)
+            cmp.lsp.CompletionItemKind.Struct,        -- (󰙅)
+            cmp.lsp.CompletionItemKind.Enum,          -- ()
+            cmp.lsp.CompletionItemKind.Interface,     -- ()
 
-        cmp.lsp.CompletionItemKind.Snippet,       -- ()
-        cmp.lsp.CompletionItemKind.Function,      -- (󰊕)
+            cmp.lsp.CompletionItemKind.Module,        -- ()
+            cmp.lsp.CompletionItemKind.Constant,      -- (󰏿)
+            cmp.lsp.CompletionItemKind.TypeParameter, -- (T)
 
-        cmp.lsp.CompletionItemKind.Class,         -- (󰠱)
-        cmp.lsp.CompletionItemKind.Struct,        -- (󰙅)
-        cmp.lsp.CompletionItemKind.Enum,          -- ()
-        cmp.lsp.CompletionItemKind.Interface,     -- ()
-
-        cmp.lsp.CompletionItemKind.Module,        -- ()
-        cmp.lsp.CompletionItemKind.Constant,      -- (󰏿)
-        cmp.lsp.CompletionItemKind.TypeParameter, -- (T)
-
-        cmp.lsp.CompletionItemKind.Unit,          -- (󰑭)
-        cmp.lsp.CompletionItemKind.Value,         -- (󰎠)
-        cmp.lsp.CompletionItemKind.Keyword,       -- (󰌋)
-        cmp.lsp.CompletionItemKind.Color,         -- (󰏘)
-        cmp.lsp.CompletionItemKind.File,          -- (󰈙)
-        cmp.lsp.CompletionItemKind.Reference,     -- (󰈇)
-        cmp.lsp.CompletionItemKind.Folder,        -- (󰉋)
-        cmp.lsp.CompletionItemKind.Event,         -- ()
-        cmp.lsp.CompletionItemKind.Operator,      -- (󰆕)
-
-        cmp.lsp.CompletionItemKind.Text,          -- (󰉿)
+            cmp.lsp.CompletionItemKind.Unit,          -- (󰑭)
+            cmp.lsp.CompletionItemKind.Value,         -- (󰎠)
+            cmp.lsp.CompletionItemKind.Color,         -- (󰏘)
+            cmp.lsp.CompletionItemKind.File,          -- (󰈙)
+            cmp.lsp.CompletionItemKind.Reference,     -- (󰈇)
+            cmp.lsp.CompletionItemKind.Folder,        -- (󰉋)
+            cmp.lsp.CompletionItemKind.Event,         -- ()
+            cmp.lsp.CompletionItemKind.Operator,      -- (󰆕)
+        },
+        {
+            cmp.lsp.CompletionItemKind.Text, -- (󰉿)
+        },
     }
 
     local idx_tbl = {}
 
-    for idx, kind in ipairs(my_kind_order) do
-        idx_tbl[kind] = idx
+    for rank, grp in ipairs(my_kind_order) do
+        for _, kind in ipairs(grp) do
+            idx_tbl[kind] = rank
+        end
     end
 
     return idx_tbl
@@ -63,26 +71,21 @@ local function allmodes(mappings)
 end
 
 ---@return boolean
-local function has_imports(entry)
+local function needs_import(entry)
     local item = entry:get_completion_item()
-    --vim.notify(vim.inspect(item))
     local imports = item and item.data and item.data.imports or {}
-    return vim.tbl_isempty(imports)
+    return not vim.tbl_isempty(imports)
 end
 
-local function config()
+local function get_mappings(confirm_opt, select_opt)
     local cmp = require("cmp")
-
-    vim.opt.completeopt = completeopt
-
-    local confirm_opt = {
-        behavior = cmp.ConfirmBehavior.Insert,
-        select = true,
-    }
-
-    local mapping = allmodes {
-        ["<C-j>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
-        ["<C-k>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
+    confirm_opt = confirm_opt or { behavior = cmp.ConfirmBehavior.Insert, select = true }
+    select_opt = select_opt or { behavior = cmp.SelectBehavior.Select }
+    return allmodes {
+        ["<Down>"] = cmp.mapping.select_next_item(select_opt),
+        ["<Up>"] = cmp.mapping.select_prev_item(select_opt),
+        ["<C-j>"] = cmp.mapping.select_next_item(select_opt),
+        ["<C-k>"] = cmp.mapping.select_prev_item(select_opt),
         ["<C-d>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ["<C-e>"] = cmp.mapping.abort(),
@@ -91,6 +94,12 @@ local function config()
         ["<C-Space>"] = cmp.mapping.complete(), -- What is the difference?
         --["<C-Space>"] = cmp.mapping.confirm(confirm_opt),
     }
+end
+
+local function config()
+    local cmp = require("cmp")
+
+    vim.opt.completeopt = completeopt
 
     local my_kind_priorities = get_my_kind_priorities()
 
@@ -110,7 +119,8 @@ local function config()
                 "TextChanged",
             },
             completeopt = completeopt:as_str(),
-            keyword_pattern = [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\w*\%(-\w*\)*\)]],
+            -- keyword_pattern = [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\w*\%(-\w*\)*\)]],
+            keyword_pattern = [[\k\+]],
             keyword_length = 1,
         },
 
@@ -147,13 +157,20 @@ local function config()
                 cmp.config.compare.exact,
                 cmp.config.compare.offset,
 
-                function(entry1, entry2) -- in scope first, imported last
-                    local has_imports1 = has_imports(entry1)
-                    local has_imports2 = has_imports(entry2)
-                    if has_imports1 ~= has_imports2 then return has_imports1 end
+                --- buf text always behind other LSP items
+                function(entry1, entry2)
+                    local is_text1 = entry1:get_kind() == cmp.lsp.CompletionItemKind.Text
+                    local is_text2 = entry2:get_kind() == cmp.lsp.CompletionItemKind.Text
+                    if is_text1 ~= is_text2 then return is_text2 end
                 end,
-
-                function(entry1, entry2)            -- custom kind
+                --- in scope first, imported last
+                function(entry1, entry2)
+                    local needs_import1 = needs_import(entry1)
+                    local needs_import2 = needs_import(entry2)
+                    if needs_import1 ~= needs_import2 then return needs_import2 end
+                end,
+                --- custom kind ordering
+                function(entry1, entry2)
                     local kind1 = entry1:get_kind() --- @type number
                     local kind2 = entry2:get_kind() --- @type number
                     if kind1 ~= kind2 then
@@ -217,7 +234,7 @@ local function config()
             end,
         },
 
-        mapping = cmp.mapping.preset.insert(mapping),
+        mapping = get_mappings(),
 
         -- order == priority
         -- multiple args == grouping
@@ -276,7 +293,7 @@ local function config()
 
     -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
     cmp.setup.cmdline({ "/", "?" }, {
-        mapping = cmp.mapping.preset.cmdline(mapping),
+        mapping = get_mappings(_, { behavior = cmp.SelectBehavior.Insert }),
         sources = {
             { name = "buffer" },
         },
@@ -287,7 +304,7 @@ local function config()
 
     -- Use cmdline & path source for ":" (if you enabled `native_menu`, this won't work anymore).
     cmp.setup.cmdline(":", {
-        mapping = cmp.mapping.preset.cmdline(mapping),
+        mapping = get_mappings(_, { behavior = cmp.SelectBehavior.Insert }),
         sources = {
             { name = "path" },
             { name = "buffer" },
