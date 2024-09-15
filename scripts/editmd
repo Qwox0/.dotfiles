@@ -27,7 +27,10 @@ touch "$md_file"
 watchexec -f "$md_file" "md_to_pdf \"$md_file\" > /dev/null 2>&1" &
 subprocs+=($!)
 
-evince "$pdf_file" &
+sleep 1
+
+evince_log="${HOME}/.evince_errors.log"
+evince "$pdf_file" 2>$evince_log &
 subprocs+=($!)
 
 echo "${subprocs[@]}"

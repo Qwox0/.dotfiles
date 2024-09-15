@@ -1153,7 +1153,7 @@ xkb_symbols "pc+us(intl)+inet(evdev)" {
 
     name[group1]="English (US, intl., with dead keys)";
 
-// unicode characters: https://en.wikipedia.org/wiki/List_of_Unicode_characters
+// unicode characters: <https://en.wikipedia.org/wiki/List_of_Unicode_characters>
 // allowed keynames: /usr/include/X11/keysymdef.h
 
     key <9> { [ Escape ] };

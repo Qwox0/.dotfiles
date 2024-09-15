@@ -6,6 +6,8 @@
 ./.env                      ; ~/.env
 ./bash/.profile             ; ~/.profile
 ./bash/.bashrc              ; ~/.bashrc
+./scripts/src/mdtools-completion.sh ; ~/.local/share/bash-completion/completions/md_to_pdf
+./scripts/src/mdtools-completion.sh ; ~/.local/share/bash-completion/completions/editmd
 ./tmux/.tmux.conf           ; ~/.tmux.conf
 ./nvim                      ; ~/.config/nvim
 ./rustfmt                   ; ~/.config/rustfmt

@@ -109,3 +109,18 @@ end
 function string.starts_with(str, pat)
     return str:find(pat, 1, true) == 1
 end
+
+---@param str string
+---@return integer
+function string.wordcount(str)
+    return vim.iter(vim.gsplit(str, "%s")):filter(function(s) return s:len() > 0 end):enumerate():last()
+end
+
+---@param str string
+---@return integer
+function string.humanwordcount(str)
+    return vim.iter(str:gmatch("[^%c%s%z%p][^%c%s%z!#$%&’()%*%+,./:;<=>%?@%[\\%]^‘{|}~]+"))
+        :filter(function(s) return s:len() > 0 end)
+        :enumerate()
+        :last()
+end

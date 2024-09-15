@@ -18,5 +18,7 @@ add_to_path "$HOME/bin"
 add_to_path "$HOME/.local/bin"
 add_to_path "$HOME/.dotfiles/scripts"
 
+add_to_path "$HOME/lib/llvm/llvm-project-18.1.6.src/build/bin"
+
 add_to_path "$HOME/.cargo/bin"
 add_to_path "/usr/local/go/bin"

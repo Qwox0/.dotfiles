@@ -55,7 +55,7 @@ fi
 # ---------------------------------
 
 compiler="pandoc"
-install_cmd="sudo apt install pandoc wkhtmltopdf"
+install_cmd="sudo apt install pandoc weasyprint"
 
 if ! type "$compiler" > /dev/null; then
     echo "\`$compiler\` command not found." >&2
@@ -68,11 +68,13 @@ name="${in_file%.*}"
 
 for ext in "html" "pdf"; do
     echo "Generate $ext"
+
     pandoc -f markdown+pipe_tables -t html5 \
+        --pdf-engine=weasyprint \
         --metadata pagetitle="${in_file##*/}" \
         --mathml \
         $style \
-        --pdf-engine-opt=--enable-local-file-access \
         "$in_file" \
-        -o "$name.$ext"
-    done
+        -o "${name}.$ext"
+        #--pdf-engine-opt=--enable-local-file-access \
+done
