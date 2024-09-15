@@ -185,12 +185,21 @@ end
 
 ---Get selected text in visual mode
 ---start is inclusive, end is inclusive
+---@return string
 function U.get_selection_text()
-    local start_row, start_col, end_row, end_col = U.get_selection_pos()
+    return U.get_selection_text_of(U.get_selection_pos())
+end
+
+---@param start_row integer
+---@param start_col integer
+---@param end_row integer
+---@param end_col ?integer
+---@return string
+function U.get_selection_text_of(start_row, start_col, end_row, end_col)
     local n_lines = math.abs(end_row - start_row) + 1
     local lines = vim.api.nvim_buf_get_lines(0, start_row - 1, end_row, false)
     lines[1] = string.sub(lines[1], start_col, -1)
-    if n_lines == 1 then
+    if n_lines == 1 and end_col then
         lines[n_lines] = string.sub(lines[n_lines], 1, end_col - start_col + 1)
     else
         lines[n_lines] = string.sub(lines[n_lines], 1, end_col)
