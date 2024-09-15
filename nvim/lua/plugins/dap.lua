@@ -8,7 +8,8 @@ local debug_prompt = {
         end,
         --["List Variables"] = require("telescope").extensions.dap.variables,
         ["Stack/Frames"] = function() require("telescope").extensions.dap.frames() end,
-        ["RustDebuggables"] = function() require("rust-tools").debuggables.debuggables() end,
+        --["RustDebuggables"] = function() require("rust-tools").debuggables.debuggables() end,
+        ["RustDebuggables"] = function() vim.cmd.RustLsp('debuggables') end,
     },
     opts = {
         prompt = "Debugger",

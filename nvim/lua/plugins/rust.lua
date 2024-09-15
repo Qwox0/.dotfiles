@@ -16,24 +16,79 @@ local function config()
     end
     if qwox_util.os.is_linux then liblldb_path = liblldb_path .. ".so" end
 
-    require("rust-tools").setup {
+    -- require("rust-tools").setup {
+    --     tools = {
+    --         inlay_hints = {
+    --             show_parameter_hints = false,
+    --             parameter_hints_prefix = "<- ",
+    --             other_hints_prefix = "» ",
+    --             highlight = "RustToolsInlayHint"
+    --         },
+    --     },
+    --     server = {
+    --         cmd = { "rustup", "run", "nightly", "rust-analyzer" },
+    --         capabilities = qwox_lsp.capabilities,
+    --         on_attach = function(client, bufnr)
+    --             nmap("<leader>rr", ":RustRunnables<CR>", { buffer = bufnr, desc = "[R]ust [R]unnables" })
+    --             qwox_lsp.custom_attach(client, bufnr)
+    --         end,
+    --         standalone = true, -- single file support
+    --         settings = {
+    --             ["rust-analyzer"] = {
+    --                 cargo = {
+    --                     features = "all",
+    --                 },
+    --                 diagnostics = {
+    --                     disabled = { "inactive-code" },
+    --                 },
+    --                 hover = {
+    --                     links = { enable = false }, -- don't write full links in docstring ("[`Ok`]" -> `Ok` (no link))
+    --                 },
+    --                 check = {
+    --                     allTargets = true,
+    --                 },
+    --             }
+    --         },
+    --     },
+    --     dap = {
+    --         adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path)
+    --         --[[
+    --     adapter = {
+    --         type = "server",
+    --         port = "${port}",
+    --         host = "127.0.0.1",
+    --         executable = {
+    --             command = debugger_path,
+    --             args = { "--server=${port}", "--pauseForDebugger" },
+    --         },
+    --     }
+    --     ]]
+    --     },
+    -- }
+
+    vim.g.rustaceanvim = {
         tools = {
+            --[[
             inlay_hints = {
                 show_parameter_hints = false,
                 parameter_hints_prefix = "<- ",
                 other_hints_prefix = "» ",
                 highlight = "RustToolsInlayHint"
             },
+            ]]
         },
         server = {
-            cmd = { "rustup", "run", "nightly", "rust-analyzer" },
-            capabilities = qwox_lsp.capabilities,
+            --cmd = { "rustup", "run", "nightly", "rust-analyzer" },
+            --capabilities = qwox_lsp.capabilities,
             on_attach = function(client, bufnr)
-                nmap("<leader>rr", ":RustRunnables<CR>", { buffer = bufnr, desc = "[R]ust [R]unnables" })
+                -- vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+
+                --nmap("<leader>rr", ":RustRunnables<CR>", { buffer = bufnr, desc = "[R]ust [R]unnables" })
                 qwox_lsp.custom_attach(client, bufnr)
             end,
-            standalone = true, -- single file support
-            settings = {
+            --standalone = true, -- single file support
+
+            default_settings = {
                 ["rust-analyzer"] = {
                     cargo = {
                         features = "all",
@@ -47,28 +102,48 @@ local function config()
                     check = {
                         allTargets = true,
                     },
+                    inlayHints = {
+                        bindingModeHints = {
+                            enable = false,
+                        },
+                        chainingHints = {
+                            enable = true,
+                        },
+                        closingBraceHints = {
+                            enable = true,
+                            minLines = 25,
+                        },
+                        closureReturnTypeHints = {
+                            enable = "never",
+                        },
+                        lifetimeElisionHints = {
+                            enable = "never",
+                            useParameterNames = false,
+                        },
+                        maxLength = 25,
+                        parameterHints = {
+                            enable = false,
+                        },
+                        renderColons = true,
+                        typeHints = {
+                            enable = true,
+                            hideClosureInitialization = false,
+                            hideNamedConstructor = true,
+                        },
+                    },
                 }
             },
         },
         dap = {
-            adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path)
-            --[[
-        adapter = {
-            type = "server",
-            port = "${port}",
-            host = "127.0.0.1",
-            executable = {
-                command = debugger_path,
-                args = { "--server=${port}", "--pauseForDebugger" },
-            },
+            adapter = require("rustaceanvim.config").get_codelldb_adapter(codelldb_path, liblldb_path)
         }
-        ]]
-        },
     }
 end
 
 return {
-    "simrat39/rust-tools.nvim",
+    --"simrat39/rust-tools.nvim",
+    "mrcjkb/rustaceanvim",
+    version = "^5",
     ft = "rust",
     dependencies = {
         "neovim/nvim-lspconfig",
