@@ -9,7 +9,7 @@ local debug_prompt = {
         --["List Variables"] = require("telescope").extensions.dap.variables,
         ["Stack/Frames"] = function() require("telescope").extensions.dap.frames() end,
         --["RustDebuggables"] = function() require("rust-tools").debuggables.debuggables() end,
-        ["RustDebuggables"] = function() vim.cmd.RustLsp('debuggables') end,
+        ["RustDebuggables"] = function() vim.cmd.RustLsp("debuggables") end,
     },
     opts = {
         prompt = "Debugger",
@@ -32,7 +32,7 @@ local keys = {
             if is_active or not qwox_util.is_filetype("rust") then
                 dap.continue()
             else
-                vim.api.nvim_command("RustDebuggables")
+                vim.cmd.RustLsp("debuggables")
             end
         end,
         desc = "[D]ap [C]ontinue"

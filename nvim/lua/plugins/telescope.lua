@@ -106,6 +106,7 @@ local function config()
             },
             file_ignore_patterns = { "^.git/" },
 
+            --preview = { treesitter = true, },
             vimgrep_arguments = {
                 "rg",
                 "--color=never",
