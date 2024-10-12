@@ -20,7 +20,7 @@ numbers = {
         leave = nil,
         enable = function()
             if numbers.relativenumber_autocmds.enter or numbers.relativenumber_autocmds.leave then
-                vim.notify("autocmds are already enabled", "error")
+                vim.notify("autocmds are already enabled", "warn")
                 return
             end
             numbers.relativenumber_autocmds.enter = vim.autocmd.set("InsertEnter", { command = ":set norelativenumber" })
