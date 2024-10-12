@@ -16,6 +16,7 @@ error() {
 }
 
 archive_file="$1"
+archive_file_full_path="$(realpath "$archive_file")"
 archive_name="${archive_file##*/}"
 dir_name="${archive_file%.*}"
 
@@ -37,3 +38,6 @@ cd "$dir_name"
 
 info "extracting archive \"$archive_name\" in \"$dir_name\""
 "$script_dir/ex_here" "$archive_name"
+
+info "moving archive back: \"$dir_name/$archive_name\" -> \"$archive_file_full_path\""
+mv "$archive_name" "$archive_file_full_path"
