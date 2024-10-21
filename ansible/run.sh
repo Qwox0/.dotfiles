@@ -21,7 +21,7 @@ ansible_playbook_cmd="ansible-playbook"
 
 if [ ! $(which "$ansible_playbook_cmd") ]; then
     warn "Couldn't find \`ansible-playbook\` in PATH. using default"
-    ansible_playbook_cmd="~/.local/bin/ansible-playbook"
+    ansible_playbook_cmd="$HOME/.local/bin/ansible-playbook"
 fi
 
 __usage="

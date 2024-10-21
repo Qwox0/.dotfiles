@@ -12,5 +12,5 @@ warn() {
 
 error() {
     echo -e "\e[91;1m+++ ERROR:\e[0m $1" >&2
-    exit $2
+    if [ $2 -ne 0 ]; then exit $2; fi
 }
