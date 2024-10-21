@@ -7,7 +7,7 @@ excluded_dirs=("$HOME/.ansible")
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$(find ${dirs[@]} -mindepth 1 -maxdepth 1 -type d -follow -not -path ${excluded_dirs[@]} | fzf)
+    selected=$(find ${dirs[@]} -mindepth 1 -maxdepth 1 -type d -follow $(printf ' -not -path %s' "${excluded_dirs[@]}") | fzf)
 fi
 
 if [[ -z $selected ]]; then
