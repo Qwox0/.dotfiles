@@ -1,4 +1,4 @@
-# Bash Configuaration
+# Bash Configuration
 #
 # login shells -> /etc/profile -> /etc/bash.bashrc -> .login, .profile
 # interactive shells -> .bashrc
@@ -33,6 +33,12 @@ export PKG_CONFIG_PATH="/usr/lib/x86_64-linux-gnu/pkgconfig"
 for a in $(find $HOME/.env/ -regex '.*/[^\.]+$'); do
     source "$a"
 done
+
+# file for local configurations outside the dotfiles
+local_config="$HOME/.bashrc-local"
+if [ -f "$local_config" ]; then
+    source "$local_config"
+fi
 
 ### SHOPT
 shopt -s autocd             # change to named directory
