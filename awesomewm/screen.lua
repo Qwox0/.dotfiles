@@ -57,7 +57,8 @@ kbdcfg:set(1)
 kbdcfg.widget:connect_signal("button::press", function() kbdcfg:set_next() end)
 ]]
 
-local mytextclock = wibox.widget.textclock()
+-- format: see <https://docs.gtk.org/glib/method.DateTime.format.html>
+local mytextclock = wibox.widget.textclock(" %a, %F, %H:%M ")
 
 local screens = {
         [1] = {

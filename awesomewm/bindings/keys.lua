@@ -154,6 +154,7 @@ awful.keyboard.append_global_keybindings({
     ]]
 })
 
+---@diagnostic disable-next-line: redundant-parameter
 client.connect_signal("request::default_keybindings", function()
     awful.keyboard.append_client_keybindings({
         awful.key({ mod }, "q", function(c) c:kill() end, { description = "close", group = "client" }),
@@ -161,6 +162,12 @@ client.connect_signal("request::default_keybindings", function()
             c.fullscreen = not c.fullscreen
             c:raise()
         end, { description = "toggle fullscreen", group = "client" }),
+        awful.key({ mod }, "t", function(c)
+            local was_popout = c.floating
+            c.floating = not was_popout
+            c.ontop = not was_popout
+            c:raise()
+        end, { description = "toggle client popout", group = "client" }),
         awful.key({ mod }, "m", function(c) c.minimized = true end, { description = "minimize", group = "client" }), -- The client currently has the input focus, so it cannot be minimized, since minimized clients can't have the focus.
         awful.key({ mod }, "o", function(c) c:move_to_screen() end,
             { description = "move to other screen", group = "client" }),

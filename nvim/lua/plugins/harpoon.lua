@@ -15,4 +15,10 @@ local keys = {
 return {
     "theprimeagen/harpoon",
     keys = keys,
+    opts = {
+        menu = {
+            width = 80,
+            height = 13,
+        }
+    },
 }

@@ -1,10 +1,9 @@
 keymap_procs:
-  <C-a>: null # unbind key
+  <q>: { c: quit-or-ask }
   <t>: { c: toggle-focus }
 keymap_term:
-  <C-a>: null
   <t>: { c: toggle-focus }
-  <q>: { c: quit-or-ask }
+  <q>: { c: copy-mode-leave }
   <j>: { c: scroll-down }
   <k>: { c: scroll-up }
   <C-d>: { c: scroll-down }
