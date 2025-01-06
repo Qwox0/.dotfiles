@@ -11,18 +11,15 @@ local keys = {
         desc = "[G]it: s[Y]nc (fetch, pull, push)"
     },
 
-    { "<leader>gh",  ":diffget //2<CR>", desc = "diffsplit [G]et left ([H])" },
-    { "<leader>gl",  ":diffget //3<CR>", desc = "diffsplit [G]et right ([L])" },
-
     { "<leader>gaa", ":!git add -A<CR>", desc = "[G]it: [A]dd [A]ll" },
 
     --nmap("<leader>ga", require("telescope.builtin").git_stash, { desc = "[G]it: [A]dd" })
 
-    -- for fugitive:
-    { "gh",          ":diffget //2<CR>", desc = "fugitive split: [G]et left(2)" },
-    { "gj",          ":diffget //3<CR>", desc = "fugitive split: [G]et down(3)" },
-    { "gk",          ":diffget //2<CR>", desc = "fugitive split: [G]et up(2)" },
-    { "gl",          ":diffget //3<CR>", desc = "fugitive split: [G]et right(3)" },
+    -- for fugitive diffsplit:
+    { "gh",          ":diffget //2<CR>", desc = "fugitive split: [G]et left" },
+    { "gl",          ":diffget //3<CR>", desc = "fugitive split: [G]et right" },
+    { "gj",          ":1,$+1diffget //2<CR>", desc = "fugitive split: [G]et left all" },
+    { "gk",          ":1,$+1diffget //3<CR>", desc = "fugitive split: [G]et right all" },
 }
 
 return { -- Git Ui
