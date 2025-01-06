@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 # usage: ex <file>
 
+set -e
+
+error() {
+    echo -e "\e[91;1m+++ ERROR:\e[0m $1" >&2
+    exit $2
+}
+
 if [ ! -f "$1" ] ; then
     error "'$1' is not a valid file" 1
 fi
