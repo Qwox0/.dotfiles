@@ -1,4 +1,15 @@
 local function config()
+    local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
+    parser_configs.mylang = {
+        install_info = {
+            url = "~/src/tree-sitter-mylang",
+            files = { "src/parser.c", "src/scanner.c" },
+            branch = "main",               -- default branch in case of git repo if different from master
+            generate_requires_npm = false, -- if stand-alone parser without npm dependencies
+            requires_generate_from_grammar = false
+        },
+        filetype = "mylang",
+    }
     require("nvim-treesitter.configs").setup {
         ensure_installed = { "vimdoc", "lua", "rust" },
         sync_install = false,

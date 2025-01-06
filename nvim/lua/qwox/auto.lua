@@ -51,4 +51,10 @@ vim.autocmd.set("ModeChanged", {
     end,
 })
 
+vim.filetype.add {
+    extension = {
+        mylang = "mylang",
+    },
+}
+
 return AUTO

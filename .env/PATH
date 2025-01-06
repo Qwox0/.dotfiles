@@ -22,3 +22,5 @@ add_to_path "$HOME/lib/llvm/llvm-project-18.1.6.src/build/bin"
 
 add_to_path "$HOME/.cargo/bin"
 add_to_path "/usr/local/go/bin"
+add_to_path "$HOME/src/mylang/target/debug"
+add_to_path "$HOME/src/mylang/target/target"
