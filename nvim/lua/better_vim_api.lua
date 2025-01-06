@@ -96,6 +96,10 @@ vim.keymap.smap = function(lhs, rhs, opts) return vim.keymap.set("s", lhs, rhs, 
 ---@see vim.keymap.set
 vim.keymap.cmap = function(lhs, rhs, opts) return vim.keymap.set("c", lhs, rhs, opts) end
 
+local old_del = vim.keymap.del
+---@diagnostic disable-next-line: duplicate-set-field
+vim.keymap.del = function(modes, lhs, opts) pcall(old_del, modes, lhs, opts) end
+
 ---@alias vim.ColorValue string|integer color name or "#RRGGBB" or number value
 
 ---@class vim.Color: vim.api.keyset.highlight
