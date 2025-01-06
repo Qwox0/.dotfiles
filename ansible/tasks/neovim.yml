@@ -16,13 +16,21 @@
 - name: "Nvim: Neovim Build Process"
   when: git_result.changed
   block:
-    - name: "Nvim: Removing old build directory"
+    - name: "Nvim: Removing old build directory (`build/`)"
+      become: true
       ansible.builtin.file:
         path: "{{ bin }}/neovim/build"
         state: absent
 
+    - name: "Nvim: Removing old build directory (`.deps/`)"
+      become: true
+      ansible.builtin.file:
+        path: "{{ bin }}/neovim/.deps"
+        state: absent
+
     - name: "Nvim: Building Neovim"
-      ansible.builtin.command: make
+      become: true
+      ansible.builtin.command: make install
       args:
         chdir: "{{ bin }}/neovim"
       environment:
