@@ -12,8 +12,9 @@ vim.opt.timeout = false -- keymapping: command timeout
 
 -- remove default lsp keymaps:
 vim.keymap.del("n", "grn")
-vim.keymap.del("n", "gra")
+vim.keymap.del({ "n", "x" }, "gra")
 vim.keymap.del("n", "grr")
+vim.keymap.del("n", "gri")
 vim.keymap.del("i", "<C-S>")
 
 map({ "n", "v" }, "<leader>", "<Nop>", { desc = "Remove default behavior of the leader key" })

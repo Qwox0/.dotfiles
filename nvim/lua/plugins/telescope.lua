@@ -143,6 +143,8 @@ local function config()
     }
 
     nmap("<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
+    local find_files_with_ignored = function() builtin.find_files { no_ignore = true, no_ignore_parent = true } end
+    nmap("<leader>fi", find_files_with_ignored, { desc = "[F]ind files (including [I]gnored)" })
     --nmap("<C-p>", builtin.git_files)
     nmap("<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
     nmap("<leader>fw", builtin.grep_string, { desc = "[F]ind current [W]ord" })

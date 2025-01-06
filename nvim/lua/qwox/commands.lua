@@ -27,3 +27,5 @@ end, { range = true, desc = "Count human words in current line" })
 vim.command.set("ReverseLine", function()
     qwox_util.set_line(nil, qwox_util.get_line():reverse())
 end, { desc = "Count human words in selection" })
+
+vim.command.set("Zen", function() require("qwox.zen").toggle() end, { desc = "Toggle zen mode" })

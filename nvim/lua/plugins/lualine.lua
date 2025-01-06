@@ -64,6 +64,7 @@ end
 
 return {
     "nvim-lualine/lualine.nvim",
+    branch = "fix_hl_inheritence", -- TODO: remove this when <https://github.com/nvim-lualine/lualine.nvim/pull/1315> is merged
     lazy = false,
     dependencies = {
         "nvim-tree/nvim-web-devicons",
