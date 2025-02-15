@@ -2,7 +2,7 @@
 
 set -e
 
-script_dir="$(dirname "$0")"
+script_dir="$(dirname "$(readlink -f "$0")")"
 
 info() {
     echo -e "\e[92;1m+++\e[0m $1"
