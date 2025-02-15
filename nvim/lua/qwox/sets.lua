@@ -1,3 +1,8 @@
+local language = "en_US.UTF-8"
+if not pcall(vim.cmd.language, language) then
+    vim.notify("Warn: Cannot set language. Try uncommenting \"" .. language .. "\" in `/etc/locale.gen` and executing `sudo locale-gen`.", vim.log.levels.WARN)
+end
+
 vim.opt.hidden = true         -- hide vim in bg when closing
 
 vim.opt.number = true         -- show line numbers
@@ -42,7 +47,7 @@ vim.opt.undodir = home .. "/.vim/undodir" -- backup: store undofiles in "~/.vim/
 vim.opt.clipboard = "unnamedplus"         -- clipboard: shared with OS (otherwise use '"*y' and '"*p')
 
 vim.opt.incsearch = true                  -- search: highlight next match while typing
-vim.opt.hlsearch = true                   -- search: update search count (hl groups changed in `auto.lua`)
+-- see <./hlsearch.lua>
 
 vim.opt.shortmess:append("S")             -- disable normal search count
 

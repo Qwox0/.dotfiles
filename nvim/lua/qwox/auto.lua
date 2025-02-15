@@ -12,26 +12,6 @@ vim.autocmd.new("TextYankPost", {
 -- Remove whitespace on save
 vim.autocmd.new("BufWritePre", { pattern = "*", command = ":%s/\\s\\+$//e" })
 
--- only highlight search results while in cmd
--- TODO: only highlight when in search mode ("/", "?") or don't highlight -> must work with `:s/` and searchcount!
-vim.colors.link("CurSearch", "Search")
-vim.autocmd.set("CmdlineEnter", {
-    callback = function()
-        vim.colors.set("Search", {
-            reverse = true,
-            bg = 2631720,  -- #282828
-            fg = 16432431, -- #fabd2f
-            cterm = { reverse = true },
-            ctermbg = 235,
-            ctermfg = 214,
-        })
-    end
-})
-vim.autocmd.set("CmdlineLeave", {
-    callback = function()
-        vim.colors.del("Search")
-    end,
-})
 
 local vimmode = vim.mode
 ---@type table<number, 0|1|2|3>

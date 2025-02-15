@@ -34,8 +34,19 @@ nmap("J", "mzJ`z", { desc = "don't move cursor on J" })
 
 nmap("<C-d>", "<C-d>zz", { desc = "center screen on Ctrl+d" })
 nmap("<C-u>", "<C-u>zz", { desc = "center screen on Ctrl+u" })
-nmap("n", "nzzzv", { desc = "center screen on n" })
-nmap("N", "Nzzzv", { desc = "center screen on N" })
+nmap("n", function()
+    require("qwox.hlsearch").enable()
+    vim.cmd.normal { "nzzzv", bang = true }
+end, { desc = "center screen on n" })
+nmap("N", function()
+    require("qwox.hlsearch").enable()
+    vim.cmd.normal { "Nzzzv", bang = true }
+end, { desc = "center screen on N" })
+
+nmap("*", function()
+    require("qwox.hlsearch").enable()
+    vim.cmd.normal { "*", bang = true }
+end, { desc = "" })
 
 nmap("<C-n>", "<cmd>cnext<CR>zz", { desc = "[N]ext quickfix list item" })
 nmap("<C-b>", "<cmd>cprev<CR>zz", { desc = "previous ([B]ack) quickfix list item" })

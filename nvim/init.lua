@@ -8,6 +8,7 @@ require("qwox.sets")
 require("qwox").numbers.default()
 require("qwox.keymaps")
 require("qwox.auto")
+require("qwox.hlsearch")
 require("qwox.commands")
 require("qwox.templates")
 

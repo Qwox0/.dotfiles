@@ -232,6 +232,8 @@ vim.colors = {
         local new = vim.tbl_deep_extend("force", old, color)
         vim.colors.set(name, new)
     end,
+
+    reapply_all = function() vim.colors.set_many(vim.colors.hl_groups) end,
 }
 
 ---@class VimMode

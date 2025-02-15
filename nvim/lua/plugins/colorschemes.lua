@@ -42,6 +42,8 @@ local function colorscheme_config(config)
         vim.colors.link("DiagnosticFloatingInfo", "DiagnosticInfo")
         vim.colors.link("DiagnosticFloatingHint", "DiagnosticHint")
         vim.colors.link("DiagnosticFloatingOk", "DiagnosticOk")
+
+        vim.colors.reapply_all() -- prevent colorscheme from overwriting manually set colors
     end
 end
 
