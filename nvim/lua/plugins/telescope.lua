@@ -181,7 +181,7 @@ local function config()
 
     nmap("<leader>fm", builtin.keymaps, { desc = "[F]ind [M]appings" })
 
-    vim.autocmd.set("WinLeave", {
+    vim.autocmd.new("WinLeave", {
         callback = function()
             if qwox_util.is_filetype("TelescopePrompt") and vim.fn.mode() == "i" then
                 qwox_util.enter_normal_mode()

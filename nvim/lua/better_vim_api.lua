@@ -1,10 +1,10 @@
 vim.augroup = {
-    set = vim.api.nvim_create_augroup,
+    new = vim.api.nvim_create_augroup,
     del = vim.api.nvim_del_augroup_by_id,
     del_by_name = vim.api.nvim_del_augroup_by_name,
 }
 vim.autocmd = {
-    set = vim.api.nvim_create_autocmd,
+    new = vim.api.nvim_create_autocmd,
     del = vim.api.nvim_del_autocmd,
 }
 

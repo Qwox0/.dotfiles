@@ -68,8 +68,8 @@ local function config()
     }
 
     -- line wrap in obsidian
-    vim.autocmd.set("BufEnter", { pattern = obsidian_dir .. "/*.md", command = ":set wrap" })
-    vim.autocmd.set("BufLeave", { pattern = obsidian_dir .. "/*.md", command = ":set nowrap" })
+    vim.autocmd.new("BufEnter", { pattern = obsidian_dir .. "/*.md", command = ":set wrap" })
+    vim.autocmd.new("BufLeave", { pattern = obsidian_dir .. "/*.md", command = ":set nowrap" })
 end
 
 local keys = {
@@ -92,7 +92,7 @@ local keys = {
     { "<leader>od", vim.cmd.ObsidianToday,    desc = "[O]bsidian open [D]aily" }
 }
 
-vim.autocmd.set({ "VimEnter", "DirChanged" }, {
+vim.autocmd.new({ "VimEnter", "DirChanged" }, {
     callback = function()
         if not vim.fn.getcwd():starts_with(obsidian_dir) then return end
         vim.cmd.doautocmd("User LoadObsidian")

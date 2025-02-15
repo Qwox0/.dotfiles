@@ -1,8 +1,8 @@
 local AUTO = {}
 
 -- Highlight on yank
-vim.augroup.set("YankHighlight", { clear = true })
-vim.autocmd.set("TextYankPost", {
+vim.augroup.new("YankHighlight", { clear = true })
+vim.autocmd.new("TextYankPost", {
     group = "YankHighlight",
     callback = function()
         vim.highlight.on_yank { higroup = "IncSearch", timeout = "100" }
@@ -10,7 +10,7 @@ vim.autocmd.set("TextYankPost", {
 })
 
 -- Remove whitespace on save
-vim.autocmd.set("BufWritePre", { pattern = "*", command = ":%s/\\s\\+$//e" })
+vim.autocmd.new("BufWritePre", { pattern = "*", command = ":%s/\\s\\+$//e" })
 
 -- only highlight search results while in cmd
 -- TODO: only highlight when in search mode ("/", "?") or don't highlight -> must work with `:s/` and searchcount!
@@ -36,7 +36,7 @@ vim.autocmd.set("CmdlineLeave", {
 local vimmode = vim.mode
 ---@type table<number, 0|1|2|3>
 AUTO.buf_conceallevels = {}
-vim.autocmd.set("ModeChanged", {
+vim.autocmd.new("ModeChanged", {
     pattern = table.arr_map(vimmode.vis_modes, function(vis) return "n:" .. vis end),
     callback = function(opts)
         ---@diagnostic disable-next-line: undefined-field
@@ -44,7 +44,7 @@ vim.autocmd.set("ModeChanged", {
         vim.opt_local.conceallevel = 0
     end,
 })
-vim.autocmd.set("ModeChanged", {
+vim.autocmd.new("ModeChanged", {
     pattern = table.arr_map(vimmode.vis_modes, function(vis) return vis .. ":n" end),
     callback = function(opts)
         vim.opt_local.conceallevel = AUTO.buf_conceallevels[opts.buf] or 0

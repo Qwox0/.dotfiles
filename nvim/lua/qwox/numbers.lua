@@ -23,8 +23,8 @@ numbers = {
                 vim.notify("autocmds are already enabled", "warn")
                 return
             end
-            numbers.relativenumber_autocmds.enter = vim.autocmd.set("InsertEnter", { command = ":set norelativenumber" })
-            numbers.relativenumber_autocmds.leave = vim.autocmd.set("InsertLeave", { command = ":set relativenumber" })
+            numbers.relativenumber_autocmds.enter = vim.autocmd.new("InsertEnter", { command = ":set norelativenumber" })
+            numbers.relativenumber_autocmds.leave = vim.autocmd.new("InsertLeave", { command = ":set relativenumber" })
         end,
         disable = function()
             if numbers.relativenumber_autocmds.enter then vim.autocmd.del(numbers.relativenumber_autocmds.enter) end
