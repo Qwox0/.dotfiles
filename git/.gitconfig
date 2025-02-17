@@ -8,3 +8,4 @@
 [alias]
     tree = tree-self --all
     tree-self = log --graph --decorate --oneline --format=format:'%C(auto)%h%d %C(white)%s %C(dim white)- %an %C(green)(%ar)%C(reset)'
+    clone-as-worktree = "!git-clone-as-worktree.sh"
