@@ -2,9 +2,13 @@ keymap_procs:
   <q>: { c: quit-or-ask }
   <t>: { c: toggle-focus }
 keymap_term:
+  <q>: { c: quit-or-ask }
   <t>: { c: toggle-focus }
-  <q>: { c: copy-mode-leave }
+  <r>: { c: restart-proc }
   <j>: { c: scroll-down }
   <k>: { c: scroll-up }
   <C-d>: { c: scroll-down }
   <C-u>: { c: scroll-up }
+keymap_copy:
+  <q>: { c: copy-mode-leave }
+  <y>: { c: copy-mode-copy }
