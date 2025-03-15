@@ -1,7 +1,7 @@
-#:schema ./taplo_starship.json
+'$schema' = "https://starship.rs/config-schema.json"
 
 format = """\
-$username$hostname$os$all$character
+$username$hostname$os$all$character$status
  $directory [➜](bold green) """
 
 add_newline = true
@@ -27,6 +27,12 @@ format = "$symbol "
 success_symbol = "[](bold green)"
 error_symbol = "[](bold red)"
 
+[status]
+disabled = false
+format = "[$symbol$status]($style)"
+symbol = ""
+style = "bold red"
+
 # configure directory
 [directory]
 truncation_length = 10
@@ -38,7 +44,7 @@ style = "bold italic blue"
 
 [cmd_duration]
 min_time = 4
-show_milliseconds = false
+show_milliseconds = true
 disabled = false
 
 [docker_context]
@@ -56,7 +62,7 @@ only_detached = true
 
 [git_status]
 format = '([\[$conflicted$stashed$deleted$renamed$modified$untracked$staged$ahead_behind\]](bold) )'
-conflicted = "[↯${count}](red bold)" # !
+conflicted = "[↯${count}](red bold)"
 stashed = "[📦${count}](yellow)"
 deleted = "[-${count}](red)"
 renamed = "[~${count}](blue)"
@@ -90,12 +96,12 @@ disabled = false
 [os.symbols]
 Windows = " "
 Debian = " "
-Ubuntu = " " #   #
+Ubuntu = " "  #  #
 
 ## Languages
 
 [rust]
-symbol = " " #  #
+symbol = " "
 style = "bold 202"
 
 [lua]
