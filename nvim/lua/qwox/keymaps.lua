@@ -51,8 +51,6 @@ end, { desc = "" })
 nmap("<C-n>", "<cmd>cnext<CR>zz", { desc = "[N]ext quickfix list item" })
 nmap("<C-b>", "<cmd>cprev<CR>zz", { desc = "previous ([B]ack) quickfix list item" })
 
-nmap("<leader>e", vim.cmd.Ex, { desc = "explore with vim file manager" })
-
 imap("<C-c>", "<Esc>", { desc = "Ctrl+C = Esc" })
 imap("<C-v>", "<C-r>\"", { desc = "Ctrl+V = Paste" })
 
