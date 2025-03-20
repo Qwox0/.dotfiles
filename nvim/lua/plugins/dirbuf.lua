@@ -15,7 +15,10 @@ return {
         { "<leader>e", vim.cmd.Dirbuf, desc = "explore with vim file manager" },
     },
     opts = {
+        show_hidden = true,
         sort_order = sort_directories_first,
-        write_cmd = "DirbufSync -confirm",
+        -- write_cmd = "DirbufSync -confirm",
+        write_cmd = "DirbufSync",
     },
+    -- also see <../../after/syntax/dirbuf.lua>
 }
