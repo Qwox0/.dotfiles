@@ -61,6 +61,11 @@ local function config()
 
     local default_strategy = "flex"
 
+    local function send_to_loclist(prompt_bufnr)
+        actions.send_to_loclist(prompt_bufnr)
+        vim.cmd.lopen()
+    end
+
     require("telescope").setup {
         defaults = { -- Default configuration for telescope
             layout_strategy = default_strategy,
@@ -91,7 +96,6 @@ local function config()
                     ["<ESC>"] = actions.close,
                     ["<C-j>"] = actions.move_selection_next,
                     ["<C-k>"] = actions.move_selection_previous,
-                    ["<C-t>"] = actions.layout.cycle_layout_next,
                     ["<C-l>"] = actions.layout.cycle_layout_next,
                     ["<C-v>"] = false,
                     ["<C-s>"] = actions.file_vsplit, -- <C-v>
@@ -101,7 +105,9 @@ local function config()
                         actions.close(prompt_bufnr)
                         -- Depending on what you want put `cd`, `lcd`, `tcd`
                         vim.cmd(string.format("silent lcd %s", dir))
-                    end
+                    end,
+                    ["<PageUp>"] = send_to_loclist,
+                    ["<PageDown>"] = send_to_loclist,
                 },
             },
             file_ignore_patterns = { "^.git/" },

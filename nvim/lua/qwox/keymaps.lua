@@ -48,8 +48,12 @@ nmap("*", function()
     vim.cmd.normal { "*", bang = true }
 end, { desc = "" })
 
-nmap("<C-n>", "<cmd>cnext<CR>zz", { desc = "[N]ext quickfix list item" })
-nmap("<C-b>", "<cmd>cprev<CR>zz", { desc = "previous ([B]ack) quickfix list item" })
+-- nmap("<C-n>", "<cmd>cnext<CR>zz", { desc = "[N]ext quickfix list item" })
+-- nmap("<C-b>", "<cmd>cprev<CR>zz", { desc = "previous ([B]ack) quickfix list item" })
+nmap("<PageDown>", "<cmd>lnext<CR>zz", { desc = "[N]ext location list item" })
+nmap("<PageUp>", "<cmd>lprev<CR>zz", { desc = "previous ([B]ack) location list item" })
+nmap("<leader>l", "<cmd>lnext<CR>zz")
+nmap("<leader>h", "<cmd>lprev<CR>zz")
 
 imap("<C-c>", "<Esc>", { desc = "Ctrl+C = Esc" })
 imap("<C-v>", "<C-r>\"", { desc = "Ctrl+V = Paste" })
