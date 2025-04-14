@@ -5,10 +5,11 @@ require("typed.snip")
 return {
     s("main", {
         t {
-            "std :: #import \"std\"",
+            "std :: #import \"std\";",
             "",
             "main :: -> {",
             "    std.println(\"Hello World\");",
+            "    0",
             "}",
         },
     }),

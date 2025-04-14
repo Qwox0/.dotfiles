@@ -11,6 +11,7 @@ end
 
 return {
     "elihunter173/dirbuf.nvim",
+    lazy = false,
     keys = {
         { "<leader>e", vim.cmd.Dirbuf, desc = "explore with vim file manager" },
     },
