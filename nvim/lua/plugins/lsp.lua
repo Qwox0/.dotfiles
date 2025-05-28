@@ -33,9 +33,9 @@ return {
     "neovim/nvim-lspconfig",
     lazy = false,
     dependencies = {
-        "williamboman/mason.nvim",
-        "williamboman/mason-lspconfig.nvim",
-        { "j-hui/fidget.nvim", tag = "legacy" }, -- Useful status UI for LSP
+        { "williamboman/mason.nvim",            version = "1.11.0" },
+        { "williamboman/mason-lspconfig.nvim",  version = "1.32.0" },
+        { "j-hui/fidget.nvim",                  tag = "legacy" }, -- Useful status UI for LSP
         "ray-x/lsp_signature.nvim",              -- show block signature
         "onsails/lspkind-nvim",                  -- LSP Symbols
 

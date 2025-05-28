@@ -76,6 +76,8 @@ local function config()
             },
         }, ]]
         },
+        modules = {},
+        ignore_install = {},
     }
 end
 

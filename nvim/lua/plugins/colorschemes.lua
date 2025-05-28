@@ -65,6 +65,7 @@ local colorschemes = {
             for _, color in ipairs({ "Red", "Yellow", "Green", "Orange", "Blue", "Aqua" }) do
                 vim.colors.update("Gruvbox" .. color .. "Sign", { bg = "none" })
             end
+            vim.colors.update("GruvboxGrayBold", { link = "GruvboxGray", bold = true })
         end),
     },
     {
