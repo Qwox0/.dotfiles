@@ -154,15 +154,16 @@ local function config()
         sorting = {
             priority_weight = 2,
             comparators = {
-                cmp.config.compare.exact,
-                cmp.config.compare.offset,
-
                 --- buf text always behind other LSP items
                 function(entry1, entry2)
                     local is_text1 = entry1:get_kind() == cmp.lsp.CompletionItemKind.Text
                     local is_text2 = entry2:get_kind() == cmp.lsp.CompletionItemKind.Text
                     if is_text1 ~= is_text2 then return is_text2 end
                 end,
+
+                cmp.config.compare.exact,
+                cmp.config.compare.offset,
+
                 --- in scope first, imported last
                 function(entry1, entry2)
                     local needs_import1 = needs_import(entry1)
