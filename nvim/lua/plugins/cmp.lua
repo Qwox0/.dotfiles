@@ -294,7 +294,7 @@ local function config()
 
     -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
     cmp.setup.cmdline({ "/", "?" }, {
-        mapping = get_mappings(_, { behavior = cmp.SelectBehavior.Insert }),
+        mapping = get_mappings(nil, { behavior = cmp.SelectBehavior.Insert }),
         sources = {
             { name = "buffer" },
         },
@@ -305,7 +305,7 @@ local function config()
 
     -- Use cmdline & path source for ":" (if you enabled `native_menu`, this won't work anymore).
     cmp.setup.cmdline(":", {
-        mapping = get_mappings(_, { behavior = cmp.SelectBehavior.Insert }),
+        mapping = get_mappings(nil, { behavior = cmp.SelectBehavior.Insert }),
         sources = {
             { name = "path" },
             { name = "buffer" },
