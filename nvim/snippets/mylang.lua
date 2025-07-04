@@ -9,7 +9,6 @@ return {
             "",
             "main :: -> {",
             "    std.println(\"Hello World\");",
-            "    0",
             "}",
         },
     }),

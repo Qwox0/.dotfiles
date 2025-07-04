@@ -1,9 +1,10 @@
 # <https://github.com/rust-lang/rustfmt/blob/master/Configurations.md>
 
+error_on_unformatted = true
 use_small_heuristics = "Max"
 max_width = 100
 chain_width = 80
-wrap_comments = true
+wrap_comments = false
 comment_width = 80
 condense_wildcard_suffixes = true
 edition = "2021"
