@@ -1,0 +1,1 @@
+/home/qwox/src/tree-sitter-mylang/queries/locals.scm
