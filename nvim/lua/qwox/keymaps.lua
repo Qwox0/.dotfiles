@@ -10,12 +10,34 @@ local cmap = vim.keymap.cmap
 vim.g.mapleader = " "   -- keymapping: define <leader> for mappings
 vim.opt.timeout = false -- keymapping: command timeout
 
--- remove default lsp keymaps:
-vim.keymap.del("n", "grn")
-vim.keymap.del({ "n", "x" }, "gra")
-vim.keymap.del("n", "grr")
-vim.keymap.del("n", "gri")
-vim.keymap.del("i", "<C-S>")
+-- remove default lsp keymaps (`:help lsp-defaults`):
+repeat
+    local function err(cause) vim.notify("Cannot remove default lsp keymaps. Cause: " .. cause, "warn") end
+
+    local defaults_paths = vim.api.nvim_get_runtime_file("lua/vim/_defaults.lua", true)
+    assert(#defaults_paths == 1)
+    local defaults_file = io.open(defaults_paths[1], "r")
+    if defaults_file == nil then
+        err(string.format("Couldn't open file '%s'.", defaults_paths[1]))
+        break
+    end
+    local content = defaults_file:read("*a") --[[@as string]]
+    local start = content:find("Default maps for LSP functions.", nil, false)
+    start = start and select(2, content:find("\n%s+do\n", start))
+    if start == nil then
+        err(string.format("Couldn't find default mappings in '%s'.", defaults_paths[1]))
+        break
+    end
+
+    local end_ = (content:find("end\n%s*\n", start) or content:len()) - 1
+    local block = content:sub(start, end_)
+
+    for modes, lhs in block:gmatch("vim%.keymap%.set%(([^\n]*), '([^']*)',") do
+        for mode in modes:gmatch("'(.)'") do
+            vim.keymap.del(mode, lhs)
+        end
+    end
+until true
 
 map({ "n", "v" }, "<leader>", "<Nop>", { desc = "Remove default behavior of the leader key" })
 nmap("q:", "<Nop>", { desc = "Disable command history" })
@@ -128,8 +150,9 @@ nmap("<leader>rf", rename_buffer, { desc = "[R]ename [F]ile" })
 
 nmap("<leader>b", ":bprevious<CR>", { desc = "previous buffer ([B]ack)" })
 nmap("<leader>n", ":bnext<CR>", { desc = "[N]ext buffer" })
-nmap("<leader>q", ":bdelete<CR>", { desc = "[Q]uit buffer" })
-nmap("<leader>!q", ":bdelete!<CR>", { desc = "[Q]uit buffer[!]" })
+
+nmap("<leader>q", ":q<CR>", { desc = "[Q]uit current window" })
+nmap("<leader>!q", ":q!<CR>", { desc = "[Q]uit current window[!]" })
 
 nmap("<leader>ji", "mzgg=G`z", { desc = "[I]ndent current buffer" })
 
