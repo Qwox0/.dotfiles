@@ -20,14 +20,21 @@ vim.opt.smartindent = true   -- tab:
 
 vim.opt.scrolloff = 8        -- scroll before cursor reaches edge
 
-vim.opt.wrap = false         -- set nowrap
+vim.opt.wrap = false
+vim.opt.showbreak = "⤷"                  -- wrap character (alternative: ↳)
+vim.opt.breakindent = true               -- set indent wrapped lines
+vim.opt.breakindentopt:append("sbr")     -- show 'showbreak' at start of wrapped line
+vim.opt.breakindentopt:append("shift:1") -- indent wrapped lines more (sadly also affects "list:-1")
+vim.opt.breakindentopt:append("list:-1") -- smartwrap numbered lists
+local default_formatlistpat = "^\\s*\\d\\+[\\]:.)}\\t ]\\s*"
+vim.opt.formatlistpat = "\\("..default_formatlistpat.."\\|^\\s*\\*\\s*\\)\\ze " -- fixes the problem that "shift:1" affects "list:-1" and smartwraps bulleted lists
 
 vim.opt.termguicolors = true -- colors: all 24-bit RGB colors
 
 vim.opt.errorbells = false   -- audio: no bells
 
 vim.opt.list = true
-vim.opt.listchars:append("eol:↴")
+vim.opt.listchars:append("eol:⤵") -- ↴
 vim.opt.listchars:append("tab:-->")
 vim.opt.listchars:append("space: ")
 vim.opt.listchars:append("multispace:⋅")
