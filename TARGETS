@@ -11,6 +11,7 @@
 ./tmux/.tmux.conf           ; ~/.tmux.conf
 ./nvim                      ; ~/.config/nvim
 ./rustfmt                   ; ~/.config/rustfmt
+./clangd/.clang-format      ; ~/.clang-format
 ./mprocs                    ; ~/.config/mprocs
 ./alacritty                 ; ~/.config/alacritty
 ./kitty                     ; ~/.config/kitty
