@@ -45,6 +45,8 @@ local function colorscheme_config(config)
 
         require("qwox.markdown").set_heading_colors() -- this is not called in `ftplugin/markdown.lua` because markdown highlighting might be injected into other file types.
 
+        vim.colors.set("@variable.mutable", { italic = true })
+
         vim.colors.reapply_all() -- prevent colorscheme from overwriting manually set colors
     end
 end

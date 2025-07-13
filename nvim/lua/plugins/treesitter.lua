@@ -1,6 +1,8 @@
 local function config()
     local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
-    parser_configs.mylang = {
+
+    -- add parser for my programming language
+    parser_configs["mylang"] = {
         install_info = {
             url = "~/src/tree-sitter-mylang",
             files = { "src/parser.c", "src/scanner.c" },
@@ -10,6 +12,15 @@ local function config()
         },
         filetype = "mylang",
     }
+
+    -- use local markdown parser which fixes a segfault when injecting markdown into my `mylang` parser.
+    local local_markdown_dir = require("qwox.util").paths.home .. "/src/tree-sitter-markdown"
+    if vim.uv.fs_stat(local_markdown_dir) then
+        local markdown_config = parser_configs.markdown
+        markdown_config.install_info.url = local_markdown_dir
+        parser_configs["markdown"] = markdown_config
+    end
+
     require("nvim-treesitter.configs").setup {
         ensure_installed = { "vimdoc", "lua", "rust" },
         sync_install = false,
@@ -78,6 +89,9 @@ local function config()
         },
         modules = {},
         ignore_install = {},
+        custom_captures = {
+            --["@variable.mutable"] = "@variable.mutable",
+        },
     }
 end
 
