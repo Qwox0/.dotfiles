@@ -138,26 +138,29 @@ end
 ---@return integer row 1-indexed
 ---@return integer col 0-indexed
 function U.get_cursor_pos()
+    ---@diagnostic disable-next-line: redundant-return-value
     return table.unpack(vim.api.nvim_win_get_cursor(0))
 end
 
----Get position of the word under the current cursor
+---Get position of the word under the current cursor in the current line
+---@param WORD boolean? see ':help word' and ':help WORD'
 ---@return integer word_start 0-indexed; inclusive
 ---@return integer word_end 0-indexed; exclusive
-function U.get_cursor_word_pos()
+function U.get_cursor_word_pos(WORD)
     local _, col = U.get_cursor_pos()
     local line = U.get_line()
-    return line:get_word_pos(col)
+    return line:get_word_pos(col, WORD)
 end
 
 ---Get current line split around word under cursor.
+---@param WORD boolean? see ':help word' and ':help WORD'
 ---@return string before
 ---@return string word
 ---@return string after
-function U.get_cursor_word()
+function U.get_cursor_word(WORD)
     ---@type string
     local line = U.get_line()
-    local word_start, word_end = U.get_cursor_word_pos()
+    local word_start, word_end = U.get_cursor_word_pos(WORD)
     return line:multi_split(word_start, word_end)
 end
 

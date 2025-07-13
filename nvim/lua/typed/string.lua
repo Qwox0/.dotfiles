@@ -1,14 +1,19 @@
-local non_word_pattern = "[^%a%d_]"
+--- see ':help word'
+local non_word_pattern = "[^%a%d_]" -- currently missing some allowed characters
+--- see ':help WORD'
+local non_WORD_pattern = "%s"
 
 ---get start and end of word under position `pos`
 ---see `require("qwox.string")`
 ---@param string string
 ---@param pos integer
+---@param WORD boolean? see ':help word' and ':help WORD'
 ---@return integer word_start 0-indexed; inclusive
 ---@return integer word_end 0-indexed; exclusive
-function string.get_word_pos(string, pos)
-    local word_start = (string:sub0(0, pos):rfind0(non_word_pattern) or -1) + 1
-    local word_end = string:sub0(pos):find0(non_word_pattern)
+function string.get_word_pos(string, pos, WORD)
+    local pat = WORD and non_WORD_pattern or non_word_pattern
+    local word_start = (string:sub0(0, pos):rfind0(pat) or -1) + 1
+    local word_end = string:sub0(pos):find0(pat)
     word_end = word_end ~= nil and word_end + pos or string:len()
     return word_start, word_end
 end

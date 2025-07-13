@@ -161,15 +161,18 @@ nmap("<leader>da", "ggdG", { desc = "[D]elete [A]ll in current buffer" })
 
 --#region surround
 
-nmap("<leader>s", function()
+local function surround(WORD)
     ---@type string
     local input = vim.fn.input("Surround word with > ")
     if input == "" then return end
 
-    local before, word, after = qwox_util.get_cursor_word()
+    local before, word, after = qwox_util.get_cursor_word(WORD)
 
     qwox_util.set_line(nil, before .. input .. word .. input:fancy_reverse() .. after)
-end, { desc = "[S]urround word" })
+end
+
+nmap("<leader>s", function() surround(false) end, { desc = "[S]urround word" })
+nmap("<leader>S", function() surround(true) end, { desc = "[S]urround WORD" })
 
 vmap("<leader>s", function()
     ---@type string
