@@ -6,7 +6,7 @@
     id: "{{ arch }}-{{ os }}"
     url: "https://ziglang.org/download/index.json"
     json: "{{ lookup('url', url, split_lines=False) | from_json }}"
-    version: "{{ json | difference(['master']) | first }}" # zig version are already ordered
+    version: "{{ json | difference(['master']) | community.general.version_sort | last }}"
     download_url: "{{ json[version][id].tarball }}"
     archive_name: "{{ download_url | split('/') | last }}"
     dir_name: "{{ archive_name | splitext | first | splitext | first }}"
