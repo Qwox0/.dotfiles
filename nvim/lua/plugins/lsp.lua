@@ -8,12 +8,11 @@ local function config()
     }
     require("mason-lspconfig").setup_handlers {
         function(server_name)
-            require("lspconfig")[server_name].setup(
-                vim.tbl_deep_extend("force", qwox_lsp.servers[server_name] or {}, {
-                    capabilities = qwox_lsp.capabilities,
-                    on_attach = qwox_lsp.custom_attach,
-                })
-            )
+            local cfg = vim.tbl_deep_extend("force", qwox_lsp.servers[server_name] or {}, {
+                capabilities = qwox_lsp.capabilities,
+                on_attach = qwox_lsp.custom_attach,
+            })
+            vim.lsp.config(server_name, cfg)
         end,
     }
 
@@ -33,11 +32,11 @@ return {
     "neovim/nvim-lspconfig",
     lazy = false,
     dependencies = {
-        { "williamboman/mason.nvim",            version = "1.11.0" },
-        { "williamboman/mason-lspconfig.nvim",  version = "1.32.0" },
-        { "j-hui/fidget.nvim",                  tag = "legacy" }, -- Useful status UI for LSP
-        "ray-x/lsp_signature.nvim",              -- show block signature
-        "onsails/lspkind-nvim",                  -- LSP Symbols
+        { "williamboman/mason.nvim",           version = "1.11.0" },
+        { "williamboman/mason-lspconfig.nvim", version = "1.32.0" },
+        { "j-hui/fidget.nvim",                 tag = "legacy" },  -- Useful status UI for LSP
+        "ray-x/lsp_signature.nvim",                               -- show block signature
+        "onsails/lspkind-nvim",                                   -- LSP Symbols
 
         "nvim-telescope/telescope.nvim",
         "hrsh7th/cmp-nvim-lsp",
