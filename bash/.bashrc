@@ -81,11 +81,15 @@ alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 
 alias git-lines='git ls-files | xargs wc -l'
+
 alias swap-clear='sudo swapoff -a; sudo swapon -a'
+alias swap-list="for file in /proc/*/status; do awk '/VmSwap|Name/{printf \$2 \" \" \$3}END{ print \"\"}' \$file; done | sort -k 2 -n -r | less"
 
 alias bt='bluetoothctl'
 alias btinfo='bluetoothinfo' # see `.dotfiles/scripts/bluetoothinfo`
 alias btd='bt disconnect'
+
+alias capture_prev_backtrace='2>&1 coredumpctl -1 gdb --debugger-arguments="--batch -ex \"thread apply all bt full\"" | tee backtrace.txt'
 
 u() {
     sudo apt update && sudo apt upgrade

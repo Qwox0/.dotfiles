@@ -101,6 +101,9 @@ end, { desc = "[R]eplace [A]ll" })
 nmap("<leader>rw", [[:%s/<C-r><C-w>/<C-r><C-w>/gI<Left><Left><Left>]], {
     desc = "[R]eplace [W]ord"
 })
+nmap("<leader>r/", [[:%s/<C-r>//<C-r>//gI<Left><Left><Left>]], {
+    desc = "[R]eplace last Search [/]"
+})
 vmap("<leader>r", [["ay:%s/<C-r>"/<C-r>"/gI<Left><Left><Left>]], {
     desc = "[R]eplace highlight"
 })

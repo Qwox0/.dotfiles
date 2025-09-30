@@ -70,3 +70,5 @@ vim.command.set("Splitdiff", arg_passthrough("diffsplit"), { nargs = 1, desc = "
 
 vim.command.set("Vdiffsplit", arg_passthrough("vert diffsplit"), { nargs = 1, desc = "`:vert diffsplit` alias" })
 vim.command.set("Vsplitdiff", arg_passthrough("vert diffsplit"), { nargs = 1, desc = "`:vert diffsplit` alias" })
+
+vim.command.set("TSInspect", "InspectTree", { desc = "`:InspectTree` alias" })

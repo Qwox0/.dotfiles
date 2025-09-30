@@ -7,6 +7,8 @@
 # set keyboard layout
 [ -f $HOME/.keyboard/my_layout.xkb ] && xkbcomp $HOME/.keyboard/my_layout.xkb $DISPLAY &
 
+export XDG_CURRENT_DESKTOP=GNOME
+
 # disable bell
 xset -b
 
