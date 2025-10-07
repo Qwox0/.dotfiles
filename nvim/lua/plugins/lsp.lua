@@ -12,6 +12,7 @@ local function config()
                 capabilities = qwox_lsp.capabilities,
                 on_attach = qwox_lsp.custom_attach,
             })
+            vim.lsp.enable(server_name)
             vim.lsp.config(server_name, cfg)
         end,
     }
