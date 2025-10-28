@@ -93,20 +93,21 @@ nmap("<leader>x", "<cmd>!chmod +x \"%\"<CR>", { silent = true, desc = "make file
 
 -- Substitute / Replace
 nmap("<leader>ra", function()
-    local search = vim.fn.input("Find > ") --TODO: highlight searched text
-    vim.cmd("/" .. search)
-    local replacement = vim.fn.input("Replace with > ")
-    vim.cmd(":%s/" .. search .. "/" .. replacement .. "/g")
+    local search = qwox_util.input_with_search("Select > ")
+    if search == "" then return end
+    qwox_util.pretype_cmd(":%s/" .. search .. "/" .. search .. "/gI<Left><Left><Left>")
 end, { desc = "[R]eplace [A]ll" })
-nmap("<leader>rw", [[:%s/<C-r><C-w>/<C-r><C-w>/gI<Left><Left><Left>]], {
-    desc = "[R]eplace [W]ord"
-})
-nmap("<leader>r/", [[:%s/<C-r>//<C-r>//gI<Left><Left><Left>]], {
-    desc = "[R]eplace last Search [/]"
-})
-vmap("<leader>r", [["ay:%s/<C-r>"/<C-r>"/gI<Left><Left><Left>]], {
-    desc = "[R]eplace highlight"
-})
+vmap("<leader>ra", function()
+    local search = qwox_util.input_with_search("Select > ")
+    if search == "" then return end
+    -- '<,'> is inserted automatically
+    qwox_util.pretype_cmd(":s/" .. search .. "/" .. search .. "/gI<Left><Left><Left>")
+end, { desc = "[R]eplace [A]ll in selection" })
+nmap("<leader>rw", [[:%s/<C-r><C-w>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "[R]eplace [W]ord" })
+nmap("<leader>r/", [[:%s/<C-r>//<C-r>//gI<Left><Left><Left>]], { desc = "[R]eplace last Search [/]" })
+local replace_selection = [["ay:%s/<C-r>"/<C-r>"/gI<Left><Left><Left>]]
+vmap("<leader>rs", replace_selection, { desc = "[R]eplace [s]election (same as '<leader>rh')" })
+vmap("<leader>rh", replace_selection, { desc = "[R]eplace [h]ighlight (same as '<leader>rs')" })
 
 nmap("<leader>bn", function()
     local file_dir = vim.fn.expand("%:p:h") .. "/"
@@ -116,7 +117,7 @@ nmap("<leader>bn", function()
         default = file_dir,
     }
     if input == "" then return end
-    vim.cmd.e(input)
+    vim.cmd.edit(input)
 end, { desc = "[B]uffer/file [N]ew" })
 
 nmap("<leader>bc", function()

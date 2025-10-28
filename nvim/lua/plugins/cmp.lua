@@ -293,7 +293,8 @@ local function config()
     })
 
     -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-    cmp.setup.cmdline({ "/", "?" }, {
+    -- also use same options for `input()` command
+    cmp.setup.cmdline({ "/", "?", "@" }, {
         mapping = get_mappings(nil, { behavior = cmp.SelectBehavior.Insert }),
         sources = {
             { name = "buffer" },

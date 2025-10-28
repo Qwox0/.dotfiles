@@ -69,5 +69,7 @@ vim.opt.lazyredraw = true -- performance: dont redraw on macros etc.
 vim.opt.splitright = true -- split: to right (instead of left) on `:vsplit`
 vim.opt.splitbelow = false
 
+vim.opt.confirm = true
+
 -- vim.opt.shortmess:append("s") -- Disable search wrap messages
 -- vim.opt.shortmess:append "c"  -- Don't show the dumb matching stuff.

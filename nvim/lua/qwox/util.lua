@@ -224,4 +224,29 @@ function U.enter_normal_mode()
     vim.api.nvim_feedkeys(esc, "x", false)
 end
 
+--- Like `input()` but also highlights current input (':h IncSearch')
+---@see vim.fn.input
+---@param prompt string
+---@return string
+function U.input_with_search(prompt)
+    require("qwox.hlsearch").enable()
+
+    local autocmd_id = vim.autocmd.new({ "CmdlineChanged", "CmdlineEnter" }, {
+        callback = function()
+            -- `nvim_buf_call` is needed, otherwise the highlight is not updated while typing
+            vim.api.nvim_buf_call(0, function() vim.fn.setreg("/", vim.fn.getcmdline()) end)
+        end,
+    })
+    local input = vim.fn.input(prompt)
+    vim.autocmd.del(autocmd_id)
+    return input
+end
+
+--- Fills the commandline with `cmd` but doesn't execute it.
+---@see vim.cmd executes command immediately
+---@param cmd string
+function U.pretype_cmd(cmd)
+    vim.fn.feedkeys(vim.api.nvim_replace_termcodes(cmd, true, false, true))
+end
+
 return U
