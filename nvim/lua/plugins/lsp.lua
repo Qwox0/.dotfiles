@@ -25,19 +25,19 @@ local function config()
     vim.colors.flatten_unlink("LspInlayHint", "keep")
     vim.lsp.inlay_hint.enable(true)
 
-
     require("fidget").setup()
 end
 
 return {
     "neovim/nvim-lspconfig",
-    lazy = false,
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         { "williamboman/mason.nvim",           version = "1.11.0" },
         { "williamboman/mason-lspconfig.nvim", version = "1.32.0" },
         { "j-hui/fidget.nvim",                 tag = "legacy" },  -- Useful status UI for LSP
         "ray-x/lsp_signature.nvim",                               -- show block signature
         "onsails/lspkind-nvim",                                   -- LSP Symbols
+        "rachartier/tiny-inline-diagnostic.nvim",
 
         "nvim-telescope/telescope.nvim",
         "hrsh7th/cmp-nvim-lsp",

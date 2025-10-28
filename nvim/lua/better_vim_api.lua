@@ -128,7 +128,7 @@ vim.keymap.del = function(modes, lhs, opts) pcall(old_del, modes, lhs, opts) end
 ---@field cterm? unknown cterm attribute map, like |highlight-args|. If not set, cterm attributes will match those from the attribute map documented above.
 
 vim.colors = {
-    ---@type Map<string, vim.Color>
+    ---@type table<string, vim.Color>
     hl_groups = {},
 
     ---uses `vim.api.nvim_set_hl`. See |nvim_set_hl()|
@@ -143,11 +143,16 @@ vim.colors = {
     ---@param name string Highlight group name
     ---@param color vim.Color
     set = function(name, color)
+        if color.link and table.count(color) > 1 then
+            local linked = vim.colors.get(color.link)
+            color = vim.tbl_deep_extend("keep", color, linked)
+            color.link = nil
+        end
         -- 0: global space (for every window)
         vim.api.nvim_set_hl(0, name, color)
         vim.colors.hl_groups[name] = color
     end,
-    ---@param colors Map<string, vim.Color>
+    ---@param colors table<string, vim.Color>
     ---@see vim.colors.set
     ---@see vim.api.nvim_set_hl
     set_many = function(colors)
@@ -163,21 +168,12 @@ vim.colors = {
         end
     end,
 
-    ---@param ... string Highlight group name
-    ---@return vim.Color ...
-    get = function(...)
-        local colors = {}
-        for _, name in ipairs({ ... }) do
-            table.insert(colors, vim.api.nvim_get_hl(0, { name = name }))
-        end
-        return table.unpack(colors)
-    end,
-    ---@param name string Highlight group name
+    ---@param color string Highlight group name
+    ---@param flat? boolean (default: false) Don't follow links
     ---@return vim.Color
-    get_active = function(name)
-        local color = vim.colors.get(name)
-        if color.link == nil then return color end
-        return vim.colors.get_active(color.link)
+    get = function(color, flat)
+        flat = flat or false
+        return vim.api.nvim_get_hl(0, { name = color, link = flat })
     end,
 
     ---If link is `nil` this does nothing.
@@ -191,7 +187,7 @@ vim.colors = {
     end,
     ---@param name string Highlight group name
     unlink = function(name)
-        local color = vim.colors.get(name)
+        local color = vim.colors.get(name, true)
         color.link = nil
         vim.colors.set(name, color)
     end,
@@ -199,7 +195,7 @@ vim.colors = {
     ---@param ordering "keep"|"force" whether to keep group data or replace (force) it with the linked data.
     flatten_unlink = function(name, ordering)
         local function get_active(n)
-            local color = vim.colors.get(n)
+            local color = vim.colors.get(n, true)
             if color.link == nil then return color end
             local linked = get_active(color.link)
             color.link = nil
@@ -227,7 +223,7 @@ vim.colors = {
             if color.cterm.reverse == nil then color.cterm.reverse = color.reverse end
         end
 
-        local old = vim.colors.get_active(name)
+        local old = vim.colors.get(name)
         color.link = old.link
         local new = vim.tbl_deep_extend("force", old, color)
         vim.colors.set(name, new)

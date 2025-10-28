@@ -37,11 +37,9 @@ local function colorscheme_config(config)
 
         -- Fix
         vim.colors.set("CmpItemKindDefault", { fg = "Orange" })
-        vim.colors.link("DiagnosticFloatingError", "DiagnosticError")
-        vim.colors.link("DiagnosticFloatingWarn", "DiagnosticWarn")
-        vim.colors.link("DiagnosticFloatingInfo", "DiagnosticInfo")
-        vim.colors.link("DiagnosticFloatingHint", "DiagnosticHint")
-        vim.colors.link("DiagnosticFloatingOk", "DiagnosticOk")
+        for _, sev in ipairs({ "Error", "Warn", "Info", "Hint", "Ok" }) do
+            vim.colors.link("DiagnosticFloating" .. sev, "Diagnostic" .. sev)
+        end
 
         require("qwox.markdown").set_heading_colors() -- this is not called in `ftplugin/markdown.lua` because markdown highlighting might be injected into other file types.
 
