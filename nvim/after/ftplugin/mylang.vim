@@ -10,6 +10,8 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 setlocal comments=s0:/*!,ex:*/,s1:/*,mb:*,ex:*/,:///,://!,://
+" also include multiline string literals to automatically insert `\\ `.
+setlocal comments+=:\\\\
 setlocal commentstring=//\ %s
 setlocal formatoptions-=t formatoptions+=croqnl
 " j was only added in 7.3.541, so stop complaints about its nonexistence
