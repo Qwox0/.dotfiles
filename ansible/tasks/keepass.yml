@@ -30,7 +30,7 @@
   register: git_result
 
 - name: "KeePass: Building"
-  when: git_result.changed
+  when: git_result.changed or 'force' in ansible_run_tags
   vars:
     path: "{{ bin }}/keepassxc_src"
   block:

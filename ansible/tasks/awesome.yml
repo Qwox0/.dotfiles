@@ -10,6 +10,7 @@
   ansible.builtin.apt:
     name:
       - libxcb-xfixes0-dev
+      - libxcb-errors-dev
 
 - name: "Awesome: Cloning Awesome"
   ansible.builtin.git:
@@ -20,7 +21,7 @@
   register: git_result
 
 - name: "Awesome: Building"
-  when: git_result.changed
+  when: git_result.changed or 'force' in ansible_run_tags
   block:
     - name: "Awesome: Removing old build directory"
       ansible.builtin.file:
@@ -28,7 +29,7 @@
         state: absent
 
     - name: "Awesome: Building .deb package"
-      ansible.builtin.command: make package
+      ansible.builtin.shell: CMAKE_ARGS="-DWITH_XCB_ERRORS=ON -DGENERATE_DOC=OFF -DGENERATE_MANPAGES=OFF" make package
       args:
         chdir: "{{ bin }}/awesome"
 

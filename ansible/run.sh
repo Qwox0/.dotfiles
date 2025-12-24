@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 info() {
     echo -e "\e[92;1m+++\e[0m $1"
 }
@@ -11,6 +13,15 @@ warn() {
 error() {
     echo -e "\e[91;1m+++ ERROR:\e[0m $1" >&2
     exit $2
+}
+
+# usage: arr_contains arr_name value
+arr_contains() {
+    arr_name="$1[@]"
+    for x in ${!arr_name}; do
+        if [ $x == $2 ]; then return 0; fi
+    done
+    return 1
 }
 
 ansible_path=${0%/*}
@@ -47,26 +58,36 @@ while getopts "Kprsnu" OPTION; do
 done
 shift "$(($OPTIND -1))"
 
-tags_str="$($ansible_playbook_cmd $local_yml --list-tags | grep "TASK TAGS:" | sed "s/^\s*TASK TAGS: \[\(.*\)\]$/\1/")"
-IFS=', ' read -r -a tags <<< "$tags_str"
+tags_str="$($ansible_playbook_cmd $local_yml --list-tags 2>/dev/null | grep "TASK TAGS:" | sed "s/^\s*TASK TAGS: \[\(.*\)\]$/\1/")"
+all_tags=( $(tr -d "," <<< "$tags_str") )
 
-tag="$1"
+selected_tags=( $(tr "," " " <<< $@) )
 
-IFS=$'\n'
-if [ -z "$(echo "${tags[*]}" | grep "^$tag$")" ]; then
-    tag_list_fancy="$(printf '    * `%s`\n' "${tags[@]}")"
-    err="please provide tag!
+tag_err() {
+    echo "$all_tags"
+    tag_list_fancy="$(printf '    * `%s`\n' "${all_tags[@]}")"
+    err="$1
 the following tags are available:
 ${tag_list_fancy}
 
 If you want to run all tasks use \`ansible-playbook $local_yml\`
 "
-    error "$err" 2
-fi
-unset IFS
+    error "$err" $2
+}
+
+if [ -z "$selected_tags" ]; then tag_err "please provide tag!" 2; fi
+
+for tag in ${selected_tags[@]}; do
+    if ! arr_contains all_tags $tag; then tag_err "unknown tag '$tag'" 3; fi
+done
+
+declare -p selected_tags
+
+comma_seperated_tags="$(tr " " "," <<< "${selected_tags[@]}")"
 
 if ! $ask_pw; then
-    $ansible_playbook_cmd $local_yml -t $tag
+    (set -x
+    $ansible_playbook_cmd $local_yml -t $comma_seperated_tags)
 
     if [ $? == 0 ]; then
         info "finished running ansible playbook. :)"
@@ -80,10 +101,11 @@ if ! $ask_pw; then
     if [[ $input != "" && $input != "y" && $input != "Y" ]]; then exit 3; fi
 fi
 
-$ansible_playbook_cmd $local_yml -K -t $tag
+(set -x
+$ansible_playbook_cmd $local_yml -K -t $comma_seperated_tags)
 
 if [ $? == 0 ]; then
     info "finished running ansible playbook. :)"
 else
-    error "failed to run ansible playbook. :(" 3
+    error "failed to run ansible playbook. :(" 4
 fi

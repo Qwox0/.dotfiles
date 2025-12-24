@@ -25,6 +25,7 @@
         - rust
         - terminal
         - neovim
+        - force # register force
 
     - name: Core
       block:

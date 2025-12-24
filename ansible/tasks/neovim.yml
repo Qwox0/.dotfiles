@@ -14,7 +14,7 @@
   register: git_result
 
 - name: "Nvim: Neovim Build Process"
-  when: git_result.changed
+  when: git_result.changed or 'force' in ansible_run_tags
   block:
     - name: "Nvim: Removing old build directory (`build/`)"
       become: true
