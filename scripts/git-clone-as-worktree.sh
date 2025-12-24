@@ -17,12 +17,14 @@ error() {
     if [ $2 -ne 0 ]; then exit $2; fi
 }
 
+LANG="en_US"
+
 # `--progress` is needed, otherwise git hides it's output
 clone_output="$(git clone --no-checkout --progress "$@" 2>&1 | tee /dev/tty)"
 
 project_dir="$(echo "$clone_output" | head -1 | sed "s/Cloning into '\(.*\)'\.\.\./\1/")"
 
-info "cd $project_dir"
+info "cd \`$project_dir\`"
 cd "$project_dir"
 
 first_commit="$(git log --reverse --pretty=oneline | head -1 | cut -d ' ' -f 1)"
