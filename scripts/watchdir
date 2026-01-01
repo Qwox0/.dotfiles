@@ -17,25 +17,41 @@ error() {
     if [ ! -z "$2" ]; then exit ${2:-1}; fi
 }
 
-#set -x
-#watchexec --no-project-ignore --ignore "\"target\"" -- $@
+clear=false
+respect_gitignore=true
+ignore_patterns=("target" ".git")
+
+POSITIONAL_ARGS=()
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --) shift; POSITIONAL_ARGS+=("$@"); break;;
+        -c|--clear) clear=true; shift;;
+        --no-gitignore) respect_gitignore=false; shift;;
+        -i|--ignore)
+            ignore_patterns+=("$2")
+            shift; shift;;
+        -*|--*) error "Unknown option $1" 1;;
+        *) POSITIONAL_ARGS+=("$1"); shift;;
+    esac
+done
+set -- "${POSITIONAL_ARGS[@]}"
+unset POSITIONAL_ARGS
 
 path="."
 command="$@"
-ignore="@./target @./.git"
-respect_gitignore=true
-print_all_changed_file=true
+print_all_events=true
 
 run_command() {
+    info "Executing \`$command\`"
     eval $command || error "Command exited with $?"
+    info "Command finished (code: $?)"
 }
 
 respect_gitignore_text=""
 [ "$respect_gitignore" = true ] && respect_gitignore_text="content of .gitignore; "
 
 info "Watching '$path'"
-info "Ignoring: $respect_gitignore_text$ignore"
-info "Executing \`$command\` on change"
+info "Ignoring: $respect_gitignore_text$ignore_patterns"
 
 if [ -z "$(which inotifywait)" ]; then error "inotifywait not installed."; fi
 
@@ -44,7 +60,7 @@ printf "\n"
 
 buffer_timeout=0.1
 
-inotifywait --recursive --monitor $ignore --format "%w%f" --event modify,move,create,delete $path |
+inotifywait --recursive --monitor --format "%w%f" --event modify,move,create,delete $path |
     while read -r changed; do
         # echo is needed otherwise `timeout` never quits
         buffered_events="$(echo "$changed"$'\n'"$(timeout $buffer_timeout cat)")"
@@ -52,19 +68,26 @@ inotifywait --recursive --monitor $ignore --format "%w%f" --event modify,move,cr
         sep=", "
         changed_files_out="$(echo "$buffered_events" | sed 's/~$//' | sort --unique |
             while read file; do
-                if ! git check-ignore "$file" >/dev/null 2>&1; then printf "$sep$file"; fi
+                if git check-ignore "$file" >/dev/null 2>&1; then continue; fi
+                simple_file_path="$(realpath -m --relative-to="$path" "$file")"
+                for ignore in "${ignore_patterns[@]}"; do
+                    if [[ "$simple_file_path" = $ignore ]]; then continue 2; fi
+                done
+                printf "$sep$file"
             done
         )"
         changed_files_out="${changed_files_out:${#sep}}"
 
         if [ -z "$changed_files_out" ]; then continue; fi
 
-        if [ "$print_all_changed_file" = false ]; then
+        if [ "$print_all_events" = false ]; then
             max_width=$(($(tput cols) - 32))
             if [[ ${#changed_files_out} -gt $max_width ]] then
                 changed_files_out="$(sed 's/^\(.*\),[^,]*$/\1, .../' <<< "${changed_files_out:0:max_width}")"
             fi
         fi
+
+        if [ "$clear" = true ]; then clear; fi
 
         info "file(s) changed: $changed_files_out"
         run_command
