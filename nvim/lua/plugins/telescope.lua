@@ -154,7 +154,8 @@ local function config()
     --nmap("<C-p>", builtin.git_files)
     nmap("<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
     nmap("<leader>fw", builtin.grep_string, { desc = "[F]ind current [W]ord" })
-    nmap("<leader>fg", builtin.live_grep, { desc = "[F]ind by [G]rep" })
+    nmap("<leader>fg", function() builtin.live_grep { additional_args = { "--multiline" } } end,
+        { desc = "[F]ind by [G]rep" })
     nmap("<leader>fo", builtin.oldfiles, { desc = "[F]ind recently [o]pened files" })
     nmap("<leader>fb", builtin.buffers, { desc = "[F]ind existing [b]uffers" })
     nmap("<leader>fd", builtin.diagnostics, { desc = "[F]ind [D]iagnostics" })
@@ -162,15 +163,12 @@ local function config()
 
     nmap("<leader>fr", builtin.resume, { desc = "[F]ind [R]esume" })
 
-    nmap("<leader>fs", function() builtin.grep_string { search = vim.fn.input("Grep For > ") } end, {
-        desc = "[F]ind [S]tring",
-    })
-    vmap("<leader>f", function() builtin.grep_string { search = qwox_util.get_selection_text() } end, {
-        desc = "[F]ind Selection"
-    })
-    nmap("<leader>/", function() builtin.current_buffer_fuzzy_find(small_dropdown) end, {
-        desc = "[/] Fuzzily search in current buffer",
-    })
+    nmap("<leader>fs", function() builtin.grep_string { search = vim.fn.input("Grep For > ") } end,
+        { desc = "[F]ind [S]tring" })
+    vmap("<leader>f", function() builtin.grep_string { search = qwox_util.get_selection_text() } end,
+        { desc = "[F]ind Selection" })
+    nmap("<leader>/", function() builtin.current_buffer_fuzzy_find(small_dropdown) end,
+        { desc = "[/] Fuzzily search in current buffer" })
     vmap("<leader>/", function()
         local selection = qwox_util.get_selection_text()
         qwox_util.enter_normal_mode()
