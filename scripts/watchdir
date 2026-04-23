@@ -69,9 +69,8 @@ inotifywait --recursive --monitor --format "%w%f" --event modify,move,create,del
         changed_files_out="$(echo "$buffered_events" | sed 's/~$//' | sort --unique |
             while read file; do
                 if git check-ignore "$file" >/dev/null 2>&1; then continue; fi
-                simple_file_path="$(realpath -m --relative-to="$path" "$file")"
                 for ignore in "${ignore_patterns[@]}"; do
-                    if [[ "$simple_file_path" = $ignore ]]; then continue 2; fi
+                    if [[ "$file" = *${ignore}* ]]; then continue 2; fi
                 done
                 printf "$sep$file"
             done
