@@ -53,22 +53,37 @@ run_command() {
     abort_command_if_running
 
     info "[$(date +"%Y-%m-%d %H:%M:%S")] Executing \`$command\`"
-    {
+    (
         eval $command || error "Command exited with $?"
         info "Command finished (code: $?)"
-    } &
+    ) &
     executor_pid=$!
     debug "executor_pid = $executor_pid"
 }
 
 abort_command_if_running() {
     debug "abort_command_if_running($executor_pid)"
+    if [ $executor_pid == 0 ] || ! ps -p $executor_pid > /dev/null; then return; fi
+
+    # CTRL+C sends SIGINT to all processes in the process group of the current command.
+    # `kill <pid>` only sends the signal to <pid> which results in leaked processes.
+
     # TODO: what if another process has taken the $executor_pid?
-    if [ $executor_pid != 0 ] && ps -p $executor_pid > /dev/null; then
-        info "Killing command (PID = $executor_pid)"
-        kill $executor_pid
-    fi
+    local processes="$executor_pid $(find_child_procs_in_group "$executor_pid" $$)"
+    info "Killing command (${processes%"${processes##*[! ]}"})"
+    # Note: the executor ignores SIGINT and would still print "Command exited ..."
+    kill $processes
+
     executor_pid=0
+}
+
+# Finds all (recursive) child processes of $1 in process group $2.
+find_child_procs_in_group() {
+    local ppid=$1
+    local pgid=$2
+    local children="$(ps --ppid "$ppid" -o pid=,pgid= | awk '$2 == '$pgid' { print $1 }')"
+    printf "$children "
+    for pid in $children; do find_child_procs_in_group "$pid" "$pgid"; done
 }
 
 trap abort_command_if_running SIGINT
