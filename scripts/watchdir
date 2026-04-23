@@ -4,6 +4,12 @@ set -e
 
 script_dir="$(dirname "$(readlink -f "$0")")"
 
+DEBUG=false
+debug() {
+    if ! $DEBUG; then return; fi
+    echo -e "\e[94;1m+++ WATCH: DEBUG:\e[0m $1"
+}
+
 info() {
     echo -e "\e[92;1m+++ WATCH:\e[0m $1"
 }
@@ -41,53 +47,73 @@ path="."
 command="$@"
 print_all_events=true
 
+executor_pid=0
+
 run_command() {
-    info "Executing \`$command\`"
-    eval $command || error "Command exited with $?"
-    info "Command finished (code: $?)"
+    abort_command_if_running
+
+    info "[$(date +"%Y-%m-%d %H:%M:%S")] Executing \`$command\`"
+    {
+        eval $command || error "Command exited with $?"
+        info "Command finished (code: $?)"
+    } &
+    executor_pid=$!
+    debug "executor_pid = $executor_pid"
 }
+
+abort_command_if_running() {
+    debug "abort_command_if_running($executor_pid)"
+    # TODO: what if another process has taken the $executor_pid?
+    if [ $executor_pid != 0 ] && ps -p $executor_pid > /dev/null; then
+        info "Killing command (PID = $executor_pid)"
+        kill $executor_pid
+    fi
+    executor_pid=0
+}
+
+trap abort_command_if_running SIGINT
+
+if [ "$clear" = true ]; then clear; fi
 
 respect_gitignore_text=""
 [ "$respect_gitignore" = true ] && respect_gitignore_text="content of .gitignore; "
 
 info "Watching '$path'"
-info "Ignoring: $respect_gitignore_text$ignore_patterns"
+info "Ignoring: $respect_gitignore_text$(echo "${ignore_patterns[@]}")"
 
 if [ -z "$(which inotifywait)" ]; then error "inotifywait not installed."; fi
 
 run_command
-printf "\n"
 
 buffer_timeout=0.1
 
-inotifywait --recursive --monitor --format "%w%f" --event modify,move,create,delete $path |
-    while read -r changed; do
-        # echo is needed otherwise `timeout` never quits
-        buffered_events="$(echo "$changed"$'\n'"$(timeout $buffer_timeout cat)")"
+while read -r changed; do
+    # echo is needed otherwise `timeout` never quits
+    buffered_events="$(echo "$changed"$'\n'"$(timeout $buffer_timeout cat)")"
 
-        sep=", "
-        changed_files_out="$(echo "$buffered_events" | sed 's/~$//' | sort --unique |
-            while read file; do
-                if git check-ignore "$file" >/dev/null 2>&1; then continue; fi
-                for ignore in "${ignore_patterns[@]}"; do
-                    if [[ "$file" = *${ignore}* ]]; then continue 2; fi
-                done
-                printf "$sep$file"
+    sep=", "
+    changed_files_out="$(echo "$buffered_events" | sed 's/~$//' | sort --unique |
+        while read file; do
+            if git check-ignore "$file" >/dev/null 2>&1; then continue; fi
+            for ignore in "${ignore_patterns[@]}"; do
+                if [[ "$file" = *${ignore}* ]]; then continue 2; fi
             done
-        )"
-        changed_files_out="${changed_files_out:${#sep}}"
+            printf "$sep$file"
+        done
+    )"
+    changed_files_out="${changed_files_out:${#sep}}"
 
-        if [ -z "$changed_files_out" ]; then continue; fi
+    if [ -z "$changed_files_out" ]; then continue; fi
 
-        if [ "$print_all_events" = false ]; then
-            max_width=$(($(tput cols) - 32))
-            if [[ ${#changed_files_out} -gt $max_width ]] then
-                changed_files_out="$(sed 's/^\(.*\),[^,]*$/\1, .../' <<< "${changed_files_out:0:max_width}")"
-            fi
+    if [ "$print_all_events" = false ]; then
+        max_width=$(($(tput cols) - 32))
+        if [[ ${#changed_files_out} -gt $max_width ]] then
+            changed_files_out="$(sed 's/^\(.*\),[^,]*$/\1, .../' <<< "${changed_files_out:0:max_width}")"
         fi
+    fi
 
-        if [ "$clear" = true ]; then clear; fi
+    if [ "$clear" = true ]; then clear; fi
 
-        info "file(s) changed: $changed_files_out"
-        run_command
-    done
+    info "file(s) changed: $changed_files_out"
+    run_command
+done < <(inotifywait --recursive --monitor --format "%w%f" --event modify,move,create,delete "$path")
