@@ -56,7 +56,7 @@ run_command() {
     (
         eval $command || error "Command exited with $?"
         info "Command finished (code: $?)"
-    ) &
+    ) < /dev/stdin &
     executor_pid=$!
     debug "executor_pid = $executor_pid"
 }
@@ -130,5 +130,5 @@ while read -r changed; do
     if [ "$clear" = true ]; then clear; fi
 
     info "file(s) changed: $changed_files_out"
-    run_command
-done < <(inotifywait --recursive --monitor --format "%w%f" --event modify,move,create,delete "$path")
+    run_command 0<&3
+done 3<&0 < <(inotifywait --recursive --monitor --format "%w%f" --event modify,move,create,delete "$path")
