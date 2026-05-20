@@ -72,3 +72,25 @@ vim.command.set("Vdiffsplit", arg_passthrough("vert diffsplit"), { nargs = 1, de
 vim.command.set("Vsplitdiff", arg_passthrough("vert diffsplit"), { nargs = 1, desc = "`:vert diffsplit` alias" })
 
 vim.command.set("TSInspect", "InspectTree", { desc = "`:InspectTree` alias" })
+
+vim.command.set("Align", function(arg)
+    local pat = vim.fn.input("Align character > ")
+    if pat == "" then return end
+
+    local selected_lines = get_selected_text(arg):lines()
+
+    local offsets = table.arr_map(selected_lines, function(l)
+        local start = l:find0(pat, nil, true)
+        return start
+    end)
+    local max_offset = vim.iter(offsets):fold(0, function(acc, o) return vim.fn.max { acc, o } end)
+
+    local start_row = arg.line1
+    for idx, line in ipairs(selected_lines) do
+        local row = start_row + idx - 1
+        local offset = offsets[idx]
+        if offset ~= nil then
+            qwox_util.set_line(row, line:insert(offset, (" "):rep(max_offset - offset)))
+        end
+    end
+end, { range = true, desc = "Align selected lines at first occurence of character" })

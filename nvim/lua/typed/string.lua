@@ -18,6 +18,20 @@ function string.get_word_pos(string, pos, WORD)
     return word_start, word_end
 end
 
+---@param string string
+---@param pattern string
+---@param init integer?
+---@param plain boolean?
+---@param include_pattern boolean? [default: false] return the match as part of the first return val.
+---@return string, string?
+function string.split_at(string, pattern, init, plain, include_pattern)
+    include_pattern = include_pattern or false
+    local start, end_ = string:find(pattern, init, plain)
+    if start == nil or end_ == nil then return string, nil end
+    start = include_pattern and end_ or start - 1
+    return string:sub(1, start), string:sub(end_ + 1)
+end
+
 ---Split `string` multiple times.
 ---[start, end[; indices: `0`, `...`, `string.len()`;
 ---@param string string
@@ -74,9 +88,11 @@ end
 ---see `require("qwox.string")`
 ---@param str string
 ---@param pat string
+---@param init? integer
+---@param plain? boolean
 ---@return integer | nil
-function string.find0(str, pat)
-    local pos = str:find(pat)
+function string.find0(str, pat, init, plain)
+    local pos = str:find(pat, init, plain)
     if pos == nil then return nil end
     return pos - 1
 end
@@ -128,4 +144,26 @@ function string.humanwordcount(str)
         :filter(function(s) return s:len() > 0 end)
         :enumerate()
         :last()
+end
+
+---@param str string
+---@return fun(): string
+function string.iter_lines(str)
+    return vim.gsplit(str, '\n', { plain = true, trimempty = false })
+end
+
+---@param str string
+---@return string[]
+function string.lines(str)
+    return vim.split(str, '\n', { plain = true, trimempty = false })
+end
+
+---@param str string
+---@param idx number
+---@param val string
+---@return string
+function string.insert(str, idx, val)
+    local before, after = str:multi_split(idx)
+    if after == nil then return str end
+    return before .. val .. after
 end

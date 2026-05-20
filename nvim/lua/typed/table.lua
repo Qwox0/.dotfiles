@@ -65,8 +65,9 @@ end
 ---@return U[]
 function table.arr_map(tbl, predicate)
     local out = {}
-    for _, v in ipairs(tbl) do
-        table.insert(out, predicate(v))
+    for idx, v in ipairs(tbl) do
+        out[idx] = predicate(v)
+        --table.insert(out, predicate(v))
     end
     return out
 end

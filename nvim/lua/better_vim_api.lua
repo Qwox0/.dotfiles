@@ -61,37 +61,37 @@ vim.command = {
 
 ---Creates a Normal mode mapping
 ---@param lhs string Left-hand side |{lhs}| of the mapping.
----@param rhs string|fun() Right-hand side |{rhs}| of the mapping, can be a Lua function.
+---@param rhs string|fun(): string? Right-hand side |{rhs}| of the mapping, can be a Lua function.
 ---@param opts? vim.keymap.set.Opts Table of |:map-arguments|.
 ---@see vim.keymap.set
 vim.keymap.nmap = function(lhs, rhs, opts) return vim.keymap.set("n", lhs, rhs, opts) end
 ---Creates an Insert mode mapping
 ---@param lhs string Left-hand side |{lhs}| of the mapping.
----@param rhs string|fun() Right-hand side |{rhs}| of the mapping, can be a Lua function.
+---@param rhs string|fun(): string? Right-hand side |{rhs}| of the mapping, can be a Lua function.
 ---@param opts? vim.keymap.set.Opts Table of |:map-arguments|.
 ---@see vim.keymap.set
 vim.keymap.imap = function(lhs, rhs, opts) return vim.keymap.set("i", lhs, rhs, opts) end
 ---Creates a Visual mode (Visual + Select) mapping
 ---@param lhs string Left-hand side |{lhs}| of the mapping.
----@param rhs string|fun() Right-hand side |{rhs}| of the mapping, can be a Lua function.
+---@param rhs string|fun(): string? Right-hand side |{rhs}| of the mapping, can be a Lua function.
 ---@param opts? vim.keymap.set.Opts Table of |:map-arguments|.
 ---@see vim.keymap.set
 vim.keymap.vmap = function(lhs, rhs, opts) return vim.keymap.set("v", lhs, rhs, opts) end
 ---Creates a Visual mode (only Visual) mapping
 ---@param lhs string Left-hand side |{lhs}| of the mapping.
----@param rhs string|fun() Right-hand side |{rhs}| of the mapping, can be a Lua function.
+---@param rhs string|fun(): string? Right-hand side |{rhs}| of the mapping, can be a Lua function.
 ---@param opts? vim.keymap.set.Opts Table of |:map-arguments|.
 ---@see vim.keymap.set
 vim.keymap.xmap = function(lhs, rhs, opts) return vim.keymap.set("x", lhs, rhs, opts) end
 ---Creates a Select mode mapping
 ---@param lhs string Left-hand side |{lhs}| of the mapping.
----@param rhs string|fun() Right-hand side |{rhs}| of the mapping, can be a Lua function.
+---@param rhs string|fun(): string? Right-hand side |{rhs}| of the mapping, can be a Lua function.
 ---@param opts? vim.keymap.set.Opts Table of |:map-arguments|.
 ---@see vim.keymap.set
 vim.keymap.smap = function(lhs, rhs, opts) return vim.keymap.set("s", lhs, rhs, opts) end
 ---Creates a Command line mapping
 ---@param lhs string Left-hand side |{lhs}| of the mapping.
----@param rhs string|fun() Right-hand side |{rhs}| of the mapping, can be a Lua function.
+---@param rhs string|fun(): string? Right-hand side |{rhs}| of the mapping, can be a Lua function.
 ---@param opts? vim.keymap.set.Opts Table of |:map-arguments|.
 ---@see vim.keymap.set
 vim.keymap.cmap = function(lhs, rhs, opts) return vim.keymap.set("c", lhs, rhs, opts) end

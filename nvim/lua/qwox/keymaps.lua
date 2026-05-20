@@ -53,6 +53,7 @@ xmap("J", ":m '>+1<CR>gv=gv", { desc = "move entire line down" })
 xmap("K", ":m '<-2<CR>gv=gv", { desc = "move entire line up" })
 
 nmap("J", "mzJ`z", { desc = "don't move cursor on J" })
+nmap("<leader>J", "J", { desc = "default 'J' (move to end of first line)" })
 
 nmap("<C-d>", "<C-d>zz", { desc = "center screen on Ctrl+d" })
 nmap("<C-u>", "<C-u>zz", { desc = "center screen on Ctrl+u" })
@@ -88,26 +89,42 @@ imap("<C-a>", "<C-o>^", { desc = "Move to the start of the line" })
 cmap("<C-a>", "<Home>", { desc = "Move to the start of the command line" })
 imap("<C-e>", "<C-o>A", { desc = "Move to the end of the line" })
 
-xmap("<leader>p", "\"_dP", { desc = "paste but keep copy buffer" })
+xmap("<leader>p", "P", { desc = "paste but keep copy buffer" })
+
 nmap("<leader>x", "<cmd>!chmod +x \"%\"<CR>", { silent = true, desc = "make file e[x]ecutable" })
 
 -- Substitute / Replace
 nmap("<leader>ra", function()
     local search = qwox_util.input_with_search("Select > ")
     if search == "" then return end
-    qwox_util.pretype_cmd(":%s/" .. search .. "/" .. search .. "/gI<Left><Left><Left>")
-end, { desc = "[R]eplace [A]ll" })
-vmap("<leader>ra", function()
+    qwox_util.pretype_cmd(":%s/" .. search .. "//gI<Left><Left><Left>")
+end, { desc = "[R]eplace [A]ll", expr = true })
+nmap("<leader>rea", function()
     local search = qwox_util.input_with_search("Select > ")
+    if search == "" then return end
+    qwox_util.pretype_cmd(":%s/" .. search .. "/" .. search .. "/gI<Left><Left><Left>")
+end, { desc = "[R]eplace ([E]dit) [A]ll" })
+
+nmap("<leader>rw", [[:%s/<C-r><C-w>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "[R]eplace (edit) [W]ord" })
+
+nmap("<leader>r/", [[:%s/<C-r>///gI<Left><Left><Left>]], { desc = "[R]eplace last search [/]" })
+nmap("<leader>re/", [[:%s/<C-r>//<C-r>//gI<Left><Left><Left>]], { desc = "[R]eplace ([E]dit) last search [/]" })
+
+vmap("<leader>r", [["ay:%s/<C-r>"//gI<Left><Left><Left>]], { desc = "[R]eplace selection" })
+vmap("<leader>e", [["ay:%s/<C-r>"/<C-r>"/gI<Left><Left><Left>]], { desc = "[R]eplace ([E]dit) selection" })
+
+vmap("<leader>ir", function()
+    local search = qwox_util.input_with_search("Replace in selection > ")
+    if search == "" then return end
+    -- '<,'> is inserted automatically
+    qwox_util.pretype_cmd(":s/" .. search .. "//gI<Left><Left><Left>")
+end, { desc = "[I]n selection [R]eplace" })
+vmap("<leader>ie", function()
+    local search = qwox_util.input_with_search("Edit & replace in selection > ")
     if search == "" then return end
     -- '<,'> is inserted automatically
     qwox_util.pretype_cmd(":s/" .. search .. "/" .. search .. "/gI<Left><Left><Left>")
-end, { desc = "[R]eplace [A]ll in selection" })
-nmap("<leader>rw", [[:%s/<C-r><C-w>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "[R]eplace [W]ord" })
-nmap("<leader>r/", [[:%s/<C-r>//<C-r>//gI<Left><Left><Left>]], { desc = "[R]eplace last Search [/]" })
-local replace_selection = [["ay:%s/<C-r>"/<C-r>"/gI<Left><Left><Left>]]
-vmap("<leader>rs", replace_selection, { desc = "[R]eplace [s]election (same as '<leader>rh')" })
-vmap("<leader>rh", replace_selection, { desc = "[R]eplace [h]ighlight (same as '<leader>rs')" })
+end, { desc = "[I]n selection [R]eplace ([E]dit)" })
 
 nmap("<leader>bn", function()
     local file_dir = vim.fn.expand("%:p:h") .. "/"
