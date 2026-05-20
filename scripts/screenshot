@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e
+
+screenshot_file="$HOME/Images/Screenshot_$(date +"%Y-%m-%d_%H%M%S").png"
+last_screenshot_path="$HOME/Images/last_screenshot.png"
+
+#xwd | xwdtopnm | pnmtopng > "$last_screenshot_path"
+
+# `gnome-screenshot -c` doesn't work
+gnome-screenshot -af "$screenshot_file"
+
+xclip -i -selection clipboard -target image/png < "$screenshot_file"
+
+ln -sf "$screenshot_file" "$last_screenshot_path"
