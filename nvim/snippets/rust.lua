@@ -16,4 +16,12 @@ return {
             "}"
         },
     }),
+    s("printvar", {
+        t("println!(\""),
+        f(function(args) return args[1][1] end, { 1 }),
+        t(" = {}\", "),
+        i(1),
+        i(0),
+        t(");"),
+    }),
 }
