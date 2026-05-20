@@ -6,18 +6,13 @@ local function config()
         ensure_installed = vim.tbl_keys(qwox_lsp.servers),
         automatic_installation = false,
     }
-    require("mason-lspconfig").setup_handlers {
-        function(server_name)
-            local cfg = vim.tbl_deep_extend("force", qwox_lsp.servers[server_name] or {}, {
-                capabilities = qwox_lsp.capabilities,
-                on_attach = qwox_lsp.custom_attach,
-            })
-            vim.lsp.enable(server_name)
-            vim.lsp.config(server_name, cfg)
-        end,
-    }
+    require("mason-lspconfig").setup_handlers { qwox_lsp.setup_server }
+
+    --qwox_lsp.setup_server("postgres_lsp", { workspace_required = false })
 
     qwox_lsp.keymap()
+
+    require("qwox.mylang").setup_lsp()
 
     --vim.colors.set("LspInlayHint", { fg = "#D3D3D3", bg = "#3A3A3A", italic = true })
     --vim.colors.set("LspInlayHint", { link = "GruvboxGray", italic = true })
@@ -34,9 +29,9 @@ return {
     dependencies = {
         { "williamboman/mason.nvim",           version = "1.11.0" },
         { "williamboman/mason-lspconfig.nvim", version = "1.32.0" },
-        { "j-hui/fidget.nvim",                 tag = "legacy" },  -- Useful status UI for LSP
-        "ray-x/lsp_signature.nvim",                               -- show block signature
-        "onsails/lspkind-nvim",                                   -- LSP Symbols
+        { "j-hui/fidget.nvim",                 tag = "legacy" }, -- Useful status UI for LSP
+        "ray-x/lsp_signature.nvim",                              -- show block signature
+        "onsails/lspkind-nvim",                                  -- LSP Symbols
         "rachartier/tiny-inline-diagnostic.nvim",
 
         "nvim-telescope/telescope.nvim",

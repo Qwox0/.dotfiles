@@ -14,8 +14,14 @@ vim.opt.timeout = false -- keymapping: command timeout
 repeat
     local function err(cause) vim.notify("Cannot remove default lsp keymaps. Cause: " .. cause, "warn") end
 
-    local defaults_paths = vim.api.nvim_get_runtime_file("lua/vim/_defaults.lua", true)
-    assert(#defaults_paths == 1)
+    local defaults_paths = vim.iter({
+            "lua/vim/_defaults.lua",
+            "lua/vim/_core/defaults.lua",
+        })
+        :map(function(path) return vim.api.nvim_get_runtime_file(path, true) end)
+        :flatten()
+        :totable()
+    assert(#defaults_paths == 1, "Found " .. #defaults_paths .. " default keymap files. Expected 1")
     local defaults_file = io.open(defaults_paths[1], "r")
     if defaults_file == nil then
         err(string.format("Couldn't open file '%s'.", defaults_paths[1]))

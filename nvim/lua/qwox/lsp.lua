@@ -41,7 +41,22 @@ LSP.servers = {
             },
         },
     },
+    -- postgres_lsp = {
+    --     root_markers = {},
+    -- },
 }
+
+---@param server_name string
+---@param cfg ?vim.lsp.Config
+function LSP.setup_server(server_name, cfg)
+    cfg = vim.tbl_deep_extend("keep", cfg or {}, LSP.servers[server_name] or {}, {
+        capabilities = LSP.capabilities,
+        on_attach = LSP.custom_attach,
+    })
+
+    vim.lsp.config(server_name, cfg)
+    vim.lsp.enable(server_name)
+end
 
 ---filetype -> format command
 ---@type table<string, function>

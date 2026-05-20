@@ -171,6 +171,7 @@ local function config()
                     if needs_import1 ~= needs_import2 then return needs_import2 end
                 end,
                 --- custom kind ordering
+                --[[
                 function(entry1, entry2)
                     local kind1 = entry1:get_kind() --- @type number
                     local kind2 = entry2:get_kind() --- @type number
@@ -183,6 +184,7 @@ local function config()
                         end
                     end
                 end,
+                ]]
 
                 cmp.config.compare.score,
 
@@ -382,7 +384,7 @@ return {
         "hrsh7th/cmp-nvim-lsp-signature-help",
         "hrsh7th/cmp-cmdline",
 
-        "onsails/lspkind-nvim",
+        { "onsails/lspkind-nvim", commit = "3ddd1b4edefa425fda5a9f95a4f25578727c0bb3" },
 
         -- Snippets
         "L3MON4D3/LuaSnip",
