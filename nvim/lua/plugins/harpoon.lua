@@ -1,24 +1,41 @@
-local keys = {
-    {
-        "<leader>a",
-        function() require("harpoon.mark").add_file() end,
-        desc = "[A]dd Harpoon mark"
-    },
-    { "<C-e>", function() require("harpoon.ui").toggle_quick_menu() end, desc = "Open Harpoon [E]dit menu" },
+local toggle_opts = {
+    title = " Harpoon ",
+    title_pos = "center",
+    border = "rounded",
+    ui_width_ratio = 1,
+    ui_max_width = 80,
+    height_in_lines = 13,
+}
 
-    { "<C-j>", function() require("harpoon.ui").nav_file(1) end,         desc = "to Harpoon 1" },
-    { "<C-k>", function() require("harpoon.ui").nav_file(2) end,         desc = "to Harpoon 2" },
-    { "<C-l>", function() require("harpoon.ui").nav_file(3) end,         desc = "to Harpoon 3" },
+local keys = {
+    { "<leader>a", function() require("harpoon"):list():add() end,     desc = "[A]dd Harpoon mark" },
+    {
+        "<C-e>",
+        function()
+            local harpoon = require("harpoon")
+            harpoon.ui:toggle_quick_menu(harpoon:list(), toggle_opts)
+            vim.api.nvim_set_option_value("winhl", "NormalFloat:Normal,Title:Normal", { win = harpoon.ui.win_id })
+        end,
+        desc = "Open Harpoon [E]dit menu"
+    },
+
+    { "<C-j>",     function() require("harpoon"):list():select(1) end, desc = "to Harpoon 1" },
+    { "<C-k>",     function() require("harpoon"):list():select(2) end, desc = "to Harpoon 2" },
+    { "<C-l>",     function() require("harpoon"):list():select(3) end, desc = "to Harpoon 3" },
     -- { "<C-m>", function() require("harpoon.ui").nav_file(4) end,         desc = "to Harpoon 4" }, -- nvim can't differentiate between <C-m> and <Enter>
 }
 
+
 return {
-    "theprimeagen/harpoon",
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    dependencies = { "nvim-lua/plenary.nvim" },
     keys = keys,
-    opts = {
-        menu = {
-            width = 80,
-            height = 13,
-        }
-    },
+    config = function()
+        local harpoon = require("harpoon")
+        local harpoon_extensions = require("harpoon.extensions")
+
+        harpoon:setup()
+        harpoon:extend(harpoon_extensions.builtins.highlight_current_file())
+    end,
 }
