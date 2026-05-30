@@ -7,8 +7,14 @@ local toggle_opts = {
     height_in_lines = 13,
 }
 
+local function nav_file(idx)
+    local harpoon = require("harpoon")
+    if harpoon.ui.win_id ~= nil then harpoon.ui:save() end
+    harpoon:list():select(idx)
+end
+
 local keys = {
-    { "<leader>a", function() require("harpoon"):list():add() end,     desc = "[A]dd Harpoon mark" },
+    { "<leader>a", function() require("harpoon"):list():add() end, desc = "[A]dd Harpoon mark" },
     {
         "<C-e>",
         function()
@@ -19,9 +25,9 @@ local keys = {
         desc = "Open Harpoon [E]dit menu"
     },
 
-    { "<C-j>",     function() require("harpoon"):list():select(1) end, desc = "to Harpoon 1" },
-    { "<C-k>",     function() require("harpoon"):list():select(2) end, desc = "to Harpoon 2" },
-    { "<C-l>",     function() require("harpoon"):list():select(3) end, desc = "to Harpoon 3" },
+    { "<C-j>",     function() nav_file(1) end,                     desc = "to Harpoon 1" },
+    { "<C-k>",     function() nav_file(2) end,                     desc = "to Harpoon 2" },
+    { "<C-l>",     function() nav_file(3) end,                     desc = "to Harpoon 3" },
     -- { "<C-m>", function() require("harpoon.ui").nav_file(4) end,         desc = "to Harpoon 4" }, -- nvim can't differentiate between <C-m> and <Enter>
 }
 
@@ -35,7 +41,11 @@ return {
         local harpoon = require("harpoon")
         local harpoon_extensions = require("harpoon.extensions")
 
-        harpoon:setup()
+        harpoon:setup {
+            settings = {
+                save_on_toggle = true,
+            },
+        }
         harpoon:extend(harpoon_extensions.builtins.highlight_current_file())
     end,
 }
