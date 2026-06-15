@@ -1,5 +1,3 @@
-local _, telescope = pcall(require, "telescope.builtin")
-
 local LSP = {}
 
 LSP.servers = {
@@ -46,11 +44,22 @@ LSP.servers = {
     -- },
 }
 
+local capabilities = nil
+function LSP.capabilities()
+    if capabilities == nil then
+        local c = vim.lsp.protocol.make_client_capabilities()
+
+        -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+        capabilities = require("cmp_nvim_lsp").default_capabilities(c)
+    end
+    return capabilities
+end
+
 ---@param server_name string
 ---@param cfg ?vim.lsp.Config
 function LSP.setup_server(server_name, cfg)
     cfg = vim.tbl_deep_extend("keep", cfg or {}, LSP.servers[server_name] or {}, {
-        capabilities = LSP.capabilities,
+        capabilities = LSP.capabilities(),
         on_attach = LSP.custom_attach,
     })
 
@@ -94,6 +103,8 @@ function LSP.custom_attach(client, bufnr)
 end
 
 function LSP.keymap()
+    local telescope = require("telescope.builtin")
+
     local map = function(mode, keys, func, desc)
         if desc then desc = "LSP: " .. desc end
         vim.keymap.set(mode, keys, func, { desc = desc })
@@ -126,9 +137,5 @@ function LSP.keymap()
     -- map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, "[W]orkspace [R]emove Folder")
     -- map("n", "<leader>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, "[W]orkspace [L]ist Folders")
 end
-
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-LSP.capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
 return LSP

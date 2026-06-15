@@ -1,16 +1,14 @@
 local function config()
-    local qwox_lsp = require("qwox.lsp")
-
     require("mason").setup()
     require("mason-lspconfig").setup {
-        ensure_installed = vim.tbl_keys(qwox_lsp.servers),
+        ensure_installed = vim.tbl_keys(qwox.lsp.servers),
         automatic_installation = false,
     }
-    require("mason-lspconfig").setup_handlers { qwox_lsp.setup_server }
+    require("mason-lspconfig").setup_handlers { qwox.lsp.setup_server }
 
-    --qwox_lsp.setup_server("postgres_lsp", { workspace_required = false })
+    --qwox.lsp.setup_server("postgres_lsp", { workspace_required = false })
 
-    qwox_lsp.keymap()
+    qwox.lsp.keymap()
 
     require("qwox.mylang").setup_lsp()
 

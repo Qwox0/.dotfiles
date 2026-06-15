@@ -7,6 +7,9 @@ vim.autocmd = {
     new = vim.api.nvim_create_autocmd,
     del = vim.api.nvim_del_autocmd,
 }
+vim.autocmd.create = vim.autocmd.new
+vim.autocmd.set = vim.autocmd.new
+vim.autocmd.delete = vim.autocmd.del
 
 ---@class vim.command.SetCallbackOpts
 ---@field name string Command name

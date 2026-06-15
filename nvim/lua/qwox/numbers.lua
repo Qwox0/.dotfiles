@@ -1,6 +1,6 @@
 local numbers
 numbers = {
-    default = function() numbers.enable() end,
+    setup = function() numbers.enable() end,
     enable = function()
         vim.opt.number = true
         vim.opt.relativenumber = true

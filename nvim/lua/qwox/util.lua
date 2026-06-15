@@ -1,3 +1,4 @@
+---@diagnostic disable-next-line: lowercase-global
 local U = {}
 
 local home = vim.fn.expand("~")
@@ -247,6 +248,10 @@ end
 ---@param cmd string
 function U.pretype_cmd(cmd)
     vim.fn.feedkeys(vim.api.nvim_replace_termcodes(cmd, true, false, true))
+end
+
+function U.get_loaded_buffers()
+    return vim.iter(vim.api.nvim_list_bufs()):filter(vim.api.nvim_buf_is_loaded):totable()
 end
 
 return U
