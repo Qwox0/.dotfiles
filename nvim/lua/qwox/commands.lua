@@ -74,7 +74,7 @@ vim.command.set("Vsplitdiff", arg_passthrough("vert diffsplit"), { nargs = 1, de
 vim.command.set("TSInspect", "InspectTree", { desc = "`:InspectTree` alias" })
 
 vim.command.set("Align", function(arg)
-    local pat = vim.fn.input("Align character > ")
+    local pat = arg.fargs[1] or vim.fn.input("Align character > ")
     if pat == "" then return end
 
     local selected_lines = get_selected_text(arg):lines()
@@ -93,4 +93,6 @@ vim.command.set("Align", function(arg)
             qwox_util.set_line(row, line:insert(offset, (" "):rep(max_offset - offset)))
         end
     end
-end, { range = true, desc = "Align selected lines at first occurence of character" })
+end, { range = true, nargs = "?", desc = "Align selected lines at first occurence of character" })
+
+vim.command.set("LspInfo", "checkhealth vim.lsp")

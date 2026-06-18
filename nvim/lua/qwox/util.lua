@@ -5,6 +5,7 @@ local home = vim.fn.expand("~")
 local nvim_data = vim.fn.stdpath("data")
 local mason = nvim_data .. "/mason"
 local obsidian = home .. "/obsidian"
+local lazy_root = nvim_data .. "/lazy"
 
 U.paths = {
     home = home,
@@ -12,7 +13,8 @@ U.paths = {
     nvim_config = vim.fn.stdpath("config"),
     nvim_data = nvim_data,
     src = home .. "/src",
-    lazy = nvim_data .. "/lazy/lazy.nvim",
+    lazy = lazy_root .. "/lazy.nvim",
+    plugins = lazy_root,
     packer = nvim_data .. "/site/pack/packer/start/packer.nvim",
     mason = mason,
     mason_packages = mason .. "/packages",
@@ -95,10 +97,18 @@ function U.is_filetype(...)
     return false
 end
 
----@param o any
+---@param ... any
 ---@return string
-function U.dump(o)
-    return vim.inspect(o)
+function U.dump(...)
+    local args = { ... }
+    local text = ""
+    for idx, value in ipairs (args) do
+        if idx > 1 then
+            text = text .. ", "
+        end
+        text = text .. vim.inspect(value)
+    end
+    return text
 end
 
 ---@param o any
@@ -209,20 +219,6 @@ function U.get_selection_text_of(start_row, start_col, end_row, end_col)
         lines[n_lines] = string.sub(lines[n_lines], 1, end_col)
     end
     return table.concat(lines, '\n')
-end
-
----@return boolean
-function U.is_visual_mode() return vim.fn.mode() == "v" end
-
----@return boolean
-function U.is_visual_line_mode() return vim.fn.mode() == "V" end
-
----@return boolean
-function U.is_visual_block_mode() return vim.fn.mode():byte() == 22 end
-
-function U.enter_normal_mode()
-    local esc = vim.api.nvim_replace_termcodes("<Esc>", true, false, true)
-    vim.api.nvim_feedkeys(esc, "x", false)
 end
 
 --- Like `input()` but also highlights current input (':h IncSearch')

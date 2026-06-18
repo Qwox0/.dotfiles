@@ -21,4 +21,6 @@ return {
         i(1),
         t(");"),
     }),
+    s("std", { t("libc :: #import \"std\";") }),
+    s("libc", { t("libc :: #import \"libc\";") }),
 }

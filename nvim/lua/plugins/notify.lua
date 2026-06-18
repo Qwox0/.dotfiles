@@ -7,6 +7,7 @@ local function config()
     vim.notify = require("notify")
     -- vim.lsp.handlers["$/progress"] = require("qwox.notify").lsp_status_update
     -- vim.lsp.handlers["window/showMessage"] = require("qwox.notify").lsp_messages
+    vim.keymap.nmap("<leader>nc", vim.notify.dismiss)
 end
 
 return {

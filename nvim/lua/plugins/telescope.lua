@@ -171,7 +171,7 @@ local function config()
         { desc = "[/] Fuzzily search in current buffer" })
     vmap("<leader>/", function()
         local selection = qwox_util.get_selection_text()
-        qwox_util.enter_normal_mode()
+        vim.mode.set_normal()
         -- vim.cmd(":let @/ = "" .. selection .. """)
         --vim.fn.search(selection)
         --vim.fn.feedkeys("/" .. selection)
@@ -188,7 +188,7 @@ local function config()
     vim.autocmd.new("WinLeave", {
         callback = function()
             if qwox_util.is_filetype("TelescopePrompt") and vim.fn.mode() == "i" then
-                qwox_util.enter_normal_mode()
+                vim.mode.set_normal()
             end
         end,
     })

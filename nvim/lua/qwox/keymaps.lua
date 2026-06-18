@@ -47,7 +47,6 @@ until true
 
 map({ "n", "v" }, "<leader>", "<Nop>", { desc = "Remove default behavior of the leader key" })
 nmap("q:", "<Nop>", { desc = "Disable command history" })
-nmap("Q", "<Nop>", { desc = "Disable Q" })
 
 nmap("k", "v:count == 0 ? \"gk\" : \"k\"", { expr = true, desc = "jump up in wrapped lines" })
 nmap("j", "v:count == 0 ? \"gj\" : \"j\"", { expr = true, desc = "jump down in wrapped lines" })
@@ -215,7 +214,7 @@ vmap("<leader>s", function()
         local before, selection, after = line:multi_split(start_col, end_col)
         after = after or ""
         qwox_util.set_line(nil, before .. input .. selection .. input:fancy_reverse() .. after)
-    elseif qwox_util.is_visual_block_mode() then
+    elseif vim.mode.is_visual_block() then
         for row = start_row, end_row, 1 do
             local before, selection, after = qwox_util.get_line(row):multi_split(start_col, end_col)
             if selection == nil or selection == "" then goto continue end
@@ -228,7 +227,12 @@ vmap("<leader>s", function()
         qwox_util.set_line(start_row, before .. input .. selection_start)
         qwox_util.set_line(end_row, selection_end .. input:fancy_reverse() .. after)
     end
-    qwox_util.enter_normal_mode() -- alternative: move/expand selection
+    vim.mode.set_normal() -- alternative: move/expand selection
 end, { desc = "[S]urround selection" })
 
 --#endregion surround
+
+map({ "i", "t", "v" }, "<C-w>", function()
+    vim.mode.set_normal()
+    vim.feed_escaped_keys("<C-w>")
+end, { desc = "window maps in more modes" })

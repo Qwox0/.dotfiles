@@ -30,8 +30,9 @@ LSP.servers = {
                     -- Make the server aware of Neovim runtime files
                     library = {
                         vim.fn.expand("$VIMRUNTIME/lua"),
-                        vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
-                        vim.fn.expand("~/bin/awesome"),
+                        --vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
+                        qwox.paths.plugins,
+                        --vim.fn.expand("~/bin/awesome"),
                     },
                     checkThirdParty = false,
                 },

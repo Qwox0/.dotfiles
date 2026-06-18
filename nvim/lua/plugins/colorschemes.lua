@@ -46,6 +46,13 @@ local function colorscheme_config(config)
         vim.colors.set("@variable.mutable", { italic = true })
 
         vim.colors.reapply_all() -- prevent colorscheme from overwriting manually set colors
+
+        -- Fix terminal_colors
+        if qwox.colors.terminal_colors then
+            for i = 0, 15 do
+                vim.g['terminal_color_' .. i] = qwox.colors.terminal_colors[i]
+            end
+        end
     end
 end
 

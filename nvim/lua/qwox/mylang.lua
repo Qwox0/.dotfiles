@@ -9,4 +9,8 @@ function _.setup_lsp()
     })
 end
 
+function _.setup_filetype()
+    vim.filetype.add({ extension = { mylang = "mylang" } })
+end
+
 return _

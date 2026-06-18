@@ -6,10 +6,12 @@ vim.augroup = {
 vim.autocmd = {
     new = vim.api.nvim_create_autocmd,
     del = vim.api.nvim_del_autocmd,
+    list = vim.api.nvim_get_autocmds,
 }
 vim.autocmd.create = vim.autocmd.new
 vim.autocmd.set = vim.autocmd.new
 vim.autocmd.delete = vim.autocmd.del
+vim.autocmd.get = vim.autocmd.list
 
 ---@class vim.command.SetCallbackOpts
 ---@field name string Command name
@@ -40,7 +42,6 @@ vim.autocmd.delete = vim.autocmd.del
 vim.command = {
     set_global = vim.api.nvim_create_user_command,
     set_buf = vim.api.nvim_buf_create_user_command,
-    ---comment
     ---@param name string|string[] Name of the new user command. Must begin with an uppercase letter.
     ---@param command (string|vim.command.SetCallback) Replacement command to execute when this user command is executed. When called from Lua, the command can also be a Lua function. The function is called with a single table argument that contains the following keys:
     ---@param opts? vim.command.SetOpts See |command-attributes|
@@ -235,12 +236,36 @@ vim.colors = {
     reapply_all = function() vim.colors.set_many(vim.colors.hl_groups) end,
 }
 
----@class VimMode
----@field type VimModeType
-local mode = {}
+vim.mode = {}
 
----@enum VimModeType
-local mode_type = {
+---@return VimMode
+function vim.mode.get()
+    local mode = vim.api.nvim_get_mode().mode
+    if mode == "c" then mode = vim.fn.getcmdtype() end
+    for _, type in pairs(vim.mode.modes) do
+        if type == mode then return mode end
+    end
+    error("unknown VimMode " .. vim.inspect(mode))
+end
+
+function vim.mode.is_visual() return vim.mode.get() == "v" end
+
+function vim.mode.is_visual_line() return vim.mode.get() == "V" end
+
+function vim.mode.is_visual_block() return vim.mode.get() == vim.mode.modes.visual_block end
+
+function vim.mode.is_visual_any()
+    local mode = vim.mode.get()
+    for _, v in pairs(vim.mode.modes_visual) do
+        if v == mode then return true end
+    end
+    return false
+end
+
+function vim.mode.set_normal() vim.feed_escaped_keys("<C-\\><C-N>") end
+
+---@enum VimMode
+vim.mode.modes = {
     --- Normal
     normal = "n",
     --- Operator-pending
@@ -302,25 +327,25 @@ local mode_type = {
     --- Virtual Replace mode |i_CTRL-X| completion
     replace_virtual_completion2 = "Rvx",
 
-
     -- --- Command-line editing
     -- cmd = "c",
-    -- command-line modes (see `getcmdtype()`)
-
-    --- normal Ex command
-    cmd_exec = ":",
-    --- debug mode command `debug-mode`
-    cmd_debug = ">",
-    --- forward search command
-    cmd_search = "/",
-    --- backward search command
-    cmd_backsearch = "?",
-    --- `input()` command
-    cmd_input = "@",
-    --- `:insert` or `:append` command
-    cmd_insert = "-",
-    --- `i_CTRL-R_=`
-    cmd_equal = "=",
+    --- command-line modes (see `getcmdtype()`)
+    cmd = {
+        --- normal Ex command
+        exec = ":",
+        --- debug mode command `debug-mode`
+        debug = ">",
+        --- forward search command
+        search = "/",
+        --- backward search command
+        backsearch = "?",
+        --- `input()` command
+        input = "@",
+        --- `:insert` or `:append` command
+        insert = "-",
+        --- `i_CTRL-R_=`
+        equal = "=",
+    },
 
     --- Command-line editing overstrike mode |c_<Insert>|
     cmd_overstrike = "cr",
@@ -341,82 +366,39 @@ local mode_type = {
     terminal = "t",
 }
 
-mode_type.vis_modes = {
-    mode_type.visual,
-    mode_type.visual_select,
-    mode_type.visual_line,
-    mode_type.visual_line_select,
-    mode_type.visual_block,
-    mode_type.visual_block_select,
+vim.mode.modes_visual = {
+    vim.mode.modes.visual,
+    vim.mode.modes.visual_select,
+    vim.mode.modes.visual_line,
+    vim.mode.modes.visual_line_select,
+    vim.mode.modes.visual_block,
+    vim.mode.modes.visual_block_select,
 }
 
-mode_type.cmd_modes = {
-    mode_type.cmd_exec,
-    mode_type.cmd_debug,
-    mode_type.cmd_search,
-    mode_type.cmd_backsearch,
-    mode_type.cmd_input,
-    mode_type.cmd_insert,
-    mode_type.cmd_equal,
+vim.mode.modes_cmd = {
+    vim.mode.modes.cmd.exec,
+    vim.mode.modes.cmd.debug,
+    vim.mode.modes.cmd.search,
+    vim.mode.modes.cmd.backsearch,
+    vim.mode.modes.cmd.input,
+    vim.mode.modes.cmd.insert,
+    vim.mode.modes.cmd.equal,
 
-    mode_type.cmd_overstrike,
-    mode_type.vim_ex,
-    mode_type.vim_ex_overstrike,
+    vim.mode.modes.cmd_overstrike,
+    vim.mode.modes.vim_ex,
+    vim.mode.modes.vim_ex_overstrike,
 }
 
-mode_type.search_modes = {
-    mode_type.cmd_search,
-    mode_type.cmd_backsearch,
+vim.mode.modes_search = {
+    vim.mode.modes.cmd.search,
+    vim.mode.modes.cmd.backsearch,
 }
 
----@param char string
----@return boolean
-function mode_type.is_valid_char(char)
-    for _, type in pairs(mode_type) do
-        if type == char then return true end
-    end
-    return false
+---@see vim.api.nvim_feedkeys
+---@see vim.api.nvim_replace_termcodes
+---
+---@param keys string
+function vim.feed_escaped_keys(keys)
+    local escaped = vim.api.nvim_replace_termcodes(keys, true, false, true)
+    vim.api.nvim_feedkeys(escaped, "n", true)
 end
-
----@param char string
----@return VimModeType
-function mode_type.new(char)
-    assert(mode_type.is_valid_char(char), "Invalid VimModeType char")
-    return char
-end
-
----Returns the currently active `VimMode`
----@return VimMode
-function mode_type.current()
-    local basic = vim.api.nvim_get_mode().mode
-    if basic == "c" then
-        basic = vim.fn.getcmdtype()
-    end
-    return mode.new(basic)
-end
-
----@param char string
----@return VimMode
-function mode.new(char)
-    local type = mode_type.new(char)
-    return setmetatable({ type = type }, { __index = mode })
-end
-
----Returns whether `self` is any visual mode.
----@return boolean
-function mode.is_any_vis(self)
-    return table.arr_contains(mode_type.vis_modes, self.type)
-end
-
----Returns whether `self` is any command mode (including search, ...).
----@return boolean
-function mode.is_any_cmd(self)
-    return table.arr_contains(mode_type.cmd_modes, self.type)
-end
-
----@return boolean
-function mode.is_search(self)
-    return table.arr_contains(mode_type.search_modes, self.type)
-end
-
-vim.mode = mode_type
