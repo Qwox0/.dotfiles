@@ -6,12 +6,12 @@ local function config()
         install_info = {
             url = "~/src/tree-sitter-mylang",
             files = { "src/parser.c", "src/scanner.c" },
-            branch = "main",               -- default branch in case of git repo if different from master
             generate_requires_npm = false, -- if stand-alone parser without npm dependencies
             requires_generate_from_grammar = false
         },
         filetype = "mylang",
     }
+    --vim.treesitter.language.add("mylang", { path = qwox_util.paths.home .. "/src/tree-sitter-mylang/mylang.so" })
 
     -- use local markdown parser which fixes a segfault when injecting markdown into my `mylang` parser.
     local local_markdown_dir = require("qwox.util").paths.home .. "/src/tree-sitter-markdown"
@@ -20,9 +20,53 @@ local function config()
         markdown_config.install_info.url = local_markdown_dir
         parser_configs["markdown"] = markdown_config
     end
+    --vim.treesitter.language.add("markdown", { path = qwox_util.paths.home .. "/src/tree-sitter-markdown/" })
+
+    --[[
+    require("nvim-treesitter.parsers").mylang = {
+        install_info = {
+            --url = "~/src/tree-sitter-mylang",
+            path = "~/src/tree-sitter-mylang",
+            --files = { "src/parser.c", "src/scanner.c" },
+            --branch = "main",               -- default branch in case of git repo if different from master
+            --generate_requires_npm = false, -- if stand-alone parser without npm dependencies
+            --requires_generate_from_grammar = false
+        },
+        filetype = "mylang",
+    }
+    ]]
+    --[[
+    require("nvim-treesitter").setup()
+    vim.autocmd.create("User", {
+        pattern = "TSUpdate",
+        callback = function()
+            require("nvim-treesitter.parsers").mylang = {
+                install_info = {
+                    --url = "~/src/tree-sitter-mylang",
+                    path = "~/src/tree-sitter-mylang",
+                    generate = true,
+                    --files = { "src/parser.c", "src/scanner.c" },
+                    --branch = "main",               -- default branch in case of git repo if different from master
+                    --generate_requires_npm = false, -- if stand-alone parser without npm dependencies
+                    --requires_generate_from_grammar = false
+                },
+                --filetype = "mylang",
+            }
+        end
+    })
+
+    vim.autocmd.create("FileType", {
+        callback = function()
+            vim.treesitter.start()
+        end
+    })
+    ]]
+
+    --vim.treesitter.language.register("mylang", { "mylang" })
+    --vim.treesitter.start(0, "mylang")
 
     require("nvim-treesitter.configs").setup {
-        ensure_installed = { "vimdoc", "lua", "rust" },
+        ensure_installed = { "vimdoc", "lua", "rust", "markdown", "mylang" },
         sync_install = false,
         auto_install = true,
         highlight = {
@@ -98,9 +142,12 @@ end
 return {
     "nvim-treesitter/nvim-treesitter",
     dependencies = {
-        "nvim-treesitter/playground",             -- show treesitter AST (for plugin development)
+        --"nvim-treesitter/playground",             -- show treesitter AST (for plugin development)
         "nvim-treesitter/nvim-treesitter-context" -- show current context (function) at the top
     },
+    --branch = "main",
+    branch = "master",
+    lazy = false,
     --build = ":TSUpdate",
     build = function()
         pcall(require("nvim-treesitter.install").update { with_sync = true })
