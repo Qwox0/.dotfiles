@@ -71,7 +71,7 @@ end
 ---filetype -> format command
 ---@type table<string, function>
 local format_alternatives = {
-
+    mylang = function() end,
 }
 
 ---@return boolean

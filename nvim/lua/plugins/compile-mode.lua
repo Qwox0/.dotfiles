@@ -5,6 +5,18 @@ _.augroup = vim.augroup.new("qwox.compile_mode", { clear = false })
 
 function _.is_active() return not not vim.g.compile_command end
 
+---@class CompileOpts: CommandParam
+---@field dir? string
+
+---@param opts? CompileOpts
+function _.compile(opts)
+    opts = opts or {}
+    if opts.dir then
+        vim.g.compilation_directory = opts.dir
+    end
+    require("compile-mode").compile(opts)
+end
+
 _.recompile_on_save_autocmd_id = nil
 function _.recompile_on_save()
     if _.recompile_on_save_autocmd_id then
@@ -60,9 +72,7 @@ function _.map_to_diagnostic(bufnr, error)
 end
 
 function _.find_errors()
-    if not _.is_active() then
-        require("compile-mode").compile()
-    end
+    if not _.is_active() then _.compile() end
     require("compile-mode.extensions.telescope")()
 end
 
@@ -75,9 +85,11 @@ return {
 
         "nvim-telescope/telescope.nvim",
     },
-    cmd = { "Compile", "Recompile" },
+    cmd = { "Compile", "Recompile", "RecompileOnSave", "CompileIn" },
     keys = {
-        { "<leader>fc", _.find_errors, desc = "[F]ind [C]ompile mode errors" }
+        { "<leader>fc", _.find_errors,                                      desc = "[F]ind [C]ompile mode errors" },
+        { "<leader>c",  function() require("compile-mode").recompile() end, desc = "[C]ompile (or recompile)" },
+        { "<leader>C",  _.compile,                                          desc = "[C]ompile new" },
     },
     config = function()
         ---@type CompileModeOpts
@@ -99,6 +111,7 @@ return {
             -- the command (and behave more like `:!`), add:
             bang_expansion = true,
 
+            -- for defaults see `~/.local/share/nvim/lazy/compile-mode.nvim/lua/compile-mode/errors/init.lua`
             error_regexp_table = {
                 rust_panic = {
                     regex = "^thread '[^']*' ([0-9]*) panicked at \\([^:]\\+\\):\\([0-9]\\+\\):\\([0-9]\\+\\)",
@@ -114,12 +127,24 @@ return {
                     row = 2,
                     col = 3,
                 },
+                inline_files_without_space = {
+                    regex =
+                    "\\([^ :,'\"()\\[\\]{}\t\n]\\+[a-zA-Z][^ :,'\"()\\[\\]{}\t\n]\\+\\):\\([0-9]\\+\\):\\([0-9]\\+\\)",
+                    --                            ^^^^^^^^ at least one text character to exclude timestamps
+                    filename = 1,
+                    row = 2,
+                    col = 3,
+                },
+
+                -- disable some defaults
+                cucumber = { regex = "$^", filename = 1 },
             },
 
-            --use_diagnostics = { keep_window = true, },
-            --hidden_buffer = true,
+            use_diagnostics = false,    -- custom CompilationFinished autocmd instead
+            recompile_no_fail = true,   -- needed for '<leader>c'
+            use_pseudo_terminal = true, -- usually better ordering of stdout/stderr
 
-            --use_pseudo_terminal = true,
+            debug = false,
         }
 
         vim.colors.del("CompileModeCommandOutput")
@@ -128,6 +153,9 @@ return {
 
         vim.command.set("RecompileOnSave", _.recompile_on_save)
         vim.command.set("DisableRecompileOnSave", _.disable_recompile_on_save)
+        vim.command.set("CompileIn", function(args)
+            _.compile({ dir = args.args })
+        end, { nargs = 1 })
 
         vim.autocmd.new("User", {
             pattern = "CompilationFinished",
