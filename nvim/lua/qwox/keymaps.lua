@@ -192,7 +192,7 @@ local function surround(WORD)
     local input = vim.fn.input("Surround word with > ")
     if input == "" then return end
 
-    local before, word, after = qwox_util.get_cursor_word(WORD)
+    local before, word, after = qwox_util.split_line_at_cursor_word(WORD)
 
     qwox_util.set_line(nil, before .. input .. word .. input:fancy_reverse() .. after)
 end

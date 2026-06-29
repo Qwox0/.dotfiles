@@ -137,7 +137,9 @@ return {
                 },
 
                 -- disable some defaults
+                ada = { regex = "$^", filename = 1 },
                 cucumber = { regex = "$^", filename = 1 },
+                gnu = { regex = "$^", filename = 1 },
             },
 
             use_diagnostics = false,    -- custom CompilationFinished autocmd instead

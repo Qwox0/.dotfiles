@@ -102,7 +102,7 @@ end
 function U.dump(...)
     local args = { ... }
     local text = ""
-    for idx, value in ipairs (args) do
+    for idx, value in ipairs(args) do
         if idx > 1 then
             text = text .. ", "
         end
@@ -145,6 +145,12 @@ function U.set_line(linenum, text)
     end
 end
 
+---@param WORD boolean? see ':help word' and ':help WORD'
+---@return string
+function U.get_cursor_word(WORD)
+    return vim.fn.expand(WORD and "<cWORD>" or "<cword>")
+end
+
 ---Get position of the cursor
 ---@return integer row 1-indexed
 ---@return integer col 0-indexed
@@ -168,7 +174,7 @@ end
 ---@return string before
 ---@return string word
 ---@return string after
-function U.get_cursor_word(WORD)
+function U.split_line_at_cursor_word(WORD)
     ---@type string
     local line = U.get_line()
     local word_start, word_end = U.get_cursor_word_pos(WORD)
@@ -189,7 +195,7 @@ function U.get_selection_pos()
     local end_row = math.max(row1, row2)
     local end_col = math.max(col1, col2)
 
-    if U.is_visual_line_mode() then
+    if vim.mode.is_visual_line() then
         start_col = 1
         end_col = U.get_line(end_row):len()
     end

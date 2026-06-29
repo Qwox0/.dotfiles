@@ -130,7 +130,7 @@ local function config()
                 additional_args = { "--hidden" },
             },
             live_grep = {
-                additional_args = { "--hidden" },
+                additional_args = { "--hidden", "--multiline" },
             },
             planets = { show_moon = true, show_pluto = true },
         },
@@ -154,8 +154,7 @@ local function config()
     --nmap("<C-p>", builtin.git_files)
     nmap("<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
     nmap("<leader>fw", builtin.grep_string, { desc = "[F]ind current [W]ord" })
-    nmap("<leader>fg", function() builtin.live_grep { additional_args = { "--multiline" } } end,
-        { desc = "[F]ind by [G]rep" })
+    nmap("<leader>fg", builtin.live_grep, { desc = "[F]ind by [G]rep" })
     nmap("<leader>fo", builtin.oldfiles, { desc = "[F]ind recently [o]pened files" })
     nmap("<leader>fb", builtin.buffers, { desc = "[F]ind existing [b]uffers" })
     nmap("<leader>fd", builtin.diagnostics, { desc = "[F]ind [D]iagnostics" })

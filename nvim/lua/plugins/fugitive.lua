@@ -26,4 +26,5 @@ local keys = {
 return { -- Git Ui
     "tpope/vim-fugitive",
     keys = keys,
+    cmd = { "Git" },
 }
